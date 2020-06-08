@@ -10,9 +10,9 @@ const router = express.Router();
 router.use(authController.protectRoute);
 
 // *? 1. FOLLOW A USER
-router.get("/follow/:userId", followController.followUser);
+router.get("/follow/:username", followController.followUser);
 
 // *? 2. UNFOLLOW A USER
-router.get("/unfollow/:userId", followController.unfollowUser);
+router.get("/unfollow/:username", followController.unfollowUser);
 
 module.exports = router;

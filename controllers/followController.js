@@ -7,7 +7,7 @@ const AppError = require("../utils/appError");
 
 // *? 1. FOLLOW A USER
 exports.followUser = catchAsync(async (req, res) => {
-	const userToFollow = await User.findById(req.params.userId);
+	const userToFollow = await User.findOne({ username: req.params.username });
 
 	// a. Check if user to follow exists
 	if (!userToFollow) {
@@ -44,7 +44,7 @@ exports.followUser = catchAsync(async (req, res) => {
 
 // *? 2. UNFOLLOW A USER
 exports.unfollowUser = catchAsync(async (req, res) => {
-	const userToUnfollow = await User.findById(req.params.userId);
+	const userToUnfollow = await User.findOne({ username: req.params.username });
 
 	// a. Check if user to unfollow exists
 	if (!userToUnfollow) {
