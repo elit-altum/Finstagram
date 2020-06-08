@@ -20,6 +20,7 @@
 		"express": "^4.17.1",
 		"express-mongo-sanitize": "^2.0.0",
 		"helmet": "^3.22.0",
+		"image-size": "^0.8.3",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.9.18",
 		"morgan": "^1.10.0",

@@ -15,8 +15,10 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const compression = require("compression");
 
-// 2. Importing routers
+// 2. Importing routers and error handler
 const userRouter = require("./routes/userRouter");
+const postRouter = require("./routes/postRouter");
+
 const errorHandler = require("./utils/errorHandler");
 
 const app = express();
@@ -69,6 +71,7 @@ app.use(compression());
 
 // *? 5. MOUNT API ROUTERS
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/posts", postRouter);
 
 // *? 6. ERROR HANDLERS
 app.use(errorHandler);

@@ -10,13 +10,6 @@ router.post("/signup", authController.signupUser);
 router.post("/login", authController.loginUser);
 router.get("/logout", authController.logoutUser);
 
-router.get(
-	"/check",
-	authController.protectRoute,
-	authController.restrictTo("user"),
-	(req, res) => res.send("done")
-);
-
 // *? 2. FORGOT AND RESET PASSWORD
 router.post("/forgotPassword", authController.generateResetToken);
 router.patch("/resetPassword/:token", authController.resetPassword);
