@@ -1,0 +1,46 @@
+// Handles users and authentication routes
+const express = require("express");
+const authController = require("../controllers/authController");
+const userController = require("../controllers/userController");
+
+const router = express.Router();
+
+// *? 1. BASICS
+router.post("/signup", authController.signupUser);
+router.post("/login", authController.loginUser);
+router.get("/logout", authController.logoutUser);
+
+router.get(
+	"/check",
+	authController.protectRoute,
+	authController.restrictTo("user"),
+	(req, res) => res.send("done")
+);
+
+// *? 2. FORGOT AND RESET PASSWORD
+router.post("/forgotPassword", authController.generateResetToken);
+router.patch("/resetPassword/:token", authController.resetPassword);
+
+// *? PROTECTED ROUTES
+router.use(authController.protectRoute);
+
+// *? 3. UPDATE USER DETAILS
+router.get("/me", userController.getMe);
+
+router.patch(
+	"/updateMe",
+	userController.uploadUserProfile,
+	userController.resizeUserImage,
+	userController.updateMe
+);
+router.patch("/updatePassword", userController.updatePassword);
+
+router.delete("/deleteMe", userController.deactivateUser);
+
+// *? ADMIN ONLY ROUTES
+router.use(authController.restrictTo("admin"));
+
+// *? DELETE USER FROM DB
+router.delete("/deleteUser/:userId", userController.deleteUser);
+
+module.exports = router;
