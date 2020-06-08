@@ -81,6 +81,20 @@ const userSchema = new mongoose.Schema(
 	}
 );
 
+// 0a. Virtual property to store user followers
+userSchema.virtual("followers", {
+	ref: "Follow",
+	foreignField: "follows",
+	localField: "_id",
+});
+
+// 0b. Virtual property to store user following
+userSchema.virtual("follows", {
+	ref: "Follow",
+	foreignField: "user",
+	localField: "_id",
+});
+
 // 1. Document middleware to hash the password before save
 userSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) {

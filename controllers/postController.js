@@ -1,7 +1,5 @@
 // Handles routes specific to post
-const fs = require("fs");
 const { promisify } = require("util");
-const path = require("path");
 
 const multer = require("multer");
 const sharp = require("sharp");
@@ -69,7 +67,13 @@ exports.storePost = catchAsync(async (req, res) => {
 		createdBy: req.user.id,
 	};
 
+	// Create the new post
 	const post = await Post.create(newPost);
+
+	// Update the post date of user
+	await User.findByIdAndUpdate(req.user.id, {
+		lastPostAt: Date.now(),
+	});
 
 	res.status(201).send({
 		status: "success",

@@ -3,3 +3,4 @@ node_modules/
 .cache
 .vscode
 package-lock.json
+public/img/
