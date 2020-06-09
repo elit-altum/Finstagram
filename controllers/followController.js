@@ -14,6 +14,10 @@ exports.followUser = catchAsync(async (req, res) => {
 		throw new AppError("This user does not seem to exist", 400);
 	}
 
+	if (currentUser.id === userToUnfollow.id) {
+		throw new AppError("You cannot follow yourself!", 400);
+	}
+
 	// b. Get all users which the user already follows
 	const currentUser = await User.findById(req.user.id).populate({
 		path: "follows",
@@ -57,6 +61,10 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 		path: "follows",
 		select: "follows -user",
 	});
+
+	if (currentUser.id === userToUnfollow.id) {
+		throw new AppError("You cannot follow yourself!", 400);
+	}
 
 	// c. Check if user doesn't even follow the other user
 	if (!currentUser.follows.length) {
