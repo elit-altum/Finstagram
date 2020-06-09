@@ -83,4 +83,61 @@ exports.storePost = catchAsync(async (req, res) => {
 	});
 });
 
-// *? GET POSTS FOR THE USER
+// *? 2. EDIT A POST
+exports.editPost = catchAsync(async (req, res) => {
+	const post = await Post.findById(req.params.postId);
+
+	if (req.body.photo) {
+		throw new AppError("You can only edit captions in a post.", 400);
+	}
+
+	console.log(req.body);
+
+	const caption = req.body.caption || "";
+
+	// a. If post exists or not
+	if (!post) {
+		throw new AppError("No post found with this id.", 400);
+	}
+
+	// b. If user editing the post has only created it
+	if (post.createdBy.toString() != req.user._id) {
+		throw new AppError("You do not have permission to delete this post.", 403);
+	}
+
+	// c. Edit the post
+	const updatedPost = await Post.findByIdAndUpdate(
+		req.params.postId,
+		{ caption },
+		{ new: true }
+	);
+
+	res.status(200).json({
+		status: "success",
+		data: {
+			post: updatedPost,
+		},
+	});
+});
+
+// *? 3. DELETE A POST
+exports.deletePost = catchAsync(async (req, res) => {
+	const post = await Post.findById(req.params.postId);
+
+	// a. If post exists or not
+	if (!post) {
+		throw new AppError("No post found with this id.", 400);
+	}
+
+	// b. If user deleting the post has only created it
+	if (post.createdBy.toString() != req.user._id) {
+		throw new AppError("You do not have permission to delete this post.", 403);
+	}
+
+	// c. Delete the post
+	await Post.findByIdAndRemove(req.params.postId);
+
+	res.status(204).json({
+		status: "success",
+	});
+});

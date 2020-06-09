@@ -17,4 +17,10 @@ router.post(
 	postController.storePost
 );
 
+// *? 2. EDIT A POST
+router.patch("/editPost/:postId", postController.editPost);
+
+// *? 3. DELETE A POST
+router.delete("/deletePost/:postId", postController.deletePost);
+
 module.exports = router;
