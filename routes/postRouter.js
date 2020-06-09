@@ -23,4 +23,7 @@ router.patch("/editPost/:postId", postController.editPost);
 // *? 3. DELETE A POST
 router.delete("/deletePost/:postId", postController.deletePost);
 
+// *? 4. GET USER TIMELINE
+router.get("/timeline", postController.getTimeline);
+
 module.exports = router;

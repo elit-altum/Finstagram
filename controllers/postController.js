@@ -7,6 +7,8 @@ const sizeOf = require("image-size");
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const Follow = require("../models/followModel");
+
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
@@ -91,8 +93,6 @@ exports.editPost = catchAsync(async (req, res) => {
 		throw new AppError("You can only edit captions in a post.", 400);
 	}
 
-	console.log(req.body);
-
 	const caption = req.body.caption || "";
 
 	// a. If post exists or not
@@ -140,4 +140,16 @@ exports.deletePost = catchAsync(async (req, res) => {
 	res.status(204).json({
 		status: "success",
 	});
+});
+
+// *? 4. GET POSTS TO SHOW TO A USER (timeline)
+exports.getTimeline = catchAsync(async (req, res) => {
+	const currentUser = await User.findById(req.user.id)
+		.populate({
+			path: "follows",
+		})
+		.select("follows");
+
+	console.log(currentUser.follows);
+	res.send("Okay");
 });

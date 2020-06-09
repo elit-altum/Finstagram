@@ -15,19 +15,20 @@ exports.followUser = catchAsync(async (req, res) => {
 	}
 
 	// b. Get all users which the user already follows
-	const currentUser = await User.findById(req.user.id)
-		.populate({
-			path: "follows",
-			select: "user",
-		})
-		.select("follows");
+	const currentUser = await User.findById(req.user.id).populate({
+		path: "follows",
+		select: "follows -user",
+	});
 
 	// c. Check if user already follows the other user
-	if (
-		currentUser.follows.length &&
-		currentUser.follows.every((user) => user.user != userToFollow._id)
-	) {
-		throw new AppError("You already follow this user", 400);
+	if (currentUser.follows.length) {
+		if (
+			!currentUser.follows.every(
+				(user) => user.follows.toString() !== userToFollow._id.toString()
+			)
+		) {
+			throw new AppError("You already follow this user", 400);
+		}
 	}
 
 	// d. Create a new follow instance
@@ -52,15 +53,18 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 	}
 
 	// b. Get all users which the user already follows
-	const currentUser = await User.findById(req.user.id)
-		.populate({
-			path: "follows",
-			select: "user",
-		})
-		.select("follows");
+	const currentUser = await User.findById(req.user.id).populate({
+		path: "follows",
+		select: "follows -user",
+	});
 
 	// c. Check if user doesn't even follow the other user
-	if (currentUser.follows.every((user) => user.user == userToUnfollow._id)) {
+	if (!currentUser.follows.length) {
+		console.log("yo");
+		throw new AppError("You don't follow this user", 400);
+	} else if (
+		!currentUser.follows.every((user) => user.follows !== userToUnfollow._id)
+	) {
 		throw new AppError("You don't follow this user", 400);
 	}
 
