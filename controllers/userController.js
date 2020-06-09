@@ -7,6 +7,8 @@ const multer = require("multer");
 const sharp = require("sharp");
 
 const User = require("../models/userModel");
+const Post = require("../models/postModel");
+
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/sendEmails");
@@ -28,17 +30,72 @@ const getSpecifics = (req, ...props) => {
 	return finalObj;
 };
 
-// *? 1. GET USER DETAILS
-exports.getMe = catchAsync(async (req, res) => {
-	const user = await User.findById(req.user.id)
+// *? 1. GET USER PROFILE
+exports.getUser = catchAsync(async (req, res) => {
+	// a. Check if user(P) is requesting his own posts or someone else's(Q)
+	const username = req.params.username || req.user.username;
+
+	// b. Get followers of user Q
+	const user = await User.findOne({ username })
 		.populate("followCount")
 		.populate("followersCount")
-		.populate("postsCount");
+		.populate("postsCount")
+		.populate("followers")
+		.select("-createdAt -updatedAt -__v -lastPostAt -lastSeenAt -email");
+
+	if (!user) {
+		throw new AppError("This user does not seem to exist!");
+	}
+
+	let fetchPostsId = "";
+	let message = "";
+
+	// c. Check if P follows Q
+	if (user.id === req.user.id) {
+		fetchPostsId = req.user.id;
+	} else {
+		if (!user.followers.length) {
+			message = "You do not follow this user.";
+		} else if (
+			user.followers.every((user) => user.user.toString() !== req.user.id)
+		) {
+			message = "You do not follow this user.";
+		} else {
+			fetchPostsId = user.id;
+		}
+	}
+
+	user.followers = null;
+
+	if (!fetchPostsId) {
+		return res.status(200).json({
+			status: "success",
+			data: {
+				user,
+				message,
+			},
+		});
+	}
+
+	// d. Fetch posts of P
+
+	// e. For pagination
+	const limit = Number(req.query.limit) || 10;
+	const skip = (Number(req.query.page) - 1) * limit || 0;
+
+	// f. Get posts by user
+	const posts = await Post.find({
+		createdBy: fetchPostsId,
+	})
+		.sort({ createdAt: -1 })
+		.limit(limit)
+		.skip(skip);
 
 	res.status(200).json({
 		status: "success",
 		data: {
 			user,
+			posts,
 		},
 	});
 });

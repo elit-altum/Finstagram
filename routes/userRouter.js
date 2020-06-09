@@ -18,8 +18,6 @@ router.patch("/resetPassword/:token", authController.resetPassword);
 router.use(authController.protectRoute);
 
 // *? 3. UPDATE USER DETAILS
-router.get("/me", userController.getMe);
-
 router.patch(
 	"/updateMe",
 	userController.uploadUserProfile,
@@ -29,6 +27,9 @@ router.patch(
 router.patch("/updatePassword", userController.updatePassword);
 
 router.delete("/deleteMe", userController.deactivateUser);
+
+// *? 4. GET A USER
+router.get("/user/:username?", userController.getUser);
 
 // *? ADMIN ONLY ROUTES
 router.use(authController.restrictTo("admin"));

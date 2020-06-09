@@ -26,7 +26,7 @@ router.delete("/deletePost/:postId", postController.deletePost);
 // *? 4. GET USER TIMELINE
 router.get("/timeline", postController.getTimeline);
 
-// *? 5. GET POSTS MADE BY A USER
-router.get("/myPosts", postController.getMyPosts);
+// *? 5. GET POSTS BY A USER
+router.get("/myPosts/:username?", postController.getMyPosts);
 
 module.exports = router;

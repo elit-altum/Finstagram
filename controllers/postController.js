@@ -187,8 +187,10 @@ exports.getTimeline = catchAsync(async (req, res) => {
 	});
 });
 
-// *? 5. GET MY POSTS
+// *? 5. GET POSTS BY A USER / MY POSTS
 exports.getMyPosts = catchAsync(async (req, res) => {
+	const username = req.params.username || req.user.username;
+
 	// a. For pagination
 	const limit = Number(req.query.limit) || 10;
 	const skip = (Number(req.query.page) - 1) * limit || 0;
