@@ -102,6 +102,30 @@ userSchema.virtual("posts", {
 	localField: "_id",
 });
 
+// 0d. Virtual property for no. of followers
+userSchema.virtual("followersCount", {
+	ref: "Follow",
+	foreignField: "follows",
+	localField: "_id",
+	count: true,
+});
+
+// 0e. Virtual property for no. of follows
+userSchema.virtual("followCount", {
+	ref: "Follow",
+	foreignField: "user",
+	localField: "_id",
+	count: true,
+});
+
+// 0f. Virtual property for no. of posts
+userSchema.virtual("postsCount", {
+	ref: "Post",
+	foreignField: "createdBy",
+	localField: "_id",
+	count: true,
+});
+
 // 1. Document middleware to hash the password before save
 userSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) {

@@ -170,9 +170,36 @@ exports.getTimeline = catchAsync(async (req, res) => {
 	const posts = await Post.find({
 		createdBy: { $in: userFollows },
 	})
+		.sort({ createdAt: -1 })
 		.limit(limit)
 		.skip(skip)
+		.populate({
+			path: "createdBy",
+			select: "username photo",
+		});
+
+	res.status(200).json({
+		status: "success",
+		results: posts.length,
+		data: {
+			posts,
+		},
+	});
+});
+
+// *? 5. GET MY POSTS
+exports.getMyPosts = catchAsync(async (req, res) => {
+	// a. For pagination
+	const limit = Number(req.query.limit) || 10;
+	const skip = (Number(req.query.page) - 1) * limit || 0;
+
+	// b. Get posts by user
+	const posts = await Post.find({
+		createdBy: req.user.id,
+	})
 		.sort({ createdAt: -1 })
+		.limit(limit)
+		.skip(skip)
 		.populate({
 			path: "createdBy",
 			select: "username photo",

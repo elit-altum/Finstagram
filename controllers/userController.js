@@ -30,7 +30,10 @@ const getSpecifics = (req, ...props) => {
 
 // *? 1. GET USER DETAILS
 exports.getMe = catchAsync(async (req, res) => {
-	const user = await User.findById(req.user.id).select("-__v");
+	const user = await User.findById(req.user.id)
+		.populate("followCount")
+		.populate("followersCount")
+		.populate("postsCount");
 
 	res.status(200).json({
 		status: "success",
