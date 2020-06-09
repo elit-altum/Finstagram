@@ -95,6 +95,13 @@ userSchema.virtual("follows", {
 	localField: "_id",
 });
 
+// 0c. Virtual property to get posts
+userSchema.virtual("posts", {
+	ref: "Post",
+	foreignField: "createdBy",
+	localField: "_id",
+});
+
 // 1. Document middleware to hash the password before save
 userSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) {

@@ -144,12 +144,45 @@ exports.deletePost = catchAsync(async (req, res) => {
 
 // *? 4. GET POSTS TO SHOW TO A USER (timeline)
 exports.getTimeline = catchAsync(async (req, res) => {
-	const currentUser = await User.findById(req.user.id)
-		.populate({
-			path: "follows",
-		})
-		.select("follows");
+	// a. For pagination
+	const limit = Number(req.query.limit) || 10;
+	const skip = (Number(req.query.page) - 1) * limit || 0;
 
-	console.log(currentUser.follows);
-	res.send("Okay");
+	// b. Get current user and the id of users it follows
+	const currentUser = await User.findById(req.user.id).populate({
+		path: "follows",
+		select: "_id",
+		populate: {
+			path: "follows",
+			select: "isActive",
+		},
+	});
+
+	// c. Extract only user id's
+	const userFollows = [];
+	currentUser.follows.forEach((user) => {
+		if (user.follows.isActive) {
+			userFollows.push(user.follows.id);
+		}
+	});
+
+	// d. Get posts by followers
+	const posts = await Post.find({
+		createdBy: { $in: userFollows },
+	})
+		.limit(limit)
+		.skip(skip)
+		.sort({ createdAt: -1 })
+		.populate({
+			path: "createdBy",
+			select: "username photo",
+		});
+
+	res.status(200).json({
+		status: "success",
+		results: posts.length,
+		data: {
+			posts,
+		},
+	});
 });

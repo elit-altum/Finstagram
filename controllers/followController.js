@@ -60,7 +60,6 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 
 	// c. Check if user doesn't even follow the other user
 	if (!currentUser.follows.length) {
-		console.log("yo");
 		throw new AppError("You don't follow this user", 400);
 	} else if (
 		!currentUser.follows.every((user) => user.follows !== userToUnfollow._id)

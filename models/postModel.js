@@ -26,13 +26,13 @@ const postSchema = new mongoose.Schema(
 );
 
 // 1. Query middleware for populating createdBy
-postSchema.pre(/find^/, function (next) {
-	// Populate createdBy with the user info
-	this.populate({
-		path: "createdBy",
-		select: "username photo",
-	});
-});
+// postSchema.pre(/find^/, function (next) {
+// 	// Populate createdBy with the user info
+// 	this.populate({
+// 		path: "createdBy",
+// 		select: "username photo",
+// 	});
+// });
 
 const Post = mongoose.model("Post", postSchema);
 
