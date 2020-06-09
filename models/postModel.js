@@ -22,17 +22,10 @@ const postSchema = new mongoose.Schema(
 	},
 	{
 		timestamps: true,
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
 	}
 );
-
-// 1. Query middleware for populating createdBy
-// postSchema.pre(/find^/, function (next) {
-// 	// Populate createdBy with the user info
-// 	this.populate({
-// 		path: "createdBy",
-// 		select: "username photo",
-// 	});
-// });
 
 // 0a. Virtual property for getting users which liked the post
 postSchema.virtual("likers", {
@@ -45,7 +38,7 @@ postSchema.virtual("likers", {
 postSchema.virtual("likes", {
 	ref: "Like",
 	foreignField: "post",
-	localField: "id",
+	localField: "_id",
 	count: true,
 });
 

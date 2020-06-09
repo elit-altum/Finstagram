@@ -9,6 +9,9 @@ const router = express.Router();
 // ! ALL ROUTES HERE ARE PROTECTED BY authController.protectRoute()
 router.use(authController.protectRoute);
 
-router.get("/post/:postId", likeController.likePost);
+router.get("/like/:postId", likeController.likePost);
+router.get("/unlike/:postId", likeController.unlikePost);
+
+router.get("/likedBy/:postId", likeController.likedBy);
 
 module.exports = router;

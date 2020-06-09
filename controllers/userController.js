@@ -54,10 +54,10 @@ exports.getUser = catchAsync(async (req, res) => {
 	const posts = await Post.find({
 		createdBy: user.id,
 	})
+		.populate("likes")
 		.sort({ createdAt: -1 })
 		.limit(limit)
-		.skip(skip)
-		.populate("likes");
+		.skip(skip);
 
 	res.status(200).json({
 		status: "success",
