@@ -19,7 +19,6 @@ const compression = require("compression");
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
 const followRouter = require("./routes/followRouter");
-const likeRouter = require("./routes/likeRouter");
 
 const errorHandler = require("./utils/errorHandler");
 
@@ -75,7 +74,6 @@ app.use(compression());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/follows", followRouter);
-app.use("/api/v1/likes", likeRouter);
 
 // *? 6. ERROR HANDLERS
 app.use(errorHandler);

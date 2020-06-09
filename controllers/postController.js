@@ -215,3 +215,26 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 		},
 	});
 });
+
+// *? 6. GET INDIVIDUAL POST
+exports.getPost = catchAsync(async (req, res) => {
+	const postId = req.params.postId;
+
+	const post = await Post.findById(postId)
+		.populate({
+			path: "createdBy",
+			select: "username photo",
+		})
+		.populate("likes");
+
+	if (!post) {
+		throw new AppError("No post found.", 404);
+	}
+
+	res.status(200).json({
+		status: "success",
+		results: {
+			post,
+		},
+	});
+});
