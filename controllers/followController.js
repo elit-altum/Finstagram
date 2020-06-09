@@ -14,29 +14,22 @@ exports.followUser = catchAsync(async (req, res) => {
 		throw new AppError("This user does not seem to exist", 400);
 	}
 
-	if (currentUser.id === userToUnfollow.id) {
+	if (req.user.id === userToFollow.id) {
 		throw new AppError("You cannot follow yourself!", 400);
 	}
 
-	// b. Get all users which the user already follows
-	const currentUser = await User.findById(req.user.id).populate({
-		path: "follows",
-		select: "follows -user",
+	// b. Check if user already follows requested user
+	const existingFollow = await Follow.findOne({
+		user: req.user.id,
+		follows: userToFollow.id,
 	});
 
-	// c. Check if user already follows the other user
-	if (currentUser.follows.length) {
-		if (
-			!currentUser.follows.every(
-				(user) => user.follows.toString() !== userToFollow._id.toString()
-			)
-		) {
-			throw new AppError("You already follow this user", 400);
-		}
+	if (existingFollow) {
+		throw new AppError("You already follow this user!", 400);
 	}
 
-	// d. Create a new follow instance
-	const follow = await Follow.create({
+	// c. Create a new follow instance
+	await Follow.create({
 		user: req.user.id,
 		follows: userToFollow._id,
 	});
@@ -56,27 +49,22 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 		throw new AppError("This user does not seem to exist", 400);
 	}
 
-	// b. Get all users which the user already follows
-	const currentUser = await User.findById(req.user.id).populate({
-		path: "follows",
-		select: "follows -user",
+	if (req.user.id === userToUnfollow.id) {
+		throw new AppError("You cannot unfollow yourself.", 400);
+	}
+
+	// b. Check of user even follows this user
+	const existingFollow = await Follow.findOne({
+		user: req.user.id,
+		follows: userToUnfollow.id,
 	});
 
-	if (currentUser.id === userToUnfollow.id) {
-		throw new AppError("You cannot follow yourself!", 400);
+	if (!existingFollow) {
+		throw new AppError("You do not follow this user.", 400);
 	}
 
-	// c. Check if user doesn't even follow the other user
-	if (!currentUser.follows.length) {
-		throw new AppError("You don't follow this user", 400);
-	} else if (
-		!currentUser.follows.every((user) => user.follows !== userToUnfollow._id)
-	) {
-		throw new AppError("You don't follow this user", 400);
-	}
-
-	// d. Delete the previously created follow instance
-	const follow = await Follow.findOneAndRemove({
+	// c. Delete the previously created follow instance
+	await Follow.findOneAndRemove({
 		user: req.user.id,
 		follows: userToUnfollow._id,
 	});

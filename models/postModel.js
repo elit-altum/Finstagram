@@ -34,6 +34,21 @@ const postSchema = new mongoose.Schema(
 // 	});
 // });
 
+// 0a. Virtual property for getting users which liked the post
+postSchema.virtual("likers", {
+	ref: "Like",
+	foreignField: "post",
+	localField: "id",
+});
+
+// 0a. Virtual property for getting number of likes
+postSchema.virtual("likes", {
+	ref: "Like",
+	foreignField: "post",
+	localField: "id",
+	count: true,
+});
+
 const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;

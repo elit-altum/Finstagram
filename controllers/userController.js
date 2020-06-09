@@ -89,7 +89,8 @@ exports.getUser = catchAsync(async (req, res) => {
 	})
 		.sort({ createdAt: -1 })
 		.limit(limit)
-		.skip(skip);
+		.skip(skip)
+		.populate("likes");
 
 	res.status(200).json({
 		status: "success",
