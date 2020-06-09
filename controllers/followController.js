@@ -10,7 +10,7 @@ exports.followUser = catchAsync(async (req, res) => {
 	const userToFollow = await User.findOne({ username: req.params.username });
 
 	// a. Check if user to follow exists
-	if (!userToFollow) {
+	if (!userToFollow || !userToFollow.isActive) {
 		throw new AppError("This user does not seem to exist", 400);
 	}
 
@@ -45,7 +45,7 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 	const userToUnfollow = await User.findOne({ username: req.params.username });
 
 	// a. Check if user to unfollow exists
-	if (!userToUnfollow) {
+	if (!userToUnfollow || !userToUnfollow.isActive) {
 		throw new AppError("This user does not seem to exist", 400);
 	}
 
