@@ -7,7 +7,6 @@ const sizeOf = require("image-size");
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
-const Follow = require("../models/followModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -222,7 +221,6 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 // *? 6. GET INDIVIDUAL POST
 exports.getPost = catchAsync(async (req, res) => {
 	const postId = req.params.postId;
-	console.log(postId);
 
 	const post = await Post.findById(postId)
 		.populate({
