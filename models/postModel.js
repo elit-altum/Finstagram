@@ -42,6 +42,14 @@ postSchema.virtual("likes", {
 	count: true,
 });
 
+// 0a. Virtual property for getting number of comments
+postSchema.virtual("comments", {
+	ref: "Comment",
+	foreignField: "post",
+	localField: "_id",
+	count: true,
+});
+
 const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;

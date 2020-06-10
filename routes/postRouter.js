@@ -4,6 +4,7 @@ const express = require("express");
 const authController = require("../controllers/authController");
 const postController = require("../controllers/postController");
 const likeController = require("../controllers/likeController");
+const commentController = require("../controllers/commentController");
 
 const router = express.Router();
 
@@ -28,10 +29,10 @@ router.delete("/delete/:postId", postController.deletePost);
 router.get("/feed", postController.getTimeline);
 
 // *? 5. GET POSTS BY A USER
-router.get("/myPosts/:username?", postController.getMyPosts);
+router.get("/:username?", postController.getMyPosts);
 
 // *? 6. GET INDIVIDUAL POST
-router.get("/:postId", postController.getPost);
+router.get("/one/:postId", postController.getPost);
 
 // *? <--- LIKES ---->
 
@@ -41,5 +42,16 @@ router.get("/:postId/like", likeController.likePost);
 router.get("/:postId/unlike", likeController.unlikePost);
 // *? GET ALL LIKES ON A POST
 router.get("/:postId/likedBy", likeController.likedBy);
+
+// *? <--- COMMENTS ---->
+
+// *? COMMENT ON A POST
+router.post("/:postId/comments", commentController.createComment);
+
+// *? GET ALL COMMENTS ON A POST
+router.get("/:postId/comments", commentController.getAllComments);
+
+// *? DELETE COMMENT ON A POST
+router.delete("/:postId/comment/:commentId", commentController.removeComment);
 
 module.exports = router;

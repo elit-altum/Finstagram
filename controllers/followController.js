@@ -90,6 +90,10 @@ exports.getAllFollowers = catchAsync(async (req, res) => {
 		})
 		.select("username photo followers");
 
+	if (!user) {
+		throw new AppError("This user does not exist.", 404);
+	}
+
 	res.json({
 		status: "success",
 		data: {
@@ -112,6 +116,10 @@ exports.getAllFollows = catchAsync(async (req, res) => {
 			},
 		})
 		.select("username photo followers");
+
+	if (!user) {
+		throw new AppError("This user does not exist.", 404);
+	}
 
 	res.json({
 		status: "success",

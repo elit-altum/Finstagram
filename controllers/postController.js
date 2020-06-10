@@ -191,13 +191,15 @@ exports.getTimeline = catchAsync(async (req, res) => {
 exports.getMyPosts = catchAsync(async (req, res) => {
 	const username = req.params.username || req.user.username;
 
+	const user = await User.findOne({ username });
+
 	// a. For pagination
 	const limit = Number(req.query.limit) || 10;
 	const skip = (Number(req.query.page) - 1) * limit || 0;
 
 	// b. Get posts by user
 	const posts = await Post.find({
-		createdBy: req.user.id,
+		createdBy: user._id,
 	})
 		.sort({ createdAt: -1 })
 		.limit(limit)
@@ -205,7 +207,8 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 		.populate({
 			path: "createdBy",
 			select: "username photo",
-		});
+		})
+		.select("photo caption dimensions");
 
 	res.status(200).json({
 		status: "success",
@@ -219,13 +222,15 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 // *? 6. GET INDIVIDUAL POST
 exports.getPost = catchAsync(async (req, res) => {
 	const postId = req.params.postId;
+	console.log(postId);
 
 	const post = await Post.findById(postId)
 		.populate({
 			path: "createdBy",
 			select: "username photo",
 		})
-		.populate("likes");
+		.populate("likes")
+		.populate("comments");
 
 	if (!post) {
 		throw new AppError("No post found.", 404);
