@@ -2,6 +2,7 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");
+const followController = require("../controllers/followController");
 
 const router = express.Router();
 
@@ -26,10 +27,18 @@ router.patch(
 );
 router.patch("/updatePassword", userController.updatePassword);
 
+// *? 4. DEACTIVATE A USER
 router.delete("/deleteMe", userController.deactivateUser);
 
-// *? 4. GET A USER
+// *? 5. GET A USER
 router.get("/user/:username?", userController.getUser);
+
+// *? <---- FOLLOW ---->
+
+// *? FOLLOW A USER
+router.get("/:username/follow", followController.followUser);
+// *? UNFOLLOW A USER
+router.get("/:username/unfollow", followController.unfollowUser);
 
 // *? ADMIN ONLY ROUTES
 router.use(authController.restrictTo("admin"));

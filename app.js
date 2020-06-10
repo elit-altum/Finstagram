@@ -18,7 +18,6 @@ const compression = require("compression");
 // 2. Importing routers and error handler
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
-const followRouter = require("./routes/followRouter");
 
 const errorHandler = require("./utils/errorHandler");
 
@@ -73,7 +72,6 @@ app.use(compression());
 // *? 5. MOUNT API ROUTERS
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
-app.use("/api/v1/follows", followRouter);
 
 // *? 6. ERROR HANDLERS
 app.use(errorHandler);

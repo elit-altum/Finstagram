@@ -35,9 +35,11 @@ router.get("/:postId", postController.getPost);
 
 // *? <--- LIKES ---->
 
+// *? LIKE A POST
 router.get("/:postId/like", likeController.likePost);
+// *? UNLIKE A POST
 router.get("/:postId/unlike", likeController.unlikePost);
-
+// *? GET ALL LIKES ON A POST
 router.get("/:postId/likedBy", likeController.likedBy);
 
 module.exports = router;
