@@ -74,3 +74,49 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 		message: `You unfollowed @${userToUnfollow.username}`,
 	});
 });
+
+// *? 3. GET ALL FOLLOWERS OF A USER
+exports.getAllFollowers = catchAsync(async (req, res) => {
+	const username = req.params.username;
+
+	const user = await User.findOne({ username })
+		.populate({
+			path: "followers",
+			select: "user",
+			populate: {
+				path: "user",
+				select: "username photo",
+			},
+		})
+		.select("username photo followers");
+
+	res.json({
+		status: "success",
+		data: {
+			followers: user.followers,
+		},
+	});
+});
+
+// *? 3. GET ALL USERS FOLLOWED BY A USER
+exports.getAllFollows = catchAsync(async (req, res) => {
+	const username = req.params.username;
+
+	const user = await User.findOne({ username })
+		.populate({
+			path: "follows",
+			select: "follows",
+			populate: {
+				path: "follows",
+				select: "username photo",
+			},
+		})
+		.select("username photo followers");
+
+	res.json({
+		status: "success",
+		data: {
+			user,
+		},
+	});
+});

@@ -40,7 +40,12 @@ router.get("/:username/follow", followController.followUser);
 // *? UNFOLLOW A USER
 router.get("/:username/unfollow", followController.unfollowUser);
 
-// *? ADMIN ONLY ROUTES
+// *? ALL FOLLOWERS OF A USER
+router.get("/:username/followers", followController.getAllFollowers);
+// *? ALL FOLLOWS OF A USER
+router.get("/:username/follows", followController.getAllFollows);
+
+// *? <---- ADMIN ONLY ROUTES ---->
 router.use(authController.restrictTo("admin"));
 
 // *? DELETE USER FROM DB
