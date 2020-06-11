@@ -176,6 +176,8 @@ exports.getTimeline = catchAsync(async (req, res) => {
 		})
 		.limit(limit)
 		.skip(skip)
+		.populate("likes")
+		.populate("comments")
 		.populate({
 			path: "createdBy",
 			select: "username photo",
@@ -230,6 +232,8 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 		.sort({ createdAt: -1 })
 		.limit(limit)
 		.skip(skip)
+		.populate("likes")
+		.populate("comments")
 		.populate({
 			path: "createdBy",
 			select: "username photo",
