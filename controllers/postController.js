@@ -7,6 +7,7 @@ const sizeOf = require("image-size");
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const Like = require("../models/likeModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -177,11 +178,30 @@ exports.getTimeline = catchAsync(async (req, res) => {
 			select: "username photo",
 		});
 
+	const newPosts = posts.map(async (post) => {
+		const likedByMe = await Like.findOne({
+			likedBy: req.user._id,
+			post: post._id,
+		});
+
+		const newPost = post.toObject();
+
+		if (likedByMe) {
+			newPost.likedByMe = true;
+		} else {
+			newPost.likedByMe = false;
+		}
+
+		return newPost;
+	});
+
+	const sendNewPosts = await Promise.all(newPosts);
+
 	res.status(200).json({
 		status: "success",
 		results: posts.length,
 		data: {
-			posts,
+			posts: sendNewPosts,
 		},
 	});
 });
