@@ -3,7 +3,11 @@ import "./App.css";
 import Post from "./components/Post/post";
 
 function App() {
-	return <Post />;
+	return (
+		<div className="layout">
+			<Post />
+		</div>
+	);
 }
 
 export default App;

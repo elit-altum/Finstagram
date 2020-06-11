@@ -1,0 +1,70 @@
+.postCard {
+	display: flex;
+	flex-direction: column;
+	margin: 0 4rem;
+}
+
+.postCard__userInfo {
+	display: flex;
+	align-items: center;
+	img {
+		margin-left: 10px;
+		width: 40px;
+		border-radius: 100%;
+	}
+	p {
+		padding-left: 35px;
+		font-size: 1rem;
+		color: $link-color;
+		font-family: $primary-font;
+		font-weight: 600;
+	}
+}
+
+.postCard__image {
+	img {
+		width: 600px;
+		margin-top: 10px;
+	}
+}
+
+.postCard__meta--icons {
+	svg {
+		font-size: 28px;
+		margin-top: 5px;
+		margin-right: 10px;
+		color: $secondary-color;
+	}
+}
+
+.postCard__likes {
+	margin-top: 4px;
+	color: $link-color;
+	font-family: $primary-font;
+}
+
+.postCard__caption {
+	display: flex;
+	align-items: center;
+	margin-top: 3px;
+}
+
+.postCard__caption--username {
+	color: $link-color;
+	font-weight: 600;
+}
+
+.postCard__caption--body {
+	margin-left: 5px;
+}
+
+.postCard__comments {
+	color: $link-color;
+	margin-top: 6px;
+}
+
+.postCard__date {
+	font-size: 0.9rem;
+	margin-top: 10px;
+	color: lighten($secondary-color, 30%);
+}
