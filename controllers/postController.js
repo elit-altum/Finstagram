@@ -7,6 +7,7 @@ const sizeOf = require("image-size");
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const Follow = require("../models/followModel");
 const Like = require("../models/likeModel");
 
 const catchAsync = require("../utils/catchAsync");
@@ -149,28 +150,30 @@ exports.getTimeline = catchAsync(async (req, res) => {
 	const skip = (Number(req.query.page) - 1) * limit || 0;
 
 	// b. Get current user and the id of users it follows
-	const currentUser = await User.findById(req.user.id).populate({
+	const userFollows = await Follow.find({
+		user: req.user._id,
+	}).populate({
 		path: "follows",
-		select: "_id",
-		populate: {
-			path: "follows",
-			select: "isActive",
-		},
+		select: "isActive",
 	});
 
-	// c. Extract only user id's
-	const userFollows = [];
-	currentUser.follows.forEach((user) => {
+	// c. Check if followed users are active anymore or not
+	const userFollowsArray = [];
+	userFollows.forEach((user) => {
 		if (user.follows.isActive) {
-			userFollows.push(user.follows.id);
+			userFollowsArray.push(user.follows.id);
 		}
 	});
 
 	// d. Get posts by followers
 	const posts = await Post.find({
-		createdBy: { $in: userFollows },
+		createdBy: {
+			$in: userFollowsArray,
+		},
 	})
-		.sort({ createdAt: -1 })
+		.sort({
+			createdAt: -1,
+		})
 		.limit(limit)
 		.skip(skip)
 		.populate({
