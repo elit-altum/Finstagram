@@ -215,6 +215,10 @@ exports.getMyPosts = catchAsync(async (req, res) => {
 
 	const user = await User.findOne({ username });
 
+	if (!user || !user.isActive) {
+		throw new AppError("This user does not exist.", 404);
+	}
+
 	// a. For pagination
 	const limit = Number(req.query.limit) || 10;
 	const skip = (Number(req.query.page) - 1) * limit || 0;
@@ -248,12 +252,12 @@ exports.getPost = catchAsync(async (req, res) => {
 	const post = await Post.findById(postId)
 		.populate({
 			path: "createdBy",
-			select: "username photo",
+			select: "username photo isActive",
 		})
 		.populate("likes")
 		.populate("comments");
 
-	if (!post) {
+	if (!post || !post.createdBy.isActive) {
 		throw new AppError("No post found.", 404);
 	}
 
