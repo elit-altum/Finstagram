@@ -238,3 +238,54 @@ exports.resetPassword = catchAsync(async (req, res) => {
 	user.passwordChangedAt = undefined;
 	generateJWT(user, res);
 });
+
+// *? 6. CHECK IF USER IS LOGGED IN
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+	let token = "";
+
+	// A. Extract JWT from request
+	if (
+		req.headers.authorization &&
+		req.headers.authorization.startsWith("Bearer")
+	) {
+		// For <Bearer Token> in API calls
+		token = req.headers.authorization.split(" ")[1];
+	} else if (req.cookies.jwt) {
+		// For web cookies
+		token = req.cookies.jwt;
+	}
+
+	if (!token) {
+		return res.status(401).json({
+			status: "failure",
+		});
+	}
+
+	// B. Verify JWT
+	const payload = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+	// C. Get user from payload user id
+	const user = await User.findById(payload.id).select("+passwordChangedAt");
+
+	if (!user || !user.isActive) {
+		return res.status(401).json({
+			status: "failure",
+		});
+	}
+
+	// D. If user changed password after JWT issue
+	const passwordChangedAt = Math.floor(
+		new Date(user.passwordChangedAt).getTime() / 1000
+	);
+
+	if (passwordChangedAt > payload.iat) {
+		return res.status(401).json({
+			status: "failure",
+		});
+	}
+
+	// E. Authenticate User
+	return res.status(200).json({
+		status: "success",
+	});
+});
