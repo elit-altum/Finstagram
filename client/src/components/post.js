@@ -13,15 +13,15 @@ import { AiOutlineComment as CommentOutline } from "react-icons/ai";
 const Post = ({ post }) => {
 	const [isLiked, setIsLiked] = useState(post.likedByMe);
 	const [likes, setLikes] = useState(post.likes * 1);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
 	const [allLikes, setAllLikes] = useState([]);
 
 	const openLikeModal = () => {
-		setIsModalOpen(true);
+		setIsLikeModalOpen(true);
 	};
 
 	const closeLikeModal = () => {
-		setIsModalOpen(false);
+		setIsLikeModalOpen(false);
 	};
 
 	const showLikes = async () => {
@@ -35,10 +35,7 @@ const Post = ({ post }) => {
 				},
 			});
 			setAllLikes(res.data.data.likers);
-			console.log(res);
-		} catch (err) {
-			console.log(err.response);
-		}
+		} catch (err) {}
 		openLikeModal();
 	};
 
@@ -144,7 +141,7 @@ const Post = ({ post }) => {
 			)}
 			<p className="postCard__date">{getTime(post.createdAt)}</p>
 			<Modal
-				isOpen={isModalOpen}
+				isOpen={isLikeModalOpen}
 				onRequestClose={closeLikeModal}
 				ariaHideApp={false}
 				contentLabel="Like Modal"
