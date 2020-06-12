@@ -11,6 +11,9 @@ router.post("/signup", authController.signupUser);
 router.post("/login", authController.loginUser);
 router.get("/logout", authController.logoutUser);
 
+// *? 1B. UTILITY: CHECK IF USER IS LOGGED IN
+router.get("/isLoggedIn", authController.isLoggedIn);
+
 // *? 2. FORGOT AND RESET PASSWORD
 router.post("/forgotPassword", authController.generateResetToken);
 router.patch("/resetPassword/:token", authController.resetPassword);
