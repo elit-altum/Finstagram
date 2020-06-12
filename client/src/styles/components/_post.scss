@@ -1,7 +1,8 @@
 .postCard {
 	display: flex;
 	flex-direction: column;
-	margin: 0 4rem;
+	margin: 4rem 0;
+	padding: 0 0.6rem;
 }
 
 .postCard__userInfo {
@@ -22,8 +23,10 @@
 }
 
 .postCard__image {
+	position: relative;
+	width: 100%;
 	img {
-		width: 600px;
+		width: 100%;
 		margin-top: 10px;
 	}
 }
@@ -34,6 +37,19 @@
 		margin-top: 5px;
 		margin-right: 10px;
 		color: $secondary-color;
+		animation: toggleAnimation 0.3s ease;
+	}
+}
+
+@keyframes toggleAnimation {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
 	}
 }
 
@@ -41,6 +57,7 @@
 	margin-top: 4px;
 	color: $link-color;
 	font-family: $primary-font;
+	cursor: pointer;
 }
 
 .postCard__caption {

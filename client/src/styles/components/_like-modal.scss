@@ -1,0 +1,41 @@
+.like-modal__list {
+	padding: 1em;
+	h3 {
+		color: $secondary-color;
+		margin-bottom: 30px;
+	}
+}
+
+.like-modal__item {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	min-width: 20rem;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid lighten($secondary-color, 70%);
+}
+
+.like-modal__item--profile {
+	img {
+		width: 35px;
+		border-radius: 50%;
+	}
+}
+
+.like-modal__item--names {
+	display: flex;
+	flex-direction: column;
+	margin-left: 30px;
+}
+
+.like-modal__item--username {
+	color: $link-color;
+	font-size: 0.95em;
+}
+
+.like-modal__item--name {
+	margin-top: 5px;
+	color: lighten($secondary-color, 40%);
+	font-size: 0.85em;
+}

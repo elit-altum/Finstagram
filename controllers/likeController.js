@@ -71,7 +71,7 @@ exports.likedBy = catchAsync(async (req, res) => {
 	})
 		.populate({
 			path: "likedBy",
-			select: "username photo",
+			select: "username photo name",
 		})
 		.select("likedBy")
 		.select("-_id");
