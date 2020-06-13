@@ -125,9 +125,9 @@ const Post = ({ post }) => {
 					<CommentOutline />
 				</div>
 			</div>
-			{!!post.likes && (
+			{!!likes && (
 				<p onClick={showLikes} className="postCard__likes">
-					{`${likes} ${post.likes === 1 ? "like" : "likes"}`}
+					{`${likes} ${likes === 1 ? "like" : "likes"}`}
 				</p>
 			)}
 			<div className="postCard__caption">

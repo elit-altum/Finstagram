@@ -5,7 +5,7 @@ import createHistory from "history/createBrowserHistory";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
-import Post from "../components/post";
+import Timeline from "../components/Timeline";
 import LoginForm from "../components/Login";
 
 export const history = createHistory();
@@ -13,7 +13,7 @@ export const history = createHistory();
 const AppRouter = (props) => (
 	<Router history={history}>
 		<Switch>
-			<PrivateRoute path="/" component={Post} exact={true} />
+			<PrivateRoute path="/" component={Timeline} exact={true} />
 			<PublicRoute path="/login" component={LoginForm} />
 		</Switch>
 	</Router>

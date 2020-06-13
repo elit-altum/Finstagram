@@ -287,5 +287,8 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 	// E. Authenticate User
 	return res.status(200).json({
 		status: "success",
+		data: {
+			user,
+		},
 	});
 });

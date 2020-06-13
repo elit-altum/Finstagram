@@ -1,5 +1,4 @@
 import React from "react";
-import { history } from "../router/router";
 import axios from "axios";
 
 const LoginForm = () => {
@@ -17,7 +16,6 @@ const LoginForm = () => {
 					password,
 				},
 			});
-			window.location.reload();
 		} catch (err) {}
 	};
 	return (

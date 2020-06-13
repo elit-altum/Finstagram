@@ -1,0 +1,49 @@
+header {
+	position: sticky;
+	top: 0;
+	height: 8vh;
+	width: 100vw;
+	z-index: 999;
+}
+
+.header {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-color: $primary-color;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: #aaa 0 0 3px;
+}
+
+.header-logo {
+	margin-left: 3rem;
+	a {
+		font-family: $secondary-font;
+		font-size: 2.4rem;
+		text-decoration: none;
+		color: lighten($secondary-color, 40%);
+	}
+}
+
+.header-navLinks {
+	list-style-type: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	li {
+		margin-right: 3rem;
+		font-weight: 600;
+		color: $link-color;
+		a {
+			text-decoration: none;
+		}
+	}
+}
+
+.header-profile {
+	width: 40px;
+	border-radius: 100%;
+}
