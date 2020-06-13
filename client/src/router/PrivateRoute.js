@@ -4,22 +4,22 @@ import { Redirect, Route } from "react-router-dom";
 
 import Layout from "../components/Layout";
 
+let renderCounter = 0;
+
 const PrivateRoute = ({ component: Component, ...rest }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-	const fetchData = async () => {
-		try {
-			const res = await axios({
-				url: "/api/v1/users/isLoggedIn",
-				method: "GET",
-			});
-
-			setIsAuthenticated(true);
-		} catch (err) {}
-	};
+	const [isAuthenticated, setIsAuthenticated] = useState(null);
 
 	useEffect(() => {
-		fetchData();
+		axios
+			.get("/api/v1/users/isLoggedIn")
+			.then(() => {
+				renderCounter++;
+				return setIsAuthenticated(true);
+			})
+			.catch(() => {
+				renderCounter++;
+				return setIsAuthenticated(false);
+			});
 	}, []);
 
 	return (
@@ -31,7 +31,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 						<Component {...props} />
 					</Layout>
 				) : (
-					<Redirect to="/login" />
+					!!renderCounter && <Redirect to="/login" />
 				)
 			}
 		/>

@@ -9,7 +9,7 @@ const LoginForm = () => {
 		const password = document.getElementById("password_field").value;
 
 		try {
-			const res = await axios({
+			await axios({
 				url: "/api/v1/users/login",
 				method: "POST",
 				data: {
@@ -17,10 +17,8 @@ const LoginForm = () => {
 					password,
 				},
 			});
-			history.push("/");
-		} catch (err) {
-			console.log(err.response);
-		}
+			window.location.reload();
+		} catch (err) {}
 	};
 	return (
 		<div className="login-form">
