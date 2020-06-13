@@ -29,10 +29,15 @@ exports.createComment = catchAsync(async (req, res) => {
 		body: req.body.comment,
 	});
 
+	const newComment = await Comment.findById(comment.id).populate({
+		path: "createdBy",
+		select: "username photo",
+	});
+
 	res.status(200).json({
 		status: "success",
 		data: {
-			comment,
+			comment: newComment,
 		},
 	});
 });

@@ -1,8 +1,10 @@
 .postCard {
 	display: flex;
 	flex-direction: column;
-	margin: 4rem 0;
-	padding: 0 0.6rem;
+	margin: 3rem 0.4rem;
+	padding: 0.6rem;
+	border-radius: 4px;
+	border: 1px solid lighten($secondary-color, 60%);
 }
 
 .postCard__userInfo {

@@ -21,12 +21,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 			})
 			.catch((err) => {
 				renderCounter++;
-				console.log(err.response);
+				// console.log(err.response);
 				return setIsAuthenticated(false);
 			});
 	}, []);
-
-	console.log(user, isAuthenticated);
 
 	return (
 		<Route
