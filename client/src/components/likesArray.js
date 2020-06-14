@@ -22,7 +22,7 @@ const LikesArray = ({ likes }) => {
 		<div className="like-modal__list">
 			<h3>Liked By</h3>
 			{likes.map((like) => (
-				<Like like={like} />
+				<Like like={like} key={like._id} />
 			))}
 		</div>
 	);

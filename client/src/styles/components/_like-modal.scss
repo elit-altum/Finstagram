@@ -32,6 +32,10 @@
 .like-modal__item--username {
 	color: $link-color;
 	font-size: 0.95em;
+	background-clip: text;
+	background: $gradient-color;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .like-modal__item--name {

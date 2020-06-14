@@ -59,7 +59,7 @@ exports.removeComment = catchAsync(async (req, res) => {
 		throw new AppError("This comment does not exist.", 404);
 	}
 
-	if (comment.id != req.user.id) {
+	if (comment.createdBy != req.user.id) {
 		throw new AppError("You do not have permission for this.", 403);
 	}
 

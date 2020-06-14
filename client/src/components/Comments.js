@@ -4,7 +4,7 @@ import Comment from "./Comment";
 
 import { AiOutlineSend as SendIcon } from "react-icons/ai";
 
-const Comments = ({ id }) => {
+const Comments = ({ id, user }) => {
 	const [comments, setComments] = useState([]);
 
 	const createComment = async (e) => {
@@ -19,6 +19,18 @@ const Comments = ({ id }) => {
 			});
 			document.getElementById("comment-field").value = "";
 			setComments(comments.concat([res.data.data.comment]));
+		} catch (err) {}
+	};
+
+	const removeComment = async (commentId) => {
+		console.log(`/api/v1/posts/${id}/comment/${commentId}`);
+		try {
+			const res = await axios({
+				url: `/api/v1/posts/${id}/comment/${commentId}`,
+				method: "DELETE",
+			});
+			const newArray = comments.filter((comment) => comment._id !== commentId);
+			setComments(newArray);
 		} catch (err) {}
 	};
 
@@ -40,7 +52,12 @@ const Comments = ({ id }) => {
 			<h3>Comments</h3>
 			<div className="commentsArray-list">
 				{comments.map((comment) => (
-					<Comment comment={comment} key={comment._id} />
+					<Comment
+						comment={comment}
+						key={comment._id}
+						user={user}
+						removeComment={removeComment}
+					/>
 				))}
 			</div>
 			<div className="createComment-form">

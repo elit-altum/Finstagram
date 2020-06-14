@@ -114,7 +114,9 @@ const Post = ({ post }) => {
 				<p>{post.createdBy.username}</p>
 			</div>
 			<div className="postCard__image">
-				<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
+				<Link to={`/post/${post.id}`}>
+					<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
+				</Link>
 			</div>
 			<div className="postCard__meta">
 				<div className="postCard__meta--icons">

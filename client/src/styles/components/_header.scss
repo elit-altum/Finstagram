@@ -11,19 +11,28 @@ header {
 	height: 100%;
 	width: 100%;
 	background-color: $primary-color;
+	box-shadow: #aaa 0 0 3px;
+}
+
+.header-content {
+	max-width: 50rem;
+	margin: 0 auto;
 	display: flex;
 	align-items: center;
+	padding-top: 0.6vh;
 	justify-content: space-between;
-	box-shadow: #aaa 0 0 3px;
 }
 
 .header-logo {
 	margin-left: 3rem;
 	a {
 		font-family: $secondary-font;
-		font-size: 2.4rem;
+		font-size: 2.2rem;
 		text-decoration: none;
-		color: lighten($secondary-color, 40%);
+		background: $gradient-color;
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 }
 

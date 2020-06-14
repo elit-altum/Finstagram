@@ -34,7 +34,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 					<>
 						<Header user={user} />
 						<Layout>
-							<Component {...props} />
+							<Component {...props} user={user} />
 						</Layout>
 					</>
 				) : (

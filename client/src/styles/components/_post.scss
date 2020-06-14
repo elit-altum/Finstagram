@@ -1,6 +1,7 @@
 .postCard {
 	display: flex;
 	flex-direction: column;
+	background-color: $primary-color;
 	margin: 3rem 0.4rem;
 	padding: 0.6rem;
 	border-radius: 4px;
@@ -18,9 +19,12 @@
 	p {
 		padding-left: 35px;
 		font-size: 1rem;
-		color: $link-color;
 		font-family: $primary-font;
 		font-weight: 600;
+		background-clip: text;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 }
 
@@ -60,6 +64,10 @@
 	color: $link-color;
 	font-family: $primary-font;
 	cursor: pointer;
+	background: $gradient-color;
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .postCard__caption {
@@ -71,6 +79,10 @@
 .postCard__caption--username {
 	color: $link-color;
 	font-weight: 600;
+	background-clip: text;
+	background: $gradient-color;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .postCard__caption--body {
@@ -80,6 +92,7 @@
 .postCard__comments {
 	color: $link-color;
 	margin-top: 6px;
+	background: $gradient-color;
 }
 
 .postCard__date {

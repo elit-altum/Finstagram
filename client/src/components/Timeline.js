@@ -5,7 +5,7 @@ import Post from "./Post";
 let renderCounter = 0;
 
 const Timeline = (props) => {
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState(["init"]);
 
 	useEffect(() => {
 		const fetchPost = async () => {

@@ -265,10 +265,23 @@ exports.getPost = catchAsync(async (req, res) => {
 		throw new AppError("No post found.", 404);
 	}
 
+	const like = await Like.findOne({
+		post: post.id,
+		likedBy: req.user.id,
+	});
+
+	const newPost = post.toObject();
+
+	if (like) {
+		newPost.likedByMe = true;
+	} else {
+		newPost.likedByMe = false;
+	}
+
 	res.status(200).json({
 		status: "success",
 		results: {
-			post,
+			post: newPost,
 		},
 	});
 });

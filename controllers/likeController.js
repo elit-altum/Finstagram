@@ -73,8 +73,7 @@ exports.likedBy = catchAsync(async (req, res) => {
 			path: "likedBy",
 			select: "username photo name",
 		})
-		.select("likedBy")
-		.select("-_id");
+		.select("likedBy");
 
 	res.status(200).json({
 		status: "success",

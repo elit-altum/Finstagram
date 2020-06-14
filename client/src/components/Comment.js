@@ -1,6 +1,8 @@
 import React from "react";
+import { AiFillDelete as DeleteIcon } from "react-icons/ai";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, user, removeComment }) => {
+	const isUser = user.id === comment.createdBy.id;
 	return (
 		<div className="comment">
 			<div className="comment--meta">
@@ -9,8 +11,16 @@ const Comment = ({ comment }) => {
 					alt={`${comment.createdBy.username}'s profile`}
 				/>
 				<p className="comment--username">{comment.createdBy.username}</p>
+				<p className="comment--body">{comment.body}</p>
 			</div>
-			<p className="comment--body">{comment.body}</p>
+			{!!isUser && (
+				<div className="comment--delete">
+					<DeleteIcon
+						onClick={() => removeComment(comment._id)}
+						title="Delete Comment"
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
