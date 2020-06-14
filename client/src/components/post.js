@@ -105,57 +105,63 @@ const Post = ({ post }) => {
 	};
 
 	return (
-		<div className="postCard">
-			<div className="postCard__userInfo">
-				<img
-					src={post.createdBy.photo}
-					alt={`${post.createdBy.username}'s profile`}
-				/>
-				<p>{post.createdBy.username}</p>
-			</div>
-			<div className="postCard__image">
-				<Link to={`/post/${post.id}`}>
-					<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
-				</Link>
-			</div>
-			<div className="postCard__meta">
-				<div className="postCard__meta--icons">
-					{isLiked ? (
-						<HeartFill style={{ color: "#b71c1c" }} onClick={handleLike} />
-					) : (
-						<HeartOutline onClick={handleLike} />
-					)}
+		!!post.id && (
+			<div className="postCard">
+				<div className="postCard__userInfo">
+					<img
+						src={post.createdBy.photo}
+						alt={`${post.createdBy.username}'s profile`}
+					/>
+					<p>{post.createdBy.username}</p>
+				</div>
+				<div className="postCard__image">
 					<Link to={`/post/${post.id}`}>
-						<CommentOutline />
+						<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
 					</Link>
 				</div>
+				<div className="postCard__meta">
+					<div className="postCard__meta--icons">
+						{isLiked ? (
+							<HeartFill style={{ color: "#b71c1c" }} onClick={handleLike} />
+						) : (
+							<HeartOutline onClick={handleLike} />
+						)}
+						<Link to={`/post/${post.id}`}>
+							<CommentOutline />
+						</Link>
+					</div>
+				</div>
+				{!!likes && (
+					<p onClick={showLikes} className="postCard__likes">
+						{`${likes} ${likes === 1 ? "like" : "likes"}`}
+					</p>
+				)}
+				<div className="postCard__caption">
+					<p className="postCard__caption--username">
+						{post.createdBy.username}
+					</p>
+					<p className="postCard__caption--body">{post.caption}</p>
+				</div>
+				{!!post.comments && (
+					<Link to={`/post/${post.id}`} className="postCard__comments">
+						<p>{`View ${post.comments} ${
+							post.comments === 1 ? "comment" : "comments"
+						}`}</p>
+					</Link>
+				)}
+				<p className="postCard__date">{getTime(post.createdAt)}</p>
+				<Modal
+					isOpen={isLikeModalOpen}
+					onRequestClose={closeLikeModal}
+					ariaHideApp={false}
+					contentLabel="Like Modal"
+					closeTimeoutMS={200}
+					className="modal"
+				>
+					<LikesArray likes={allLikes} />
+				</Modal>
 			</div>
-			{!!likes && (
-				<p onClick={showLikes} className="postCard__likes">
-					{`${likes} ${likes === 1 ? "like" : "likes"}`}
-				</p>
-			)}
-			<div className="postCard__caption">
-				<p className="postCard__caption--username">{post.createdBy.username}</p>
-				<p className="postCard__caption--body">{post.caption}</p>
-			</div>
-			{!!post.comments && (
-				<div className="postCard__comments">{`View ${post.comments} ${
-					post.comments === 1 ? "comment" : "comments"
-				}`}</div>
-			)}
-			<p className="postCard__date">{getTime(post.createdAt)}</p>
-			<Modal
-				isOpen={isLikeModalOpen}
-				onRequestClose={closeLikeModal}
-				ariaHideApp={false}
-				contentLabel="Like Modal"
-				closeTimeoutMS={200}
-				className="modal"
-			>
-				<LikesArray likes={allLikes} />
-			</Modal>
-		</div>
+		)
 	);
 };
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./Post";
 
+import NotFound from "./NotFound";
+
 let renderCounter = 0;
 
 const Timeline = (props) => {
@@ -31,7 +33,9 @@ const Timeline = (props) => {
 				(!!posts.length ? (
 					posts.map((post) => <Post post={post} key={post.id} />)
 				) : (
-					<h3>Posts Not Found</h3>
+					<NotFound
+						message={"No posts found. Please follow users to view a timeline."}
+					/>
 				))}
 		</div>
 	);

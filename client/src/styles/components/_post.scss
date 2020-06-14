@@ -90,9 +90,17 @@
 }
 
 .postCard__comments {
-	color: $link-color;
-	margin-top: 6px;
-	background: $gradient-color;
+	text-decoration: none;
+	p {
+		color: $link-color;
+		margin-top: 6px;
+		background-clip: text;
+		text-decoration: none;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		cursor: pointer;
+	}
 }
 
 .postCard__date {

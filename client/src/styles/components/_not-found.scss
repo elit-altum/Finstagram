@@ -1,0 +1,19 @@
+.not-found-container {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: lighten($secondary-color, 30%);
+}
+
+.not-found__icon {
+	svg {
+		font-size: 5rem;
+	}
+}
+
+.not-found__message {
+	font-size: 1.2rem;
+	margin-top: 30px;
+}
