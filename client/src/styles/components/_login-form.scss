@@ -8,6 +8,7 @@
 
 .login-form-container {
 	padding: 3rem;
+	margin: 0.6rem;
 	border-radius: 4px;
 	background-color: $primary-color;
 	width: 100%;
@@ -21,6 +22,14 @@
 		font-family: $secondary-font;
 		font-size: 3.3rem;
 		text-align: center;
+	}
+	p {
+		a {
+			background-clip: text;
+			background: $gradient-color;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
 	}
 }
 
