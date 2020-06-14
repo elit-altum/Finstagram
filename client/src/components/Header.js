@@ -1,5 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+import axios from "axios";
+
+import { toast } from "react-toastify";
+
+const logout = async () => {
+	const url = "/api/v1/users/logout";
+	try {
+		await axios({
+			url,
+			method: "GET",
+		});
+		toast.success("Logged out successfully!", {
+			autoClose: 2000,
+			pauseOnHover: false,
+		});
+		setTimeout(() => {
+			window.location.reload(true);
+		}, 2000);
+	} catch (err) {
+		toast.error("Error logging out. Please try again later.");
+	}
+};
+
+const Msg = ({ closeToast, user }) => (
+	<div className="header-toast">
+		<p>{user.username.toUpperCase()}</p>
+		<button className="header-toast-logout" onClick={logout}>
+			Logout
+		</button>
+		<button onClick={() => <Redirect to="/" />}>My Profile</button>
+	</div>
+);
 
 const Header = ({ user }) => {
 	return (
@@ -10,15 +42,17 @@ const Header = ({ user }) => {
 						<Link to="/">Finstagram</Link>
 					</div>
 					<ul className="header-navLinks">
-						{/* <li>{user.username.toUpperCase()}</li> */}
 						<li>
-							<Link to="/">
-								<img
-									src={user.photo}
-									alt={`${user.username}'s profile`}
-									className="header-profile"
-								/>
-							</Link>
+							<img
+								src={user.photo}
+								alt={`${user.username}'s profile`}
+								className="header-profile"
+								onClick={() =>
+									toast(<Msg user={user} />, {
+										autoClose: 10000,
+									})
+								}
+							/>
 						</li>
 					</ul>
 				</div>

@@ -23,6 +23,29 @@ header {
 	justify-content: space-between;
 }
 
+.header-toast {
+	text-transform: uppercase;
+	font-family: $primary-font;
+	p {
+		font-size: 1.3rem;
+	}
+	button {
+		margin: 10px 0;
+		font-family: $primary-font;
+		outline: none;
+		text-transform: uppercase;
+		border: none;
+		background-color: transparent;
+		margin-right: 10px;
+		font-weight: 600;
+		font-size: 0.95rem;
+		text-decoration: none;
+	}
+	.header-toast-logout {
+		color: #ffeb3b;
+	}
+}
+
 .header-logo {
 	margin-left: 3rem;
 	a {
