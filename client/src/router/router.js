@@ -20,6 +20,7 @@ const AppRouter = (props) => (
 			<PublicRoute path="/signup" component={SignupForm} />
 
 			<PrivateRoute path="/" component={Timeline} exact={true} />
+			<PrivateRoute path="/post/create" component={PostDetail} exact={true} />
 			<PrivateRoute path="/post/:postId" component={PostDetail} exact={true} />
 			<PrivateRoute path="/:username" component={UserProfile} exact={true} />
 		</Switch>

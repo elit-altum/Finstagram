@@ -42,6 +42,11 @@
 		color: $link-color;
 		font-family: $primary-font;
 		font-weight: 600;
+		background-clip: text;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		cursor: pointer;
 	}
 }
 

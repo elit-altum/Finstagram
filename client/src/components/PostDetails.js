@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 
+import { history } from "../router/router";
+
 import {
 	AiOutlineHeart as HeartOutline,
 	AiFillHeart as HeartFill,
@@ -129,7 +131,12 @@ const PostDetails = ({ user }) => {
 							src={post.createdBy.photo}
 							alt={`${post.createdBy.username}'s profile`}
 						/>
-						<p className="postDetails--username">{post.createdBy.username}</p>
+						<p
+							className="postDetails--username"
+							onClick={() => history.push(`/${post.createdBy.username}`)}
+						>
+							{post.createdBy.username}
+						</p>
 					</div>
 					<div className="postDetails--image">
 						<img src={post.photo} alt={`${post.createdBy.username}'s post`} />

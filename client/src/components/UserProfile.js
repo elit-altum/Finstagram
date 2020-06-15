@@ -3,8 +3,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 
-import { AiOutlineHeart as HeartOutline } from "react-icons/ai";
-import { AiOutlineComment as CommentOutline } from "react-icons/ai";
+import {
+	AiOutlineHeart as HeartOutline,
+	AiOutlineComment as CommentOutline,
+	AiOutlinePlus as AddIcon,
+} from "react-icons/ai";
 
 import { toast } from "react-toastify";
 
@@ -209,6 +212,9 @@ const UserProfile = (props) => {
 				) : (
 					<NotFound />
 				)}
+				<button className="newPost-button">
+					<AddIcon />
+				</button>
 				<Modal
 					isOpen={isModalOpen}
 					onRequestClose={closeModal}
