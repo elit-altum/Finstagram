@@ -7,7 +7,7 @@ import Layout from "../components/Layout";
 let renderCounter = 0;
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(null);
+	const [isAuthenticated, setIsAuthenticated] = useState();
 
 	useEffect(() => {
 		axios
@@ -16,9 +16,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 				renderCounter++;
 				return setIsAuthenticated(true);
 			})
-			.catch(() => {
+			.catch((err) => {
 				renderCounter++;
-				return setIsAuthenticated(false);
+				if (err.response.status === 401) {
+					return setIsAuthenticated(false);
+				}
 			});
 	}, []);
 

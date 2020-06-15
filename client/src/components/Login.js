@@ -30,6 +30,7 @@ const LoginForm = () => {
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
+
 	return (
 		<div className="login-page">
 			<div className="login-form-container">

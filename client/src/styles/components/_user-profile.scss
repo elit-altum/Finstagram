@@ -1,0 +1,141 @@
+.user-page {
+	margin: 4rem 0.8rem;
+}
+
+.user-info {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.user-profile {
+	.user-profile__name {
+		margin-top: 20px;
+		font-size: 1.2rem;
+		color: $secondary-color;
+	}
+
+	.user-profile__username {
+		font-size: 1rem;
+		color: lighten($secondary-color, 20%);
+	}
+	img {
+		width: 6rem;
+		border-radius: 100%;
+	}
+}
+
+.user-stats {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	div {
+		margin: 0 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		h3 {
+			font-size: 1.5rem;
+		}
+		p {
+			font-size: 1rem;
+		}
+	}
+}
+
+.user-following {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 20px;
+	background-color: $secondary-color;
+	color: $primary-color;
+	border-radius: 2px;
+	padding: 1px;
+	font-size: 1rem;
+}
+
+.user-follow-button {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 20px;
+	color: $primary-color;
+	background-color: #0277bd;
+	outline: none;
+	font-family: $primary-font;
+	border: none;
+	border-radius: 2px;
+	padding: 1.5px;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.user-posts {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 1rem;
+	grid-auto-rows: auto;
+	align-items: center;
+	justify-content: center;
+	margin: 5rem 0;
+}
+
+.post-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: $primary-color;
+	border: 1px solid #aaa;
+}
+
+.post-container__image {
+	opacity: 1;
+	display: block;
+	width: 100%;
+	height: auto;
+	transition: 0.3s ease;
+	backface-visibility: hidden;
+}
+
+.post-container__details {
+	transition: 0.3s ease;
+	opacity: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.post-container:hover .post-container__image {
+	opacity: 0.3;
+}
+
+.post-container:hover .post-container__details {
+	opacity: 1;
+}
+
+.post-container__details {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 20px;
+		font-size: 1.4rem;
+		color: $secondary-color;
+		p {
+			margin-left: 5px;
+		}
+	}
+}
