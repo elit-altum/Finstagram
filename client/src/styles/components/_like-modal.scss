@@ -1,5 +1,5 @@
 .like-modal__list {
-	padding: 1em;
+	padding: 1rem;
 	h3 {
 		color: $secondary-color;
 		margin-bottom: 30px;
@@ -10,6 +10,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	margin: 1rem;
 	min-width: 20rem;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
@@ -36,6 +37,7 @@
 	background: $gradient-color;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+	cursor: pointer;
 }
 
 .like-modal__item--name {

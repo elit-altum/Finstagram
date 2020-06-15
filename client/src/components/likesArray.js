@@ -1,17 +1,21 @@
 import React from "react";
 
-const Like = ({ like }) => {
+import { history } from "../router/router";
+
+export const UserInfoSmall = ({ user }) => {
 	return (
 		<div className="like-modal__item">
 			<div className="like-modal__item--profile">
-				<img
-					src={`${like.likedBy.photo}`}
-					alt={`${like.likedBy.username}'s profile`}
-				/>
+				<img src={`${user.photo}`} alt={`${user.username}'s profile`} />
 			</div>
 			<div className="like-modal__item--names">
-				<p className="like-modal__item--username">{like.likedBy.username}</p>
-				<p className="like-modal__item--name">{like.likedBy.name}</p>
+				<p
+					className="like-modal__item--username"
+					onClick={() => history.push(`/${user.username}`)}
+				>
+					{user.username}
+				</p>
+				<p className="like-modal__item--name">{user.name}</p>
 			</div>
 		</div>
 	);
@@ -22,7 +26,7 @@ const LikesArray = ({ likes }) => {
 		<div className="like-modal__list">
 			<h3>Liked By</h3>
 			{likes.map((like) => (
-				<Like like={like} key={like._id} />
+				<UserInfoSmall user={like.likedBy} key={like._id} />
 			))}
 		</div>
 	);

@@ -25,6 +25,7 @@
 		background: $gradient-color;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
+		cursor: pointer;
 	}
 }
 
@@ -83,6 +84,7 @@
 	background: $gradient-color;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+	cursor: pointer;
 }
 
 .postCard__caption--body {

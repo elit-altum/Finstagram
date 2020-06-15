@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Modal from "react-modal";
 
 import { AiOutlineHeart as HeartOutline } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
 
+import { toast } from "react-toastify";
+
 import NotFound from "./NotFound";
+import { UserInfoSmall } from "./likesArray";
+
+import { history } from "../router/router";
 
 const Post = ({ post }) => {
 	return (
-		<div class="post-container">
-			<img src={post.photo} class="post-container__image" alt="My-Post" />
-			<div class="post-container__details">
-				<div class="post-container__details--likes">
+		<div className="post-container">
+			<img
+				src={post.photo}
+				className="post-container__image"
+				alt="My-Post"
+				onClick={() => history.push(`/post/${post.id}`)}
+			/>
+			<div className="post-container__details">
+				<div className="post-container__details--likes">
 					<HeartOutline />
 					<p>{post.likes}</p>
 				</div>
@@ -33,6 +44,71 @@ const UserProfile = (props) => {
 	const [user, setUser] = useState();
 	const [posts, setPosts] = useState();
 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [usersArray, setUsersArray] = useState([]);
+
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+		setUsersArray([]);
+	};
+
+	const followUser = async (username) => {
+		try {
+			const url = `/api/v1/users/${username}/follow`;
+			const res = await axios({
+				url,
+				method: "GET",
+			});
+
+			toast.success(res.data.message, {
+				autoClose: 5000,
+				pauseOnHover: false,
+			});
+			let newFollowersCount = user.followersCount + 1;
+			setUser({
+				...user,
+				followedByMe: true,
+				followersCount: newFollowersCount,
+			});
+		} catch (err) {
+			toast.success(err.response.data.error.message, {
+				autoClose: 5000,
+				pauseOnHover: false,
+			});
+		}
+	};
+
+	const unfollowUser = async (username) => {
+		try {
+			const url = `/api/v1/users/${username}/unfollow`;
+			const res = await axios({
+				url,
+				method: "GET",
+			});
+
+			toast.success(res.data.message, {
+				autoClose: 5000,
+				pauseOnHover: false,
+			});
+			let newFollowersCount = user.followersCount - 1;
+			setUser({
+				...user,
+				followedByMe: false,
+				followersCount: newFollowersCount,
+			});
+		} catch (err) {
+			toast.success(err.response.data.error.message, {
+				autoClose: 5000,
+				pauseOnHover: false,
+			});
+		}
+	};
+
 	const fetchUser = async () => {
 		try {
 			const url = `/api/v1/users/user/${username}`;
@@ -43,6 +119,38 @@ const UserProfile = (props) => {
 			setUser(res.data.data.user);
 			setPosts(res.data.data.posts);
 		} catch (err) {}
+	};
+
+	const fetchFollows = async () => {
+		try {
+			const url = `/api/v1/users/${username}/follows`;
+			const res = await axios({
+				url,
+				method: "GET",
+			});
+			setUsersArray(res.data.data.user.follows);
+		} catch (err) {}
+	};
+
+	const fetchFollowers = async () => {
+		try {
+			const url = `/api/v1/users/${username}/followers`;
+			const res = await axios({
+				url,
+				method: "GET",
+			});
+			setUsersArray(res.data.data.followers);
+		} catch (err) {}
+	};
+
+	const showFollows = () => {
+		fetchFollows();
+		openModal();
+	};
+
+	const showFollowers = () => {
+		fetchFollowers();
+		openModal();
 	};
 
 	useEffect(() => {
@@ -65,32 +173,57 @@ const UserProfile = (props) => {
 								<h3>{user.postsCount}</h3>
 								<p>Posts</p>
 							</div>
-							<div className="user-stats--followers">
+							<div className="user-stats--followers" onClick={showFollowers}>
 								<h3>{user.followersCount}</h3>
 								<p>Followers</p>
 							</div>
-							<div className="user-stats--follows">
+							<div className="user-stats--follows" onClick={showFollows}>
 								<h3>{user.followCount}</h3>
 								<p>Follows</p>
 							</div>
 						</div>
 						{!!notMe &&
 							(user.followedByMe ? (
-								<div className="user-following">Following</div>
+								<button
+									className="user-following-button"
+									onClick={() => unfollowUser(user.username)}
+								>
+									Following
+								</button>
 							) : (
-								<button className="user-follow-button">Follow</button>
+								<button
+									className="user-follow-button"
+									onClick={() => followUser(user.username)}
+								>
+									Follow
+								</button>
 							))}
 					</div>
 				</div>
 				{!!posts.length ? (
 					<div className="user-posts">
 						{posts.map((post) => (
-							<Post post={post} />
+							<Post post={post} key={post._id} />
 						))}
 					</div>
 				) : (
 					<NotFound />
 				)}
+				<Modal
+					isOpen={isModalOpen}
+					onRequestClose={closeModal}
+					ariaHideApp={false}
+					contentLabel="Like Modal"
+					closeTimeoutMS={200}
+					className="modal"
+				>
+					{usersArray.map((user) => (
+						<UserInfoSmall
+							user={user.follows.name ? user.follows : user.user}
+							key={user._id}
+						/>
+					))}
+				</Modal>
 			</div>
 		)
 	);

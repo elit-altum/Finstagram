@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 
 import LikesArray from "./likesArray";
 
+import { history } from "../router/router";
+
 import {
 	AiOutlineHeart as HeartOutline,
 	AiFillHeart as HeartFill,
@@ -31,9 +33,6 @@ const Post = ({ post }) => {
 			const res = await axios({
 				url,
 				method: "GET",
-				headers: {
-					Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
-				},
 			});
 			setAllLikes(res.data.data.likers);
 		} catch (err) {}
@@ -67,11 +66,9 @@ const Post = ({ post }) => {
 			await axios({
 				url,
 				method: "GET",
-				headers: {
-					Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
-				},
 			});
 		} catch (err) {
+			// console.log(err.response);
 			setIsLiked(!isLiked);
 		}
 	};
@@ -82,11 +79,9 @@ const Post = ({ post }) => {
 			await axios({
 				url,
 				method: "GET",
-				headers: {
-					Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
-				},
 			});
 		} catch (err) {
+			// console.log(err.response);
 			setIsLiked(!isLiked);
 		}
 	};
@@ -112,7 +107,9 @@ const Post = ({ post }) => {
 						src={post.createdBy.photo}
 						alt={`${post.createdBy.username}'s profile`}
 					/>
-					<p>{post.createdBy.username}</p>
+					<p onClick={() => history.push(`/${post.createdBy.username}`)}>
+						{post.createdBy.username}
+					</p>
 				</div>
 				<div className="postCard__image">
 					<Link to={`/post/${post.id}`}>
@@ -137,7 +134,10 @@ const Post = ({ post }) => {
 					</p>
 				)}
 				<div className="postCard__caption">
-					<p className="postCard__caption--username">
+					<p
+						className="postCard__caption--username"
+						onClick={() => history.push(`/${post.createdBy.username}`)}
+					>
 						{post.createdBy.username}
 					</p>
 					<p className="postCard__caption--body">{post.caption}</p>

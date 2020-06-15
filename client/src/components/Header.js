@@ -2,6 +2,8 @@ import React from "react";
 import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 
+import { history } from "../router/router";
+
 import { toast } from "react-toastify";
 
 const logout = async () => {
@@ -29,7 +31,9 @@ const Msg = ({ closeToast, user }) => (
 		<button className="header-toast-logout" onClick={logout}>
 			Logout
 		</button>
-		<button onClick={() => <Redirect to="/" />}>My Profile</button>
+		<button onClick={() => history.push(`/${user.username}`)}>
+			My Profile
+		</button>
 	</div>
 );
 
