@@ -8,6 +8,7 @@ const sharp = require("sharp");
 
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
+const Follow = require("../models/followModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -55,14 +56,30 @@ exports.getUser = catchAsync(async (req, res) => {
 		createdBy: user.id,
 	})
 		.populate("likes")
+		.populate("comments")
 		.sort({ createdAt: -1 })
 		.limit(limit)
 		.skip(skip);
 
+	const finalUser = user.toObject();
+	// e. Follow info of user
+	if (req.user.id !== user.id) {
+		const follow = await Follow.findOne({
+			user: req.user.id,
+			follows: user._id,
+		});
+
+		if (follow) {
+			finalUser.followedByMe = true;
+		} else {
+			finalUser.followedByMe = false;
+		}
+	}
+
 	res.status(200).json({
 		status: "success",
 		data: {
-			user,
+			user: finalUser,
 			posts,
 		},
 	});
