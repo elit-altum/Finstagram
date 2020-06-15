@@ -85,7 +85,7 @@ exports.getAllFollowers = catchAsync(async (req, res) => {
 			select: "user",
 			populate: {
 				path: "user",
-				select: "username photo",
+				select: "username photo name",
 			},
 		})
 		.select("username photo followers");
@@ -112,7 +112,7 @@ exports.getAllFollows = catchAsync(async (req, res) => {
 			select: "follows",
 			populate: {
 				path: "follows",
-				select: "username photo",
+				select: "username photo name",
 			},
 		})
 		.select("username photo followers");
