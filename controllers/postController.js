@@ -165,6 +165,8 @@ exports.getTimeline = catchAsync(async (req, res) => {
 		}
 	});
 
+	userFollowsArray.push(req.user.id);
+
 	// d. Get posts by followers
 	const posts = await Post.find({
 		createdBy: {
