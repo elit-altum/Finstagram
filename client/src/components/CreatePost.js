@@ -1,65 +1,65 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
+import { AiFillFileAdd as AddFile } from "react-icons";
 
 import { toast } from "react-toastify";
 
-const LoginForm = () => {
+import { history } from "../router/router";
+
+const CreatePost = () => {
 	const sendFormData = async (e) => {
 		e.preventDefault();
-		const username = document.getElementById("username_field").value;
-		const password = document.getElementById("password_field").value;
+
+		const form = new FormData();
+		form.append("photo", document.getElementById("photo_field").files[0]);
+		form.append("caption", document.getElementById("caption_field").value);
 
 		try {
 			await axios({
-				url: "/api/v1/users/login",
+				url: "/api/v1/posts/create",
 				method: "POST",
-				data: {
-					username,
-					password,
-				},
+				data: form,
 			});
-			toast.success("Logged in successfully!", {
+
+			toast.success("New post created!", {
 				autoClose: 2000,
 			});
 			setTimeout(() => {
-				window.location.reload(true);
+				history.push("/");
 			}, 2000);
 		} catch (err) {
 			console.log(err.response.data.data.error.message);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
-
 	return (
 		<div className="login-page">
 			<div className="login-form-container">
-				<h2>Finstagram</h2>
+				<h2>New Post</h2>
 				<form onSubmit={sendFormData} class="login-form">
 					<input
 						type="text"
-						name="username"
-						required={true}
-						placeholder="username"
-						id="username_field"
+						name="caption"
+						placeholder="Caption"
+						id="caption_field"
 					></input>
 					<input
-						type="password"
-						name="password"
-						placeholder="********"
-						id="password_field"
+						type="file"
+						name="photo"
+						accept="image/*"
 						required={true}
+						placeholder="Photo"
+						id="photo_field"
 					></input>
+					<label for="photo_field">Choose</label>
 					<button type="submit" className="login-form__submit">
 						Submit
 					</button>
 				</form>
-				<p>
-					No account? <Link to="/signup">Sign up</Link>
-				</p>
 			</div>
 		</div>
 	);
 };
 
-export default LoginForm;
+export default CreatePost;

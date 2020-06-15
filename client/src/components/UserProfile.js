@@ -212,7 +212,10 @@ const UserProfile = (props) => {
 				) : (
 					<NotFound />
 				)}
-				<button className="newPost-button">
+				<button
+					className="newPost-button"
+					onClick={() => history.push("/post/create")}
+				>
 					<AddIcon />
 				</button>
 				<Modal

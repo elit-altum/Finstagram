@@ -76,7 +76,7 @@ const Signup = () => {
 						id="passwordConfirm_field"
 						required={true}
 					></input>
-					<button type="submit" class="login-form__submit">
+					<button type="submit" className="login-form__submit">
 						Submit
 					</button>
 				</form>

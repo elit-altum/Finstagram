@@ -149,6 +149,7 @@
 
 .newPost-button {
 	position: absolute;
+	cursor: pointer;
 	bottom: 10%;
 	right: 10%;
 	z-index: 999;
@@ -162,6 +163,7 @@
 	align-items: center;
 	justify-content: center;
 	box-shadow: 0 0 8px #222;
+	outline: none;
 	svg {
 		font-size: 1.5rem;
 	}
