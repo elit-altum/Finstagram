@@ -35,7 +35,7 @@ const LoginForm = () => {
 		<div className="login-page">
 			<div className="login-form-container">
 				<h2>Finstagram</h2>
-				<form onSubmit={sendFormData} class="login-form">
+				<form onSubmit={sendFormData} className="login-form">
 					<input
 						type="text"
 						name="username"
