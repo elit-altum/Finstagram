@@ -1,6 +1,6 @@
 import React from "react";
 import { Router, Switch } from "react-router-dom";
-import createHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
 
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
@@ -12,7 +12,7 @@ import PostDetail from "../components/PostDetails";
 import UserProfile from "../components/UserProfile";
 import CreatePost from "../components/CreatePost";
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 const AppRouter = (props) => (
 	<Router history={history}>

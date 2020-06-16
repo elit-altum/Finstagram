@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-import { AiFillFileAdd as AddFile } from "react-icons";
+import {
+	BsFileEarmarkPlus as AddFileIcon,
+	BsFileEarmarkCheck as UploadedFileIcon,
+} from "react-icons/bs";
 
 import { toast } from "react-toastify";
 
 import { history } from "../router/router";
 
 const CreatePost = () => {
+	const [uploaded, setUploaded] = useState(false);
+
 	const sendFormData = async (e) => {
 		e.preventDefault();
 
@@ -37,7 +42,7 @@ const CreatePost = () => {
 		<div className="login-page">
 			<div className="login-form-container">
 				<h2>New Post</h2>
-				<form onSubmit={sendFormData} class="login-form">
+				<form onSubmit={sendFormData} className="login-form">
 					<input
 						type="text"
 						name="caption"
@@ -51,8 +56,21 @@ const CreatePost = () => {
 						required={true}
 						placeholder="Photo"
 						id="photo_field"
+						onChange={() => setUploaded(true)}
 					></input>
-					<label for="photo_field">Choose</label>
+					<label htmlFor="photo_field" className="upload-post-label">
+						{!uploaded ? (
+							<>
+								<AddFileIcon />
+								<p>Add Image</p>
+							</>
+						) : (
+							<>
+								<UploadedFileIcon />
+								<p>Uploaded!</p>
+							</>
+						)}
+					</label>
 					<button type="submit" className="login-form__submit">
 						Submit
 					</button>
