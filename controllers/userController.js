@@ -96,7 +96,7 @@ exports.updateMe = catchAsync(async (req, res) => {
 
 	const santisedObject = getSpecifics(req, "email", "name", "username");
 
-	if (req.file.filename) {
+	if (req.hasOwnProperty("file")) {
 		santisedObject.photo = `/img/user-profiles/${req.file.filename}`;
 
 		// Delete existing photo
@@ -132,7 +132,7 @@ exports.updatePassword = catchAsync(async (req, res) => {
 
 	const user = await User.findById(req.user.id).select("+password");
 
-	const isMatch = user.comparePassword(oldPassword, user.password);
+	const isMatch = await user.comparePassword(oldPassword, user.password);
 
 	if (!isMatch) {
 		throw new AppError("The provided password is incorrect.", 403);
