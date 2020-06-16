@@ -81,6 +81,9 @@ const userSchema = new mongoose.Schema(
 	}
 );
 
+// 00. Indexing names and usernames
+userSchema.index({ name: 1, username: 1 });
+
 // 0a. Virtual property to store user followers
 userSchema.virtual("followers", {
 	ref: "Follow",

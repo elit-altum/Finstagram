@@ -189,6 +189,44 @@ exports.deleteUser = catchAsync(async (req, res) => {
 	});
 });
 
+// *? 6. SEARCH FOR A USER USING NAME/USERNAME
+exports.searchUser = catchAsync(async (req, res) => {
+	if (!req.body.search) {
+		throw new AppError("No users found!", 404);
+	}
+
+	const searchQuery = new RegExp(req.body.search, "i");
+
+	const users = await User.find({
+		$or: [
+			{
+				username: searchQuery,
+			},
+			{
+				name: searchQuery,
+			},
+		],
+	})
+		.sort({
+			name: 1,
+		})
+		.limit(8)
+		.skip(0)
+		.select("username name photo");
+
+	if (!users) {
+		throw new AppError("No users found!", 404);
+	}
+
+	res.status(200).json({
+		status: "success",
+		data: {
+			results: users.length,
+			users,
+		},
+	});
+});
+
 // *? <--------------- USER PROFILE IMAGES ----------------->
 
 // *? 0. UTILITY FUNCTIONS FOR IMAGES

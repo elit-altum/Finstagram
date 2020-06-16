@@ -36,6 +36,9 @@ router.delete("/deleteMe", userController.deactivateUser);
 // *? 5. GET A USER
 router.get("/user/:username?", userController.getUser);
 
+// *? 6. SEARCH A USER
+router.post("/search", userController.searchUser);
+
 // *? <---- FOLLOW ---->
 
 // *? FOLLOW A USER
