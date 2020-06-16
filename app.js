@@ -14,6 +14,7 @@ const xss = require("xss-clean");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const compression = require("compression");
+const cors = require("cors");
 
 // 2. Importing routers and error handler
 const userRouter = require("./routes/userRouter");
@@ -39,6 +40,9 @@ mongoose
 	});
 
 // *? 4. ATTACH MIDDLEWARES
+
+// Cors for CORS handling
+app.use(cors());
 
 // Morgan for request logging
 if (process.env.NODE_ENV === "development") {
