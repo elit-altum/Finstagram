@@ -192,10 +192,11 @@ exports.deleteUser = catchAsync(async (req, res) => {
 // *? 6. SEARCH FOR A USER USING NAME/USERNAME
 exports.searchUser = catchAsync(async (req, res) => {
 	if (!req.body.search) {
-		throw new AppError("No users found!", 404);
+		throw new AppError("Please provide a search value.", 400);
 	}
 
-	const searchQuery = new RegExp(req.body.search, "i");
+	const regex = "^" + req.body.search;
+	const searchQuery = new RegExp(regex, "i");
 
 	const users = await User.find({
 		$or: [
@@ -207,15 +208,12 @@ exports.searchUser = catchAsync(async (req, res) => {
 			},
 		],
 	})
-		.sort({
-			name: 1,
-		})
 		.limit(8)
 		.skip(0)
 		.select("username name photo");
 
 	if (!users) {
-		throw new AppError("No users found!", 404);
+		throw new AppError("No users found.", 404);
 	}
 
 	res.status(200).json({
