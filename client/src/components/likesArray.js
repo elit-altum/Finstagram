@@ -11,7 +11,7 @@ export const UserInfoSmall = ({ user }) => {
 			<div className="like-modal__item--names">
 				<p
 					className="like-modal__item--username"
-					onClick={() => history.push(`/${user.username}`)}
+					onClick={() => history.push(`/user/${user.username}`)}
 				>
 					{user.username}
 				</p>

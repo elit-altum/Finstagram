@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Switch } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import PrivateRoute from "./PrivateRoute";
@@ -13,6 +13,7 @@ import UserProfile from "../components/UserProfile";
 import CreatePost from "../components/CreatePost";
 import EditUserProfile from "../components/EditUserProfile";
 import SearchUsers from "../components/SearchUsers";
+import PageNotFound from "../components/PageNotFound";
 
 export const history = createBrowserHistory();
 
@@ -27,7 +28,13 @@ const AppRouter = (props) => (
 			<PrivateRoute path="/post/:postId" component={PostDetail} exact={true} />
 			<PrivateRoute path="/update" component={EditUserProfile} exact={true} />
 			<PrivateRoute path="/searchUsers" component={SearchUsers} exact={true} />
-			<PrivateRoute path="/:username" component={UserProfile} exact={true} />
+			<PrivateRoute
+				path="/user/:username"
+				component={UserProfile}
+				exact={true}
+			/>
+
+			<Route path="/" component={PageNotFound} />
 		</Switch>
 	</Router>
 );

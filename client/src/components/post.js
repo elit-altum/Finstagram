@@ -107,7 +107,7 @@ const Post = ({ post }) => {
 						src={post.createdBy.photo}
 						alt={`${post.createdBy.username}'s profile`}
 					/>
-					<p onClick={() => history.push(`/${post.createdBy.username}`)}>
+					<p onClick={() => history.push(`/user/${post.createdBy.username}`)}>
 						{post.createdBy.username}
 					</p>
 				</div>
@@ -136,7 +136,7 @@ const Post = ({ post }) => {
 				<div className="postCard__caption">
 					<p
 						className="postCard__caption--username"
-						onClick={() => history.push(`/${post.createdBy.username}`)}
+						onClick={() => history.push(`/user/${post.createdBy.username}`)}
 					>
 						{post.createdBy.username}
 					</p>

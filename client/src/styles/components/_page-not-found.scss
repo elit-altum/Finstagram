@@ -1,0 +1,49 @@
+.page-404 {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.page-404-content {
+	background-color: $primary-color;
+	margin: 0.3rem;
+	padding: 1.2rem;
+	text-align: center;
+	box-shadow: 0 0 3px #ccc;
+	border-radius: 4px;
+	h3 {
+		font-family: $secondary-font;
+		font-size: 5rem;
+		background-clip: text;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		cursor: pointer;
+	}
+	h2 {
+		margin-top: 20px;
+		color: lighten($secondary-color, 20%);
+	}
+	p {
+		margin-top: 10px;
+		color: lighten($secondary-color, 40%);
+		font-size: 1rem;
+	}
+
+	button {
+		margin-top: 40px;
+		background-color: $primary-color;
+		font-family: $primary-font;
+		padding: 0.3rem 0.8rem;
+		font-size: 1rem;
+		border-radius: 4px;
+		border: 1px solid lighten($secondary-color, 60%);
+		background-clip: text;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		cursor: pointer;
+	}
+}

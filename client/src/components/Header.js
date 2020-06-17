@@ -31,7 +31,7 @@ const Msg = ({ closeToast, user }) => (
 		<button className="header-toast-logout" onClick={logout}>
 			Logout
 		</button>
-		<button onClick={() => history.push(`/${user.username}`)}>
+		<button onClick={() => history.push(`/user/${user.username}`)}>
 			My Profile
 		</button>
 	</div>

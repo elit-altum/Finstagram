@@ -133,7 +133,7 @@ const PostDetails = ({ user }) => {
 						/>
 						<p
 							className="postDetails--username"
-							onClick={() => history.push(`/${post.createdBy.username}`)}
+							onClick={() => history.push(`/user/${post.createdBy.username}`)}
 						>
 							{post.createdBy.username}
 						</p>
