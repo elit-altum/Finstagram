@@ -35,7 +35,7 @@ const Timeline = (props) => {
 		<div className="my-timeline">
 			{!!renderCounter &&
 				(!!posts.length ? (
-					posts.map((post) => <Post post={post} key={post._id} />)
+					posts.map((post) => <Post post={post} key={post.id} />)
 				) : (
 					<NotFound
 						message={"No posts found. Please follow users to view a timeline."}
