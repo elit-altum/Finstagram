@@ -213,22 +213,24 @@ const UserProfile = (props) => {
 				) : (
 					<NotFound />
 				)}
-				<div className="cta-buttons">
-					<button
-						className="newPost-button"
-						onClick={() => history.push("/post/create")}
-						title="Create New Post"
-					>
-						<AddIcon />
-					</button>
-					<button
-						className="editMe-button"
-						onClick={() => history.push("/update")}
-						title="Edit Details"
-					>
-						<EditIcon />
-					</button>
-				</div>
+				{!!!notMe && (
+					<div className="cta-buttons">
+						<button
+							className="newPost-button"
+							onClick={() => history.push("/post/create")}
+							title="Create New Post"
+						>
+							<AddIcon />
+						</button>
+						<button
+							className="editMe-button"
+							onClick={() => history.push("/update")}
+							title="Edit Details"
+						>
+							<EditIcon />
+						</button>
+					</div>
+				)}
 				<Modal
 					isOpen={isModalOpen}
 					onRequestClose={closeModal}

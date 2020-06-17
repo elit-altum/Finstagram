@@ -12,6 +12,7 @@ import PostDetail from "../components/PostDetails";
 import UserProfile from "../components/UserProfile";
 import CreatePost from "../components/CreatePost";
 import EditUserProfile from "../components/EditUserProfile";
+import SearchUsers from "../components/SearchUsers";
 
 export const history = createBrowserHistory();
 
@@ -25,6 +26,7 @@ const AppRouter = (props) => (
 			<PrivateRoute path="/post/create" component={CreatePost} exact={true} />
 			<PrivateRoute path="/post/:postId" component={PostDetail} exact={true} />
 			<PrivateRoute path="/update" component={EditUserProfile} exact={true} />
+			<PrivateRoute path="/searchUsers" component={SearchUsers} exact={true} />
 			<PrivateRoute path="/:username" component={UserProfile} exact={true} />
 		</Switch>
 	</Router>

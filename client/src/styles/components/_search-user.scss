@@ -1,0 +1,87 @@
+.searchUsers {
+	h3 {
+		margin-top: 15vh;
+		background-clip: text;
+		background: $gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		font-family: $secondary-font;
+		font-size: 3.3rem;
+		text-align: center;
+	}
+}
+
+.searchUser-bar {
+	width: 100%;
+	height: 50px;
+	margin: 0.8rem;
+	margin-top: 30px;
+	border-radius: 4px;
+	box-shadow: 0 0 3px #ccc;
+	background-color: $primary-color;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.searchUser-bar__icon {
+	svg {
+		font-size: 2rem;
+		padding-left: 6px;
+	}
+}
+
+.searchUser-bar__input {
+	width: 100%;
+	height: 100%;
+	padding: 0.8rem;
+	outline: none;
+	border: none;
+	font-size: 1.1rem;
+	font-family: $primary-font;
+	font-weight: bolder;
+	color: lighten($secondary-color, 20%);
+	&:focus {
+		outline: none;
+	}
+}
+
+.searchUsers-results {
+	min-height: 100px;
+	overflow-y: auto;
+}
+
+.search-loader {
+	margin: 0 auto;
+	margin-top: 50px;
+	height: 40px;
+	width: 40px;
+	border-radius: 100%;
+	border: 1.4px solid #ccc;
+	border-top: 1.4px solid #555;
+	animation: infinite-rotate 0.6s infinite none;
+}
+
+.search-not-found {
+	margin: 0 auto;
+	margin-top: 50px;
+	text-align: center;
+	width: 100%;
+	color: lighten($secondary-color, 40%);
+	svg {
+		font-size: 3rem;
+	}
+	p {
+		margin-top: 10px;
+		font-size: 1.1rem;
+	}
+}
+
+@keyframes infinite-rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

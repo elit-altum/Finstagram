@@ -45,6 +45,33 @@
 	}
 }
 
+@media only screen and (max-width: 500px) {
+	.user-profile {
+		.user-profile__name {
+			margin-top: 20px;
+			font-size: 0.8rem;
+		}
+		.user-profile__username {
+			font-size: 0.7rem;
+			margin-top: 6px;
+		}
+		img {
+			width: 4rem;
+		}
+	}
+	.user-stats {
+		div {
+			margin: 0 0.5rem;
+			h3 {
+				font-size: 1.2rem;
+			}
+			p {
+				font-size: 0.9rem;
+			}
+		}
+	}
+}
+
 .user-following-button {
 	width: 100%;
 	display: flex;
@@ -148,7 +175,7 @@
 }
 
 .cta-buttons {
-	position: absolute;
+	position: fixed;
 	right: 10%;
 	bottom: 10%;
 	display: flex;
