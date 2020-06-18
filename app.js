@@ -77,9 +77,10 @@ app.use(compression());
 // *? 5. MOUNT API ROUTERS
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
+app.use("/img", express.static(path.join(__dirname, "public", "img")));
 
 // *? 6. FOR SERVING REACT WEBSITE
-app.use("*", (req, res) => {
+app.use("/", (req, res) => {
 	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
