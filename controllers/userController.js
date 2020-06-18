@@ -225,6 +225,26 @@ exports.searchUser = catchAsync(async (req, res) => {
 	});
 });
 
+// *? 6. SEARCH FOR A USER USING NAME/USERNAME
+exports.findRandomUsers = catchAsync(async (req, res) => {
+	const users = await User.find({ _id: { $ne: req.user.id } })
+		.limit(8)
+		.skip(0)
+		.select("username name photo");
+
+	if (!users) {
+		throw new AppError("No users found.", 404);
+	}
+
+	res.status(200).json({
+		status: "success",
+		data: {
+			results: users.length,
+			users,
+		},
+	});
+});
+
 // *? <--------------- USER PROFILE IMAGES ----------------->
 
 // *? 0. UTILITY FUNCTIONS FOR IMAGES

@@ -211,7 +211,7 @@ const UserProfile = (props) => {
 						))}
 					</div>
 				) : (
-					<NotFound />
+					<NotFound message={"No posts yet."} />
 				)}
 				{!!!notMe && (
 					<div className="cta-buttons">

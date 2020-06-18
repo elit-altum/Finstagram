@@ -39,6 +39,9 @@ router.get("/user/:username?", userController.getUser);
 // *? 6. SEARCH A USER
 router.post("/search", userController.searchUser);
 
+// *? 7. GET RANDOM USERS
+router.get("/random", userController.findRandomUsers);
+
 // *? <---- FOLLOW ---->
 
 // *? FOLLOW A USER

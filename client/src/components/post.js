@@ -112,9 +112,11 @@ const Post = ({ post }) => {
 					</p>
 				</div>
 				<div className="postCard__image">
-					<Link to={`/post/${post.id}`}>
-						<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
-					</Link>
+					<img
+						src={post.photo}
+						alt={`${post.createdBy.username}'s post`}
+						onDoubleClick={handleLike}
+					/>
 				</div>
 				<div className="postCard__meta">
 					<div className="postCard__meta--icons">

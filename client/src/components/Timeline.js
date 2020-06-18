@@ -37,9 +37,13 @@ const Timeline = (props) => {
 				(!!posts.length ? (
 					posts.map((post) => <Post post={post} key={post.id} />)
 				) : (
-					<NotFound
-						message={"No posts found. Please follow users to view a timeline."}
-					/>
+					<div className="no-posts">
+						<NotFound
+							message={
+								"No posts found. Please follow users to view a timeline."
+							}
+						/>
+					</div>
 				))}
 			<div className="cta-buttons">
 				<button
