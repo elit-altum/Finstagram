@@ -56,7 +56,7 @@ app.set("trust proxy", 1);
 app.use(express.json());
 
 // For static files
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static("client/build"));
 
 // Parse cookies
@@ -77,10 +77,10 @@ app.use(compression());
 // *? 5. MOUNT API ROUTERS
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
-app.use("/img", express.static(path.join(__dirname, "public")));
+app.use("/img", express.static(path.join(__dirname, "public", "img")));
 
 // *? 6. FOR SERVING REACT WEBSITE
-app.use("/", (req, res) => {
+app.use((req, res) => {
 	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
