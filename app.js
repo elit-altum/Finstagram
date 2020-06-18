@@ -24,6 +24,12 @@ const errorHandler = require("./utils/errorHandler");
 
 const app = express();
 
+if (process.env.NODE_ENV === "development") {
+	process.env.PWD = __dirname;
+} else {
+	process.env.PWD = process.cwd();
+}
+
 // 3. Connect to MongoDB
 mongoose
 	.connect(process.env.MONGO_SRV, {
@@ -77,11 +83,11 @@ app.use(compression());
 // *? 5. MOUNT API ROUTERS
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
-app.use("/img", express.static(path.join(__dirname, "public", "img")));
+app.use("/img", express.static(path.join(process.env.PWD, "public", "img")));
 
 // *? 6. FOR SERVING REACT WEBSITE
 app.use((req, res) => {
-	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+	res.sendFile(path.join(process.env.PWD, "client", "build", "index.html"));
 });
 
 // *? 6. ERROR HANDLERS
