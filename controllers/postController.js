@@ -1,9 +1,12 @@
 // Handles routes specific to post
 const { promisify } = require("util");
+const path = require("path");
 
 const multer = require("multer");
 const sharp = require("sharp");
 const sizeOf = require("image-size");
+
+const cloudinary = require("cloudinary").v2;
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
@@ -48,6 +51,7 @@ exports.convertImageToJpeg = async (req, res, next) => {
 	).getTime()}.jpg`;
 
 	await sharp(req.file.buffer)
+		.resize(500, 500)
 		.toFormat("jpeg")
 		.jpeg({ quality: 90 })
 		.toFile(`public/img/posts/${req.file.filename}`);
@@ -63,9 +67,20 @@ exports.storePost = catchAsync(async (req, res) => {
 		`public/img/posts/${req.file.filename}`
 	);
 
+	const imagePath = path.join(
+		__dirname,
+		"..",
+		"public",
+		"img",
+		"posts",
+		req.file.filename
+	);
+
+	const image = await cloudinary.uploader.upload(imagePath);
+
 	const newPost = {
 		caption,
-		photo: `/img/posts/${req.file.filename}`,
+		photo: image.url,
 		dimensions: `${dimensions.width} x ${dimensions.height}`,
 		createdBy: req.user.id,
 	};

@@ -5,6 +5,7 @@ const path = require("path");
 
 const multer = require("multer");
 const sharp = require("sharp");
+const cloudinary = require("cloudinary").v2;
 
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
@@ -97,7 +98,18 @@ exports.updateMe = catchAsync(async (req, res) => {
 	const santisedObject = getSpecifics(req, "email", "name", "username");
 
 	if (req.hasOwnProperty("file")) {
-		santisedObject.photo = `/img/user-profiles/${req.file.filename}`;
+		const imagePath = path.join(
+			__dirname,
+			"..",
+			"public",
+			"img",
+			"user-profiles",
+			req.file.filename
+		);
+
+		const image = await cloudinary.uploader.upload(imagePath);
+
+		santisedObject.photo = image.url;
 
 		// Delete existing photo
 		const imageName = req.user.photo.split("/")[3];
