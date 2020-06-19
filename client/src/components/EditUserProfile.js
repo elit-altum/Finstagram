@@ -6,12 +6,15 @@ import { MdModeEdit as EditIcon } from "react-icons/md";
 import { toast } from "react-toastify";
 
 import { history } from "../router/router";
+import Loader from "./Loader";
 
 const EditUserProfile = ({ user }) => {
 	const [uploadedText, setUploadedText] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const sendUpdateData = async (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 
 		const form = new FormData();
 		form.append("photo", document.getElementById("photo_field").files[0]);
@@ -25,6 +28,7 @@ const EditUserProfile = ({ user }) => {
 				method: "PATCH",
 				data: form,
 			});
+			setIsLoading(false);
 
 			toast.success("User details updated!", {
 				autoClose: 2000,
@@ -34,12 +38,14 @@ const EditUserProfile = ({ user }) => {
 			}, 2000);
 		} catch (err) {
 			// console.log(err.response);
+			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
 
 	const sendPasswordData = async (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 
 		const oldPassword = document.getElementById("oldPassword_field").value;
 		const newPassword = document.getElementById("newPassword_field").value;
@@ -57,6 +63,7 @@ const EditUserProfile = ({ user }) => {
 				},
 			});
 
+			setIsLoading(false);
 			toast.success("Password successfully updated!", {
 				autoClose: 2000,
 			});
@@ -65,6 +72,7 @@ const EditUserProfile = ({ user }) => {
 			}, 2000);
 		} catch (err) {
 			// console.log(err.response);
+			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
@@ -125,12 +133,12 @@ const EditUserProfile = ({ user }) => {
 							onChange={() => setUploadedText("New profile uploaded!")}
 						></input>
 						<button type="submit" className="login-form__submit">
-							Submit
+							{!isLoading ? <p>Submit</p> : <Loader />}
 						</button>
 					</form>
 				</div>
 			</div>
-			<div className="login-page" style={{ marginTop: "-150px" }}>
+			<div className="login-page" style={{ marginTop: "-80px" }}>
 				<div className="login-form-container">
 					<h2>ChangePassword</h2>
 					<form onSubmit={sendPasswordData} className="login-form">
@@ -162,7 +170,7 @@ const EditUserProfile = ({ user }) => {
 							className="edit-user-input"
 						></input>
 						<button type="submit" className="login-form__submit">
-							Update
+							{!isLoading ? <p>Update</p> : <Loader />}
 						</button>
 					</form>
 				</div>

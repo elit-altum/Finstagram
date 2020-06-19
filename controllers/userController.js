@@ -110,12 +110,6 @@ exports.updateMe = catchAsync(async (req, res) => {
 		const image = await cloudinary.uploader.upload(imagePath);
 
 		santisedObject.photo = image.url;
-
-		// Delete existing photo
-		const imageName = req.user.photo.split("/")[3];
-		if (imageName != "default.png") {
-			await deleteProfilePhoto(imageName);
-		}
 	}
 
 	const user = await User.findByIdAndUpdate(req.user.id, santisedObject, {
@@ -285,7 +279,7 @@ exports.uploadUserProfile = upload.single("photo");
 
 // * c. MIDDLEWARE: Sharp for image processing and storing
 exports.resizeUserImage = async (req, res, next) => {
-	if (!req.file) {
+	if (!req.hasOwnProperty("file")) {
 		next();
 	}
 	req.file.filename = `user-${req.user.id}-${new Date(
@@ -299,18 +293,4 @@ exports.resizeUserImage = async (req, res, next) => {
 		.toFile(`public/img/user-profiles/${req.file.filename}`);
 
 	next();
-};
-
-// * d. Delete old profile picture from server
-const deleteProfilePhoto = async (imageName) => {
-	const deletePath = path.join(
-		__dirname,
-		"..",
-		"public",
-		"img",
-		"user-profiles",
-		imageName
-	);
-
-	await promisify(fs.unlink)(deletePath);
 };

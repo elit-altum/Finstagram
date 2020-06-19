@@ -9,11 +9,14 @@ import {
 import { toast } from "react-toastify";
 
 import { history } from "../router/router";
+import Loader from "./Loader";
 
 const CreatePost = () => {
 	const [uploaded, setUploaded] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const sendFormData = async (e) => {
+		setIsLoading(true);
 		e.preventDefault();
 
 		const form = new FormData();
@@ -27,6 +30,8 @@ const CreatePost = () => {
 				data: form,
 			});
 
+			setIsLoading(false);
+
 			toast.success("New post created!", {
 				autoClose: 2000,
 			});
@@ -34,7 +39,7 @@ const CreatePost = () => {
 				history.push("/");
 			}, 2000);
 		} catch (err) {
-			console.log(err.response.data.data.error.message);
+			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
@@ -72,7 +77,7 @@ const CreatePost = () => {
 						)}
 					</label>
 					<button type="submit" className="login-form__submit">
-						Submit
+						{!isLoading ? <p>Submit</p> : <Loader />}
 					</button>
 				</form>
 			</div>
