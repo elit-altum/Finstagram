@@ -1,13 +1,15 @@
 {
-  "short_name": "Finstagrm",
-  "name": "Finstagram - The Instagram Clone",
-  "icons": [{
-    "src": "favicon.png",
-    "sizes": "64x64 32x32 24x24 16x16",
-    "type": "image/x-icon"
-  }],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#222",
-  "background_color": "#ffffff"
+	"short_name": "Finstagram",
+	"name": "Finstagram - The Instagram Clone",
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "64x64 32x32 24x24 16x16",
+			"type": "image/x-icon"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#222",
+	"background_color": "#ffffff"
 }

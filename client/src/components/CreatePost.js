@@ -30,9 +30,7 @@ const CreatePost = () => {
 				data: form,
 			});
 
-			setIsLoading(false);
-
-			toast.success("New post created!", {
+			toast.success("New post created! Redirecting..", {
 				autoClose: 2000,
 			});
 			setTimeout(() => {
@@ -76,7 +74,11 @@ const CreatePost = () => {
 							</>
 						)}
 					</label>
-					<button type="submit" className="login-form__submit">
+					<button
+						type="submit"
+						className="login-form__submit"
+						disabled={isLoading}
+					>
 						{!isLoading ? <p>Submit</p> : <Loader />}
 					</button>
 				</form>

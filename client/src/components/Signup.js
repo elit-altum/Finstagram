@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import { toast } from "react-toastify";
 
+import Loader from "./Loader";
+
 const Signup = () => {
+	const [isLoading, setIsLoading] = useState(false);
+
 	const sendFormData = async (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 		const username = document.getElementById("username_field").value;
 		const name = document.getElementById("name_field").value;
 		const email = document.getElementById("email_field").value;
@@ -32,7 +37,7 @@ const Signup = () => {
 				window.location.reload(true);
 			}, 2000);
 		} catch (err) {
-			console.log(err.response.data.data.error.message);
+			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
 		}
 	};
@@ -76,8 +81,12 @@ const Signup = () => {
 						id="passwordConfirm_field"
 						required={true}
 					></input>
-					<button type="submit" className="login-form__submit">
-						Submit
+					<button
+						type="submit"
+						className="login-form__submit"
+						disabled={isLoading}
+					>
+						{!isLoading ? <p>Submit</p> : <Loader />}
 					</button>
 				</form>
 			</div>

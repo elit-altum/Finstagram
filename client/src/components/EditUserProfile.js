@@ -63,7 +63,6 @@ const EditUserProfile = ({ user }) => {
 				},
 			});
 
-			setIsLoading(false);
 			toast.success("Password successfully updated!", {
 				autoClose: 2000,
 			});
@@ -132,7 +131,11 @@ const EditUserProfile = ({ user }) => {
 							id="photo_field"
 							onChange={() => setUploadedText("New profile uploaded!")}
 						></input>
-						<button type="submit" className="login-form__submit">
+						<button
+							type="submit"
+							className="login-form__submit"
+							disabled={isLoading}
+						>
 							{!isLoading ? <p>Submit</p> : <Loader />}
 						</button>
 					</form>
