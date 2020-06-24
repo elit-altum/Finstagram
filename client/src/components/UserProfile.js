@@ -62,6 +62,12 @@ const UserProfile = (props) => {
 	};
 
 	const followUser = async (username) => {
+		let newFollowersCount = user.followersCount + 1;
+		setUser({
+			...user,
+			followedByMe: true,
+			followersCount: newFollowersCount,
+		});
 		try {
 			const url = `/api/v1/users/${username}/follow`;
 			const res = await axios({
@@ -73,12 +79,6 @@ const UserProfile = (props) => {
 				autoClose: 5000,
 				pauseOnHover: false,
 			});
-			let newFollowersCount = user.followersCount + 1;
-			setUser({
-				...user,
-				followedByMe: true,
-				followersCount: newFollowersCount,
-			});
 		} catch (err) {
 			toast.success(err.response.data.error.message, {
 				autoClose: 5000,
@@ -88,6 +88,12 @@ const UserProfile = (props) => {
 	};
 
 	const unfollowUser = async (username) => {
+		let newFollowersCount = user.followersCount - 1;
+		setUser({
+			...user,
+			followedByMe: false,
+			followersCount: newFollowersCount,
+		});
 		try {
 			const url = `/api/v1/users/${username}/unfollow`;
 			const res = await axios({
@@ -98,12 +104,6 @@ const UserProfile = (props) => {
 			toast.success(res.data.message, {
 				autoClose: 5000,
 				pauseOnHover: false,
-			});
-			let newFollowersCount = user.followersCount - 1;
-			setUser({
-				...user,
-				followedByMe: false,
-				followersCount: newFollowersCount,
 			});
 		} catch (err) {
 			toast.success(err.response.data.error.message, {
