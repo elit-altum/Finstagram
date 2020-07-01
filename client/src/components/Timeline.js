@@ -4,6 +4,7 @@ import axios from "axios";
 import { BsSearch as SearchIcon } from "react-icons/bs";
 
 import NotFound from "./NotFound";
+import PageLoader from "./PageLoader";
 import Post from "./Post";
 
 import { history } from "../router/router";
@@ -33,8 +34,8 @@ const Timeline = (props) => {
 
 	return (
 		<div className="my-timeline">
-			{!!renderCounter &&
-				(!!posts.length ? (
+			{!!renderCounter ? (
+				!!posts.length ? (
 					posts.map((post) => <Post post={post} key={post.id} />)
 				) : (
 					<div className="no-posts">
@@ -44,7 +45,10 @@ const Timeline = (props) => {
 							}
 						/>
 					</div>
-				))}
+				)
+			) : (
+				<PageLoader />
+			)}
 			<div className="cta-buttons">
 				<button
 					className="searchUsers-button"

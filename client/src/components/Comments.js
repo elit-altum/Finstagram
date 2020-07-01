@@ -23,9 +23,8 @@ const Comments = ({ id, user }) => {
 	};
 
 	const removeComment = async (commentId) => {
-		console.log(`/api/v1/posts/${id}/comment/${commentId}`);
 		try {
-			const res = await axios({
+			await axios({
 				url: `/api/v1/posts/${id}/comment/${commentId}`,
 				method: "DELETE",
 			});

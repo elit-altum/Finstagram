@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 
 import NotFound from "./NotFound";
+import PageLoader from "./PageLoader";
 import { UserInfoSmall } from "./likesArray";
 
 import { history } from "../router/router";
@@ -161,93 +162,92 @@ const UserProfile = (props) => {
 		fetchUser();
 	}, []);
 
-	return (
-		!!user &&
-		!!posts && (
-			<div className="user-page">
-				<div className="user-info">
-					<div className="user-profile">
-						<img src={user.photo} alt={`${user.username}'s profile`} />
-						<p className="user-profile__name">{user.name}</p>
-						<p className="user-profile__username">{user.username}</p>
-					</div>
-					<div className="user-meta">
-						<div className="user-stats">
-							<div className="user-stats--posts">
-								<h3>{user.postsCount}</h3>
-								<p>Posts</p>
-							</div>
-							<div className="user-stats--followers" onClick={showFollowers}>
-								<h3>{user.followersCount}</h3>
-								<p>Followers</p>
-							</div>
-							<div className="user-stats--follows" onClick={showFollows}>
-								<h3>{user.followCount}</h3>
-								<p>Follows</p>
-							</div>
-						</div>
-						{!!notMe &&
-							(user.followedByMe ? (
-								<button
-									className="user-following-button"
-									onClick={() => unfollowUser(user.username)}
-								>
-									Following
-								</button>
-							) : (
-								<button
-									className="user-follow-button"
-									onClick={() => followUser(user.username)}
-								>
-									Follow
-								</button>
-							))}
-					</div>
+	return !!user && !!posts ? (
+		<div className="user-page">
+			<div className="user-info">
+				<div className="user-profile">
+					<img src={user.photo} alt={`${user.username}'s profile`} />
+					<p className="user-profile__name">{user.name}</p>
+					<p className="user-profile__username">{user.username}</p>
 				</div>
-				{!!posts.length ? (
-					<div className="user-posts">
-						{posts.map((post) => (
-							<Post post={post} key={post._id} />
+				<div className="user-meta">
+					<div className="user-stats">
+						<div className="user-stats--posts">
+							<h3>{user.postsCount}</h3>
+							<p>Posts</p>
+						</div>
+						<div className="user-stats--followers" onClick={showFollowers}>
+							<h3>{user.followersCount}</h3>
+							<p>Followers</p>
+						</div>
+						<div className="user-stats--follows" onClick={showFollows}>
+							<h3>{user.followCount}</h3>
+							<p>Follows</p>
+						</div>
+					</div>
+					{!!notMe &&
+						(user.followedByMe ? (
+							<button
+								className="user-following-button"
+								onClick={() => unfollowUser(user.username)}
+							>
+								Following
+							</button>
+						) : (
+							<button
+								className="user-follow-button"
+								onClick={() => followUser(user.username)}
+							>
+								Follow
+							</button>
 						))}
-					</div>
-				) : (
-					<NotFound message={"No posts yet."} />
-				)}
-				{!!!notMe && (
-					<div className="cta-buttons">
-						<button
-							className="newPost-button"
-							onClick={() => history.push("/post/create")}
-							title="Create New Post"
-						>
-							<AddIcon />
-						</button>
-						<button
-							className="editMe-button"
-							onClick={() => history.push("/update")}
-							title="Edit Details"
-						>
-							<EditIcon />
-						</button>
-					</div>
-				)}
-				<Modal
-					isOpen={isModalOpen}
-					onRequestClose={closeModal}
-					ariaHideApp={false}
-					contentLabel="Like Modal"
-					closeTimeoutMS={200}
-					className="modal"
-				>
-					{usersArray.map((user) => (
-						<UserInfoSmall
-							user={user.follows.name ? user.follows : user.user}
-							key={user._id}
-						/>
-					))}
-				</Modal>
+				</div>
 			</div>
-		)
+			{!!posts.length ? (
+				<div className="user-posts">
+					{posts.map((post) => (
+						<Post post={post} key={post._id} />
+					))}
+				</div>
+			) : (
+				<NotFound message={"No posts yet."} />
+			)}
+			{!!!notMe && (
+				<div className="cta-buttons">
+					<button
+						className="newPost-button"
+						onClick={() => history.push("/post/create")}
+						title="Create New Post"
+					>
+						<AddIcon />
+					</button>
+					<button
+						className="editMe-button"
+						onClick={() => history.push("/update")}
+						title="Edit Details"
+					>
+						<EditIcon />
+					</button>
+				</div>
+			)}
+			<Modal
+				isOpen={isModalOpen}
+				onRequestClose={closeModal}
+				ariaHideApp={false}
+				contentLabel="Like Modal"
+				closeTimeoutMS={200}
+				className="modal"
+			>
+				{usersArray.map((user) => (
+					<UserInfoSmall
+						user={user.follows.name ? user.follows : user.user}
+						key={user._id}
+					/>
+				))}
+			</Modal>
+		</div>
+	) : (
+		<PageLoader />
 	);
 };
 

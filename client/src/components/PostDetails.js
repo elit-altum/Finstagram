@@ -10,6 +10,7 @@ import {
 	AiFillHeart as HeartFill,
 } from "react-icons/ai";
 
+import PageLoader from "./PageLoader";
 import Comments from "./Comments";
 import LikesArray from "./likesArray";
 
@@ -122,54 +123,58 @@ const PostDetails = ({ user }) => {
 		}
 	};
 
-	return (
-		!!post.id && (
-			<div className="postDetails">
-				<div className="postDetails--info">
-					<div className="postDetails--meta">
-						<img
-							src={post.createdBy.photo}
-							alt={`${post.createdBy.username}'s profile`}
-						/>
-						<p
-							className="postDetails--username"
-							onClick={() => history.push(`/user/${post.createdBy.username}`)}
-						>
-							{post.createdBy.username}
+	return !!post.id ? (
+		<div className="postDetails">
+			<div className="postDetails--info">
+				<div className="postDetails--meta">
+					<img
+						src={post.createdBy.photo}
+						alt={`${post.createdBy.username}'s profile`}
+					/>
+					<p
+						className="postDetails--username"
+						onClick={() => history.push(`/user/${post.createdBy.username}`)}
+					>
+						{post.createdBy.username}
+					</p>
+				</div>
+				<div className="postDetails--image">
+					<img
+						src={post.photo}
+						alt={`${post.createdBy.username}'s post`}
+						onDoubleClick={handleLike}
+					/>
+				</div>
+				<div className="postDetails__likes">
+					{isLiked ? (
+						<HeartFill style={{ color: "#b71c1c" }} onClick={handleLike} />
+					) : (
+						<HeartOutline onClick={handleLike} />
+					)}
+					{!!likes && (
+						<p onClick={showLikes} className="postDetails__likes--count">
+							{`${likes} ${likes === 1 ? "like" : "likes"}`}
 						</p>
-					</div>
-					<div className="postDetails--image">
-						<img src={post.photo} alt={`${post.createdBy.username}'s post`} />
-					</div>
-					<div className="postDetails__likes">
-						{isLiked ? (
-							<HeartFill style={{ color: "#b71c1c" }} onClick={handleLike} />
-						) : (
-							<HeartOutline onClick={handleLike} />
-						)}
-						{!!likes && (
-							<p onClick={showLikes} className="postDetails__likes--count">
-								{`${likes} ${likes === 1 ? "like" : "likes"}`}
-							</p>
-						)}
-					</div>
-					<p className="postCard__date">{getTime(post.createdAt)}</p>
+					)}
 				</div>
-				<div className="postDetails--details">
-					<Comments id={postId} user={user} />
-				</div>
-				<Modal
-					isOpen={isLikeModalOpen}
-					onRequestClose={closeLikeModal}
-					ariaHideApp={false}
-					contentLabel="Like Modal"
-					closeTimeoutMS={200}
-					className="modal"
-				>
-					<LikesArray likes={allLikes} />
-				</Modal>
+				<p className="postCard__date">{getTime(post.createdAt)}</p>
 			</div>
-		)
+			<div className="postDetails--details">
+				<Comments id={postId} user={user} />
+			</div>
+			<Modal
+				isOpen={isLikeModalOpen}
+				onRequestClose={closeLikeModal}
+				ariaHideApp={false}
+				contentLabel="Like Modal"
+				closeTimeoutMS={200}
+				className="modal"
+			>
+				<LikesArray likes={allLikes} />
+			</Modal>
+		</div>
+	) : (
+		<PageLoader />
 	);
 };
 
