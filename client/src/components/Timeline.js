@@ -9,10 +9,9 @@ import Post from "./Post";
 
 import { history } from "../router/router";
 
-let renderCounter = 0;
-
 const Timeline = (props) => {
 	const [posts, setPosts] = useState(["init"]);
+	const [renderCounter, setRenderCounter] = useState(0);
 
 	useEffect(() => {
 		const fetchPost = async () => {
@@ -22,10 +21,10 @@ const Timeline = (props) => {
 					url,
 					method: "GET",
 				});
-				renderCounter++;
+				setRenderCounter(1);
 				setPosts(res.data.data.posts);
 			} catch (err) {
-				renderCounter++;
+				setRenderCounter(1);
 			}
 		};
 
@@ -34,7 +33,7 @@ const Timeline = (props) => {
 
 	return (
 		<div className="my-timeline">
-			{!!renderCounter ? (
+			{!!renderCounter && !!posts ? (
 				!!posts.length ? (
 					posts.map((post) => <Post post={post} key={post.id} />)
 				) : (

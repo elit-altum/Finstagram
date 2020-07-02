@@ -176,11 +176,17 @@ const UserProfile = (props) => {
 							<h3>{user.postsCount}</h3>
 							<p>Posts</p>
 						</div>
-						<div className="user-stats--followers" onClick={showFollowers}>
+						<div
+							className="user-stats--followers"
+							onClick={!!user.followersCount ? showFollowers : null}
+						>
 							<h3>{user.followersCount}</h3>
 							<p>Followers</p>
 						</div>
-						<div className="user-stats--follows" onClick={showFollows}>
+						<div
+							className="user-stats--follows"
+							onClick={!!user.followCount ? showFollows : null}
+						>
 							<h3>{user.followCount}</h3>
 							<p>Follows</p>
 						</div>
