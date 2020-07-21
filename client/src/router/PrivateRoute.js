@@ -1,39 +1,17 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { history } from "./router";
+
+import { connect } from "react-redux";
 
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 
-let renderCounter = 0;
-let user = {};
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState();
-
-	useEffect(() => {
-		axios
-			.get("/api/v1/users/isLoggedIn")
-			.then((res) => {
-				renderCounter++;
-				user = res.data.data.user;
-				return setIsAuthenticated(true);
-			})
-			.catch((err) => {
-				renderCounter++;
-				// console.log(err.response.status === 401);
-				if (err.response.status === 401) {
-					return setIsAuthenticated(false);
-				}
-			});
-	}, []);
-
+const PrivateRoute = ({ component: Component, user, loading, ...rest }) => {
 	return (
 		<Route
 			{...rest}
 			component={(props) =>
-				isAuthenticated ? (
+				!loading && user ? (
 					<>
 						<Header user={user} />
 						<Layout>
@@ -41,11 +19,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 						</Layout>
 					</>
 				) : (
-					!!renderCounter && <Redirect to="/login" />
+					<Redirect to="/login" />
 				)
 			}
 		/>
 	);
 };
 
-export default PrivateRoute;
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	loading: state.auth.loading,
+});
+
+export default connect(mapStateToProps, null)(PrivateRoute);
