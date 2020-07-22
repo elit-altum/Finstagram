@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 
@@ -76,11 +77,13 @@ const UserProfile = (props) => {
 				method: "GET",
 			});
 
+			props.fetchTimeline();
 			toast.success(res.data.message, {
 				autoClose: 5000,
 				pauseOnHover: false,
 			});
 		} catch (err) {
+			console.log(err);
 			toast.success(err.response.data.error.message, {
 				autoClose: 5000,
 				pauseOnHover: false,
@@ -101,12 +104,13 @@ const UserProfile = (props) => {
 				url,
 				method: "GET",
 			});
-
+			props.fetchTimeline();
 			toast.success(res.data.message, {
 				autoClose: 5000,
 				pauseOnHover: false,
 			});
 		} catch (err) {
+			console.log(err.response);
 			toast.success(err.response.data.error.message, {
 				autoClose: 5000,
 				pauseOnHover: false,
@@ -257,4 +261,8 @@ const UserProfile = (props) => {
 	);
 };
 
-export default UserProfile;
+const mapDispatchToProps = (dispatch) => ({
+	fetchTimeline: () => dispatch({ type: "FETCH_TIMELINE" }),
+});
+
+export default connect(null, mapDispatchToProps)(UserProfile);
