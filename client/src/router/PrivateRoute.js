@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, user, loading, ...rest }) => {
 			component={(props) =>
 				!loading && user ? (
 					<>
-						<Header user={user} />
+						<Header />
 						<Layout>
 							<Component {...props} user={user} />
 						</Layout>

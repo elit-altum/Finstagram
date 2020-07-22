@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { history } from "../router/router";
 
 import { toast } from "react-toastify";
 
 import Loader from "./Loader";
 
-const LoginForm = () => {
+const LoginForm = ({ putToken }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const sendFormData = async (e) => {
@@ -16,7 +19,7 @@ const LoginForm = () => {
 		const password = document.getElementById("password_field").value;
 
 		try {
-			await axios({
+			const res = await axios({
 				url: "/api/v1/users/login",
 				method: "POST",
 				data: {
@@ -24,12 +27,11 @@ const LoginForm = () => {
 					password,
 				},
 			});
-			toast.success("Logged in successfully! Redirecting..", {
+			toast.success("Logged in successfully!", {
 				autoClose: 2000,
 			});
-			setTimeout(() => {
-				window.location.reload(true);
-			}, 2000);
+			console.log(res.data.data.user);
+			putToken(res.data.data.user);
 		} catch (err) {
 			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
@@ -71,4 +73,8 @@ const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+const mapDispatchToProps = (dispatch) => ({
+	putToken: (user) => dispatch({ type: "PUT_TOKEN", user }),
+});
+
+export default connect(null, mapDispatchToProps)(LoginForm);

@@ -1,11 +1,15 @@
 import { put, takeLatest, all, call } from "redux-saga/effects";
 import * as api from "./api";
+
 // Get User Token
 function* fetchAuthToken() {
 	try {
 		const res = yield call(api.isLoggedIn);
+		console.log(res);
 		yield put({ type: "PUT_TOKEN", user: res.data.data.user });
-	} catch (e) {}
+	} catch (e) {
+		yield put({ type: "USER_NOT_FOUND" });
+	}
 }
 
 function* actionWatcher() {

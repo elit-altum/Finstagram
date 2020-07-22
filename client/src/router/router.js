@@ -23,7 +23,9 @@ export const history = createBrowserHistory();
 
 const AppRouter = (props) => {
 	// Fetch initial states
-	useEffect(() => props.isLoggedIn(), []);
+	useEffect(() => {
+		props.isLoggedIn();
+	}, []);
 
 	return !props.loading ? (
 		<Router history={history}>

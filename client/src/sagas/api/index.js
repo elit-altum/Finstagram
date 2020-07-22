@@ -4,3 +4,8 @@ import axios from "axios";
 export function isLoggedIn() {
 	return axios.get("/api/v1/users/isLoggedIn");
 }
+
+// ? 02. LOGOUT USER
+export function logoutUser() {
+	return axios.get("/api/v1/users/logout");
+}
