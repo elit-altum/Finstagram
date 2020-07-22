@@ -15,11 +15,8 @@ function* fetchAuthToken() {
 function* fetchTimeline() {
 	try {
 		const res = yield call(api.getTimeline);
-		console.log(res);
 		yield put({ type: "PUT_TIMELINE", posts: res.data.data.posts });
-	} catch (e) {
-		console.log(e);
-	}
+	} catch (e) {}
 }
 
 function* actionWatcher() {
