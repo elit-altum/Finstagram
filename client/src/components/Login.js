@@ -3,8 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { history } from "../router/router";
-
 import { toast } from "react-toastify";
 
 import Loader from "./Loader";
