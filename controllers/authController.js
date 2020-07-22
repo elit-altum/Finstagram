@@ -96,7 +96,7 @@ exports.loginUser = catchAsync(async (req, res) => {
 exports.logoutUser = (req, res) => {
 	res.cookie("jwt", "loggedOut", {
 		httpOnly: true,
-		expires: new Date(Date.now() + 1000),
+		expires: new Date(Date.now() + 100),
 	});
 
 	res.status(200).json({
@@ -255,7 +255,7 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 		token = req.cookies.jwt;
 	}
 
-	if (!token) {
+	if (!token || token === "loggedOut") {
 		return res.status(401).json({
 			status: "failure",
 		});

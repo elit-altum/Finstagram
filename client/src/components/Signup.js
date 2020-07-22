@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
 import { toast } from "react-toastify";
 
 import Loader from "./Loader";
 
-const Signup = () => {
+const Signup = ({ putToken, fetchTimeline }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const sendFormData = async (e) => {
@@ -19,7 +20,7 @@ const Signup = () => {
 			.value;
 
 		try {
-			await axios({
+			const res = await axios({
 				url: "/api/v1/users/signup",
 				method: "POST",
 				data: {
@@ -33,9 +34,8 @@ const Signup = () => {
 			toast.success("New account created!", {
 				autoClose: 2000,
 			});
-			setTimeout(() => {
-				window.location.reload(true);
-			}, 2000);
+			putToken(res.data.data.user);
+			fetchTimeline();
 		} catch (err) {
 			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
@@ -94,4 +94,9 @@ const Signup = () => {
 	);
 };
 
-export default Signup;
+const mapDispatchToProps = (dispatch) => ({
+	putToken: (user) => dispatch({ type: "PUT_TOKEN", user }),
+	fetchTimeline: () => dispatch({ type: "FETCH_TIMELINE" }),
+});
+
+export default connect(null, mapDispatchToProps)(Signup);
