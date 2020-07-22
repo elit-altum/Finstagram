@@ -8,7 +8,7 @@ import { history } from "../router/router";
 
 import { toast } from "react-toastify";
 
-const Header = ({ user, logoutUser }) => {
+const Header = ({ user, logoutUser, clearTimeline }) => {
 	const logout = async () => {
 		const url = "/api/v1/users/logout";
 		try {
@@ -21,6 +21,7 @@ const Header = ({ user, logoutUser }) => {
 				pauseOnHover: false,
 			});
 			logoutUser();
+			clearTimeline();
 		} catch (err) {
 			toast.error("Error logging out. Please try again later.");
 		}
@@ -67,6 +68,7 @@ const Header = ({ user, logoutUser }) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutUser: () => dispatch({ type: "USER_NOT_FOUND" }),
+	clearTimeline: () => dispatch({ type: "CLEAR_TIMELINE" }),
 });
 
 const mapStateToProps = (state) => ({

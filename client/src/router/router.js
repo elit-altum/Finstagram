@@ -25,6 +25,7 @@ const AppRouter = (props) => {
 	// Fetch initial states
 	useEffect(() => {
 		props.isLoggedIn();
+		props.fetchTimeline();
 	}, []);
 
 	return !props.loading ? (
@@ -62,6 +63,7 @@ const AppRouter = (props) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	isLoggedIn: () => dispatch(actions.getAuthToken()),
+	fetchTimeline: () => dispatch(actions.fetchMyTimeline()),
 });
 
 const mapStateToProps = (state) => ({

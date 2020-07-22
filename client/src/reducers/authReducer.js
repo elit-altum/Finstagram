@@ -4,7 +4,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-	console.log(action, state);
 	switch (action.type) {
 		case "FETCH_AUTH_TOKEN":
 			return { ...state, loading: true };

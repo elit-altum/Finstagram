@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 import Loader from "./Loader";
 
-const LoginForm = ({ putToken }) => {
+const LoginForm = ({ putToken, fetchTimeline }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const sendFormData = async (e) => {
@@ -30,8 +30,8 @@ const LoginForm = ({ putToken }) => {
 			toast.success("Logged in successfully!", {
 				autoClose: 2000,
 			});
-			console.log(res.data.data.user);
 			putToken(res.data.data.user);
+			fetchTimeline();
 		} catch (err) {
 			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
@@ -75,6 +75,7 @@ const LoginForm = ({ putToken }) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	putToken: (user) => dispatch({ type: "PUT_TOKEN", user }),
+	fetchTimeline: () => dispatch({ type: "FETCH_TIMELINE" }),
 });
 
 export default connect(null, mapDispatchToProps)(LoginForm);
