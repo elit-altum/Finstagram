@@ -199,6 +199,15 @@ const PostDetails = ({
 						</p>
 					)}
 				</div>
+				<div className="postCard__caption">
+					<p
+						className="postCard__caption--username"
+						onClick={() => history.push(`/user/${post.createdBy.username}`)}
+					>
+						{post.createdBy.username}
+					</p>
+					<p className="postCard__caption--body">{post.caption}</p>
+				</div>
 				<p className="postCard__date">{getTime(post.createdAt)}</p>
 			</div>
 			<div className="postDetails--details">
