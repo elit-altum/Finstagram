@@ -1,6 +1,7 @@
 import React from "react";
 
 import { history } from "../router/router";
+import Loader from "./Loader";
 
 export const UserInfoSmall = ({ user }) => {
 	return (
@@ -21,15 +22,17 @@ export const UserInfoSmall = ({ user }) => {
 	);
 };
 
-const LikesArray = ({ likes }) => {
-	return (
-		<div className="like-modal__list">
-			<h3>Liked By</h3>
-			{likes.map((like) => (
-				<UserInfoSmall user={like.likedBy} key={like._id} />
-			))}
-		</div>
-	);
-};
+const LikesArray = ({ likes }) => (
+	<div className="like-modal__list">
+		<h3>Liked By</h3>
+		{!!likes.length ? (
+			likes.map((like) => <UserInfoSmall user={like.likedBy} key={like._id} />)
+		) : (
+			<div className="likesLoader">
+				<Loader />
+			</div>
+		)}
+	</div>
+);
 
 export default LikesArray;
