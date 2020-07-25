@@ -2,10 +2,26 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Comment from "./Comment";
 
+import { connect } from "react-redux";
+
 import { AiOutlineSend as SendIcon } from "react-icons/ai";
 
-const Comments = ({ id, user }) => {
+const Comments = ({ id, user, timelinePosts, updateTimeline }) => {
 	const [comments, setComments] = useState([]);
+
+	// Update redux store when a post is liked/unliked
+	const updateStore = (postId, commentsCount) => {
+		const newTimeline = [...timelinePosts];
+
+		// 1. Update the comment count for timeline posts
+		newTimeline.forEach((post) => {
+			if (post._id === postId) {
+				post.comments = commentsCount;
+			}
+		});
+
+		updateTimeline(newTimeline);
+	};
 
 	const createComment = async (e) => {
 		e.preventDefault();
@@ -18,7 +34,11 @@ const Comments = ({ id, user }) => {
 				},
 			});
 			document.getElementById("comment-field").value = "";
-			setComments(comments.concat([res.data.data.comment]));
+
+			const newArray = comments.concat([res.data.data.comment]);
+			setComments(newArray);
+
+			updateStore(id, newArray.length);
 		} catch (err) {}
 	};
 
@@ -30,6 +50,7 @@ const Comments = ({ id, user }) => {
 			});
 			const newArray = comments.filter((comment) => comment._id !== commentId);
 			setComments(newArray);
+			updateStore(id, newArray.length);
 		} catch (err) {}
 	};
 
@@ -77,4 +98,13 @@ const Comments = ({ id, user }) => {
 	);
 };
 
-export default Comments;
+const mapStateToProps = (state) => ({
+	timelinePosts: state.timeline.posts,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	updateTimeline: (newTimeline) =>
+		dispatch({ type: "PUT_TIMELINE", posts: newTimeline }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments);
