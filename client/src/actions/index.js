@@ -5,3 +5,7 @@ export const getAuthToken = () => ({
 export const fetchMyTimeline = () => ({
 	type: "FETCH_TIMELINE",
 });
+
+export const fetchTrendingPosts = () => ({
+	type: "FETCH_TRENDING",
+});

@@ -1,5 +1,6 @@
 header {
 	position: sticky;
+	// position: sticky doesn't work if parent i.e. body has overflow: hidden
 	top: 0;
 	height: 4rem;
 	width: 100vw;
@@ -12,6 +13,7 @@ header {
 	width: 100%;
 	background-color: $primary-color;
 	box-shadow: #aaa 0 0 3px;
+	margin-bottom: 30px;
 }
 
 .header-content {
@@ -67,13 +69,18 @@ header {
 	justify-content: center;
 
 	li {
-		margin-right: 3rem;
+		margin-right: 1rem;
 		font-weight: 600;
 		color: $link-color;
 		a {
 			text-decoration: none;
 		}
 	}
+}
+
+.discover-icon a svg {
+	font-size: 1.8em;
+	color: lighten($secondary-color, 20%);
 }
 
 .header-profile {

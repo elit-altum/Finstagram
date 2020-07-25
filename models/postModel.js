@@ -34,7 +34,7 @@ postSchema.virtual("likers", {
 	localField: "id",
 });
 
-// 0a. Virtual property for getting number of likes
+// 0b. Virtual property for getting number of likes
 postSchema.virtual("likes", {
 	ref: "Like",
 	foreignField: "post",
@@ -42,7 +42,7 @@ postSchema.virtual("likes", {
 	count: true,
 });
 
-// 0a. Virtual property for getting number of comments
+// 0c. Virtual property for getting number of comments
 postSchema.virtual("comments", {
 	ref: "Comment",
 	foreignField: "post",

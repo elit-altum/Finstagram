@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
 import Timeline from "../components/Timeline";
+import Trending from "../components/TrendingPage";
 import LoginForm from "../components/Login";
 import SignupForm from "../components/Signup";
 import PostDetail from "../components/PostDetails";
@@ -26,6 +27,7 @@ const AppRouter = (props) => {
 	useEffect(() => {
 		props.isLoggedIn();
 		props.fetchTimeline();
+		props.fetchTrending();
 	}, []);
 
 	return !props.loading ? (
@@ -35,6 +37,7 @@ const AppRouter = (props) => {
 				<PublicRoute path="/signup" component={SignupForm} />
 
 				<PrivateRoute path="/" component={Timeline} exact={true} />
+				<PrivateRoute path="/trending" component={Trending} exact={true} />
 				<PrivateRoute path="/post/create" component={CreatePost} exact={true} />
 				<PrivateRoute
 					path="/post/:postId"
@@ -64,6 +67,7 @@ const AppRouter = (props) => {
 const mapDispatchToProps = (dispatch) => ({
 	isLoggedIn: () => dispatch(actions.getAuthToken()),
 	fetchTimeline: () => dispatch(actions.fetchMyTimeline()),
+	fetchTrending: () => dispatch(actions.fetchTrendingPosts()),
 });
 
 const mapStateToProps = (state) => ({

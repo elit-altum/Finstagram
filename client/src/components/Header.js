@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import { connect } from "react-redux";
+import { FaRegCompass as CompassIcon } from "react-icons/fa";
 
 import { history } from "../router/router";
 
@@ -47,6 +47,11 @@ const Header = ({ user, logoutUser, clearTimeline }) => {
 						<Link to="/">Finstagram</Link>
 					</div>
 					<ul className="header-navLinks">
+						<li className="discover-icon">
+							<Link to="/trending">
+								<CompassIcon />
+							</Link>
+						</li>
 						<li>
 							<img
 								src={user.photo}

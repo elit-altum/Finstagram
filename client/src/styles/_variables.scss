@@ -6,6 +6,11 @@ $gradient-color: linear-gradient(
 	rgba(212, 1, 1, 1) 0%,
 	rgba(243, 0, 255, 1) 100%
 );
+$alternate-gradient-color: linear-gradient(
+	90deg,
+	rgba(212, 1, 201, 1) 0%,
+	rgba(7, 0, 255, 0.9951330874146533) 100%
+);
 $link-color: #1a237e;
 
 $primary-font: "Quicksand", sans-serif;

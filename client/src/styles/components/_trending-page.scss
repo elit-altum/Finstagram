@@ -1,0 +1,23 @@
+.trendingPage__heading {
+	padding: 30px 0;
+	text-align: center;
+	margin: 0 0.4rem;
+	margin-top: 30px;
+	background-color: $primary-color;
+	border-radius: 4px;
+	border: 1px solid lighten($secondary-color, 60%);
+
+	h3 {
+		font-family: $secondary-font;
+		font-size: 3.2rem;
+		background-clip: text;
+		background: $alternate-gradient-color;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	p {
+		margin-top: 10px;
+		font-style: italic;
+		color: lighten($secondary-color, 40%);
+	}
+}
