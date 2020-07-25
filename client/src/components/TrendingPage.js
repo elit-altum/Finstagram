@@ -9,9 +9,13 @@ import Post from "./Post";
 
 import { history } from "../router/router";
 
-const Timeline = ({ posts, loading }) => {
+const TrendingPage = ({ posts, loading }) => {
 	return (
 		<div className="my-timeline">
+			<div className="trendingPage__heading">
+				<h3>Trending On Finstagram</h3>
+				<p>Highest growing posts from around the world!</p>
+			</div>
 			{!loading ? (
 				!!posts.length ? (
 					posts.map((post, index) => (
@@ -43,4 +47,4 @@ const mapStateToProps = (state) => ({
 	loading: state.trending.loading,
 });
 
-export default connect(mapStateToProps, null)(Timeline);
+export default connect(mapStateToProps, null)(TrendingPage);
