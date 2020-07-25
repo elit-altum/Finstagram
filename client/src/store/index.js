@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 
 import authReducer from "../reducers/authReducer";
-import userReducer from "../reducers/userReducer";
+import trendingReducer from "../reducers/trendingReducer";
 import timelineReducer from "../reducers/timelineReducer";
 
 import mySaga from "../sagas";
@@ -17,7 +17,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
 	combineReducers({
 		auth: authReducer,
-		user: userReducer,
+		trending: trendingReducer,
 		timeline: timelineReducer,
 	}),
 	composeEnhancers(applyMiddleware(sagaMiddleware))

@@ -392,8 +392,8 @@ exports.getTrending = catchAsync(async (req, res) => {
 	// e. Send trending posts
 	res.status(200).json({
 		status: "success",
-		results: {
-			length: populatedPosts.length,
+		data: {
+			results: populatedPosts.length,
 			posts: populatedPosts,
 		},
 	});

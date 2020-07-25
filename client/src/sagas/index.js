@@ -19,9 +19,18 @@ function* fetchTimeline() {
 	} catch (e) {}
 }
 
+// ? 03. GET TRENDING POSTS
+function* fetchTrending() {
+	try {
+		const res = yield call(api.getTrending);
+		yield put({ type: "PUT_TRENDING", posts: res.data.data.posts });
+	} catch (e) {}
+}
+
 function* actionWatcher() {
 	yield takeLatest("FETCH_AUTH_TOKEN", fetchAuthToken);
 	yield takeLatest("FETCH_TIMELINE", fetchTimeline);
+	yield takeLatest("FETCH_TRENDING", fetchTrending);
 }
 
 export default function* rootSaga() {

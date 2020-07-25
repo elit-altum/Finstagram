@@ -5,7 +5,12 @@ export function isLoggedIn() {
 	return axios.get("/api/v1/users/isLoggedIn");
 }
 
-// ? 02. FETCH POSTS OF USER
+// ? 02. FETCH TIMELINE OF USER
 export function getTimeline() {
 	return axios.get("/api/v1/posts/feed");
+}
+
+// ? 03. FETCH TRENDING POSTS
+export function getTrending() {
+	return axios.get("/api/v1/posts/trending");
 }
