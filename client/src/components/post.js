@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import {
 } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
 
-const Post = ({ post }) => {
+const Post = ({ post, rank }) => {
 	const [isLiked, setIsLiked] = useState(post.likedByMe);
 	const [likes, setLikes] = useState(post.likes * 1);
 	const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
@@ -25,18 +25,6 @@ const Post = ({ post }) => {
 
 	const closeLikeModal = () => {
 		setIsLikeModalOpen(false);
-	};
-
-	const showLikes = async () => {
-		const url = `/api/v1/posts/${post.id}/likedBy`;
-		try {
-			const res = await axios({
-				url,
-				method: "GET",
-			});
-			setAllLikes(res.data.data.likers);
-		} catch (err) {}
-		openLikeModal();
 	};
 
 	const getTime = (date) => {
@@ -61,7 +49,7 @@ const Post = ({ post }) => {
 	};
 
 	const createLike = async () => {
-		const url = `/api/v1/posts/${post.id}/like`;
+		const url = `/api/v1/posts/${post._id}/like`;
 		try {
 			await axios({
 				url,
@@ -74,7 +62,7 @@ const Post = ({ post }) => {
 	};
 
 	const removeLike = async () => {
-		const url = `/api/v1/posts/${post.id}/unlike`;
+		const url = `/api/v1/posts/${post._id}/unlike`;
 		try {
 			await axios({
 				url,
@@ -99,8 +87,23 @@ const Post = ({ post }) => {
 		}
 	};
 
+	useEffect(() => {
+		const fetchLikes = async () => {
+			const url = `/api/v1/posts/${post._id}/likedBy`;
+			try {
+				const res = await axios({
+					url,
+					method: "GET",
+				});
+				setAllLikes(res.data.data.likers);
+			} catch (err) {}
+		};
+
+		fetchLikes();
+	}, []);
+
 	return (
-		!!post.id && (
+		!!post._id && (
 			<div className="postCard">
 				<div className="postCard__userInfo">
 					<img
@@ -111,6 +114,11 @@ const Post = ({ post }) => {
 						{post.createdBy.username}
 					</p>
 				</div>
+				{!!rank && (
+					<div className="postCard__trending">
+						<p># {rank} on trending</p>
+					</div>
+				)}
 				<div className="postCard__image">
 					<img
 						src={post.photo}
@@ -125,13 +133,13 @@ const Post = ({ post }) => {
 						) : (
 							<HeartOutline onClick={handleLike} />
 						)}
-						<Link to={`/post/${post.id}`}>
+						<Link to={`/post/${post._id}`}>
 							<CommentOutline />
 						</Link>
 					</div>
 				</div>
 				{!!likes && (
-					<p onClick={showLikes} className="postCard__likes">
+					<p onClick={openLikeModal} className="postCard__likes">
 						{`${likes} ${likes === 1 ? "like" : "likes"}`}
 					</p>
 				)}
@@ -145,7 +153,7 @@ const Post = ({ post }) => {
 					<p className="postCard__caption--body">{post.caption}</p>
 				</div>
 				{!!post.comments && (
-					<Link to={`/post/${post.id}`} className="postCard__comments">
+					<Link to={`/post/${post._id}`} className="postCard__comments">
 						<p>{`View ${post.comments} ${
 							post.comments === 1 ? "comment" : "comments"
 						}`}</p>

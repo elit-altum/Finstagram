@@ -29,6 +29,17 @@
 	}
 }
 
+.postCard__trending {
+	margin-top: 10px;
+	font-size: 1.6rem;
+	font-family: $secondary-font;
+	font-weight: bold;
+	background: $alternate-gradient-color;
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
 .postCard__image {
 	position: relative;
 	width: 100%;
