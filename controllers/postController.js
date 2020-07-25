@@ -206,7 +206,7 @@ exports.getTimeline = catchAsync(async (req, res) => {
 			post: post._id,
 		});
 
-		const newPost = post.toObject();
+		let newPost = post.toObject();
 
 		if (likedByMe) {
 			newPost.likedByMe = true;
@@ -287,7 +287,7 @@ exports.getPost = catchAsync(async (req, res) => {
 		likedBy: req.user.id,
 	});
 
-	const newPost = post.toObject();
+	let newPost = post.toObject();
 
 	if (like) {
 		newPost.likedByMe = true;
@@ -299,6 +299,102 @@ exports.getPost = catchAsync(async (req, res) => {
 		status: "success",
 		results: {
 			post: newPost,
+		},
+	});
+});
+
+// *? 7. GET TRENDING POSTS
+exports.getTrending = catchAsync(async (req, res) => {
+	/* 
+  a. Aggregation Pipeline to sort posts on the basis of: 
+   -> (time since created) / likes
+   lower the score, higher the position on the result.
+
+  b. Aggregation pipeline steps
+    - $lookup: populate the 'likes' field with all people who liked the post.
+    - $addFields: only get the array size of likers as we only need no. of likes
+                  find the difference in date when post was created and now ($$NOW provided by mongodb with system current time)
+    - $addFields: calculate the trendScore based on the previously calculated data 
+    - $project: to only select the required fields in every document
+    - $sort and $limit: only return the top 10 trending posts.
+    Aggregation pipeline returns all documents as plain JS Objects and not MongoDB Documents
+  */
+
+	const posts = await Post.aggregate([
+		{
+			$lookup: {
+				from: "likes",
+				localField: "_id",
+				foreignField: "post",
+				as: "likers",
+			},
+		},
+		{
+			$addFields: {
+				likes: { $size: "$likers" },
+				dateDifference: {
+					$subtract: ["$$NOW", "$createdAt"],
+				},
+			},
+		},
+		{
+			$addFields: {
+				trendScore: {
+					$divide: ["$dateDifference", "$likes"],
+				},
+			},
+		},
+		{
+			$project: {
+				photo: 1,
+				caption: 1,
+				createdBy: 1,
+				dimensions: 1,
+				createdAt: 1,
+				trendScore: 1,
+			},
+		},
+		{
+			$sort: {
+				trendScore: 1,
+			},
+		},
+		{
+			$limit: 10,
+		},
+	]);
+
+	//c1. Check if every post is liked by user or not
+	const ifLikedPosts = posts.map(async (post) => {
+		const likedByMe = await Like.findOne({
+			likedBy: req.user._id,
+			post: post._id,
+		});
+
+		if (likedByMe) {
+			post.likedByMe = true;
+		} else {
+			post.likedByMe = false;
+		}
+
+		return post;
+	});
+
+	// c2. Resolve promises in array
+	const ifLikedPostsResolved = await Promise.all(ifLikedPosts);
+
+	// d. Populate the user info for every post
+	const populatedPosts = await Post.populate(ifLikedPostsResolved, {
+		path: "createdBy",
+		select: "username photo isActive",
+	});
+
+	// e. Send trending posts
+	res.status(200).json({
+		status: "success",
+		results: {
+			length: populatedPosts.length,
+			posts: populatedPosts,
 		},
 	});
 });
