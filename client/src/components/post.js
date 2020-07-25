@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import LikesArray from "./likesArray";
 
@@ -13,20 +14,20 @@ import {
 } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
 
-const Post = ({ post, rank }) => {
+const Post = ({
+	post,
+	rank,
+	timelinePosts,
+	trendingPosts,
+	updateTimeline,
+	updateTrending,
+}) => {
 	const [isLiked, setIsLiked] = useState(post.likedByMe);
 	const [likes, setLikes] = useState(post.likes * 1);
 	const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
 	const [allLikes, setAllLikes] = useState([]);
 
-	const openLikeModal = () => {
-		setIsLikeModalOpen(true);
-	};
-
-	const closeLikeModal = () => {
-		setIsLikeModalOpen(false);
-	};
-
+	// a. Calculate time of post creation
 	const getTime = (date) => {
 		const givenDate = new Date(date).setHours(0, 0, 0, 0);
 		const today = new Date(Date.now()).setHours(0, 0, 0, 0);
@@ -48,6 +49,42 @@ const Post = ({ post, rank }) => {
 		);
 	};
 
+	// b. Open Modal showing all likers
+	const openLikeModal = () => {
+		setIsLikeModalOpen(true);
+	};
+
+	// c. Close Modal showing all likers
+	const closeLikeModal = () => {
+		setIsLikeModalOpen(false);
+	};
+
+	// d. Update redux store when a post is liked/unliked
+	const updateStore = (postId, likesCount, likedByMe) => {
+		const newTimeline = [...timelinePosts];
+		const newTrending = [...trendingPosts];
+
+		// 1. Update the likes count and likedByMe for timeline posts
+		newTimeline.forEach((post) => {
+			if (post._id === postId) {
+				post.likedByMe = likedByMe;
+				post.likes = likesCount;
+			}
+		});
+
+		// 2. Update the likes count and likedByMe for trending posts
+		newTrending.forEach((post) => {
+			if (post._id === postId) {
+				post.likedByMe = likedByMe;
+				post.likes = likesCount;
+			}
+		});
+
+		updateTimeline(newTimeline);
+		updateTrending(newTrending);
+	};
+
+	// e. Fetch all users who liked a post
 	const fetchLikes = async () => {
 		const url = `/api/v1/posts/${post._id}/likedBy`;
 		try {
@@ -59,6 +96,7 @@ const Post = ({ post, rank }) => {
 		} catch (err) {}
 	};
 
+	// f. Inform the database that user has liked the post
 	const createLike = async () => {
 		const url = `/api/v1/posts/${post._id}/like`;
 		try {
@@ -67,11 +105,11 @@ const Post = ({ post, rank }) => {
 				method: "GET",
 			});
 		} catch (err) {
-			// console.log(err.response);
 			setIsLiked(!isLiked);
 		}
 	};
 
+	// g. Inform the database that user has unliked the post
 	const removeLike = async () => {
 		const url = `/api/v1/posts/${post._id}/unlike`;
 		try {
@@ -80,11 +118,11 @@ const Post = ({ post, rank }) => {
 				method: "GET",
 			});
 		} catch (err) {
-			// console.log(err.response);
 			setIsLiked(!isLiked);
 		}
 	};
 
+	// h. Updates store and state using above func.
 	const handleLike = async () => {
 		const likedCopy = isLiked;
 		setIsLiked(!isLiked);
@@ -92,12 +130,13 @@ const Post = ({ post, rank }) => {
 
 		if (likedCopy) {
 			setLikes(likes - 1);
+			updateStore(post._id, likes - 1, !likedCopy);
 			await removeLike();
 		} else {
 			setLikes(likes + 1);
+			updateStore(post._id, likes + 1, !likedCopy);
 			await createLike();
 		}
-
 		await fetchLikes();
 	};
 
@@ -178,26 +217,16 @@ const Post = ({ post, rank }) => {
 	);
 };
 
-export default Post;
+const mapStateToProps = (state) => ({
+	timelinePosts: state.timeline.posts,
+	trendingPosts: state.trending.posts,
+});
 
-Post.defaultProps = {
-	post: {
-		_id: "5edf5aec3561dd32206cecc1",
-		caption: "My Niece is good!",
-		photo: "/img/posts/post-5edf42f57e58a1049ca59e8a-1591696108114.jpg",
-		dimensions: "1000 x 1000",
-		createdBy: {
-			photo: "/img/user-profiles/default.png",
-			_id: "5edf42f57e58a1049ca59e8a",
-			username: "jayantxk",
-			id: "5edf42f57e58a1049ca59e8a",
-		},
-		createdAt: "2020-06-09T09:48:28.166Z",
-		updatedAt: "2020-06-09T09:48:28.166Z",
-		__v: 0,
-		likes: 21,
-		comments: 40,
-		id: "5edf5aec3561dd32206cecc1",
-		likedByMe: false,
-	},
-};
+const mapDispatchToProps = (dispatch) => ({
+	updateTimeline: (newTimeline) =>
+		dispatch({ type: "PUT_TIMELINE", posts: newTimeline }),
+	updateTrending: (newTrending) =>
+		dispatch({ type: "PUT_TRENDING", posts: newTrending }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);
