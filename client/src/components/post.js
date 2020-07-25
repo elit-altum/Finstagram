@@ -48,6 +48,17 @@ const Post = ({ post, rank }) => {
 		);
 	};
 
+	const fetchLikes = async () => {
+		const url = `/api/v1/posts/${post._id}/likedBy`;
+		try {
+			const res = await axios({
+				url,
+				method: "GET",
+			});
+			setAllLikes(res.data.data.likers);
+		} catch (err) {}
+	};
+
 	const createLike = async () => {
 		const url = `/api/v1/posts/${post._id}/like`;
 		try {
@@ -77,6 +88,7 @@ const Post = ({ post, rank }) => {
 	const handleLike = async () => {
 		const likedCopy = isLiked;
 		setIsLiked(!isLiked);
+		setAllLikes([]);
 
 		if (likedCopy) {
 			setLikes(likes - 1);
@@ -85,20 +97,11 @@ const Post = ({ post, rank }) => {
 			setLikes(likes + 1);
 			await createLike();
 		}
+
+		await fetchLikes();
 	};
 
 	useEffect(() => {
-		const fetchLikes = async () => {
-			const url = `/api/v1/posts/${post._id}/likedBy`;
-			try {
-				const res = await axios({
-					url,
-					method: "GET",
-				});
-				setAllLikes(res.data.data.likers);
-			} catch (err) {}
-		};
-
 		fetchLikes();
 	}, []);
 
