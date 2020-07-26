@@ -19,11 +19,33 @@ const postSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		locationName: {
+			type: String,
+			default: "",
+		},
+		location: {
+			type: {
+				type: String,
+				default: "Point",
+			},
+			coordinates: {
+				type: [Number],
+				default: [],
+			},
+		},
 	},
 	{
 		timestamps: true,
 		toJSON: { virtuals: true },
 		toObject: { virtuals: true },
+	}
+);
+
+// Indexing the location coordinates
+postSchema.index(
+	{ location: "2dsphere" },
+	{
+		sparse: true,
 	}
 );
 

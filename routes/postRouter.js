@@ -31,10 +31,13 @@ router.get("/feed", postController.getTimeline);
 // *? 5. GET TRENDING POSTS
 router.get("/trending", postController.getTrending);
 
-// *? 6. GET POSTS BY A USER
+// *? 7. GET POSTS NEAR A LOCATION
+router.get("/near", postController.getPostsNearTo);
+
+// *? 8. GET POSTS BY A USER
 router.get("/:username?", postController.getMyPosts);
 
-// *? 7. GET INDIVIDUAL POST
+// *? 9. GET INDIVIDUAL POST
 router.get("/one/:postId", postController.getPost);
 
 // *? <--- LIKES ---->

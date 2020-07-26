@@ -22,3 +22,27 @@ input[type="file"] {
 		margin-top: 10px;
 	}
 }
+
+.searchResults {
+	min-height: 20px;
+	min-width: 100%;
+	position: relative;
+}
+
+.locationSearch-results {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	z-index: 999;
+	background-color: $primary-color;
+	border-radius: 4px;
+	padding: 5px 10px;
+	box-shadow: #ccc 1px 1px 3px;
+}
+
+.searchLocation {
+	margin-bottom: 3px;
+	padding: 3px 0;
+	border-bottom: #ccc 1px solid;
+	cursor: pointer;
+}

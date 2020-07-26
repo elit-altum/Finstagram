@@ -62,6 +62,15 @@ exports.convertImageToJpeg = async (req, res, next) => {
 // * 1b. Store post to database
 exports.storePost = catchAsync(async (req, res) => {
 	const caption = req.body.caption || "";
+	const locationName = req.body.locationName || "";
+	const { latitude, longitude } = req.body;
+	let location = [];
+
+	if (latitude && longitude) {
+		location = [longitude, latitude];
+	} else {
+		location = [0, 0];
+	}
 
 	const dimensions = await promisify(sizeOf)(
 		`public/img/posts/${req.file.filename}`
@@ -80,6 +89,10 @@ exports.storePost = catchAsync(async (req, res) => {
 
 	const newPost = {
 		caption,
+		location: {
+			coordinates: location,
+		},
+		locationName,
 		photo: image.url,
 		dimensions: `${dimensions.width} x ${dimensions.height}`,
 		createdBy: req.user.id,
@@ -338,6 +351,11 @@ exports.getTrending = catchAsync(async (req, res) => {
 			},
 		},
 		{
+			$match: {
+				likes: { $gt: 0 },
+			},
+		},
+		{
 			$addFields: {
 				trendScore: {
 					$divide: ["$dateDifference", "$likes"],
@@ -353,6 +371,8 @@ exports.getTrending = catchAsync(async (req, res) => {
 				createdAt: 1,
 				trendScore: 1,
 				likes: 1,
+				locationName: 1,
+				location: 1,
 			},
 		},
 		{
@@ -395,6 +415,56 @@ exports.getTrending = catchAsync(async (req, res) => {
 		status: "success",
 		data: {
 			results: populatedPosts.length,
+			posts: populatedPosts,
+		},
+	});
+});
+
+// *? 8. GET POSTS NEAR A LOCATION
+exports.getPostsNearTo = catchAsync(async (req, res) => {
+	const { lat, lng } = req.query;
+
+	if (!lat || !lng) {
+		throw new AppError("Please provide coordinates.", 400);
+	}
+
+	// Get posts with a valid location in a 20Km radius of specified center
+	const nearByPosts = await Post.aggregate([
+		{
+			$geoNear: {
+				near: {
+					type: "Point",
+					coordinates: [lng * 1, lat * 1],
+				},
+				query: { locationName: { $ne: "" } },
+				maxDistance: 20 * 1000,
+				distanceField: "displacement",
+				spherical: true,
+			},
+		},
+		{
+			$sort: {
+				displacement: 1,
+			},
+		},
+		{
+			$limit: 9,
+		},
+	]);
+
+	const populatedPosts = await Post.populate(nearByPosts, {
+		path: "createdBy",
+		select: "username photo isActive",
+	});
+
+	res.status(200).json({
+		status: "success",
+		data: {
+			location: {
+				latitude: lat * 1,
+				longitude: lng * 1,
+				name: nearByPosts[0].locationName,
+			},
 			posts: populatedPosts,
 		},
 	});
