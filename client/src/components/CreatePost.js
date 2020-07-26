@@ -3,6 +3,8 @@ import axios from "axios";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import geoCode from "../utils/geoCode";
 
+import { connect } from "react-redux";
+
 import {
 	BsFileEarmarkPlus as AddFileIcon,
 	BsFileEarmarkCheck as UploadedFileIcon,
@@ -16,7 +18,7 @@ import Loader from "./Loader";
 // Global object for sending location data
 let globalLocation = {};
 
-const CreatePost = () => {
+const CreatePost = ({ fetchPosts }) => {
 	const [uploaded, setUploaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [locations, setLocations] = useState([]);
@@ -80,6 +82,7 @@ const CreatePost = () => {
 			toast.success("New post created! Redirecting..", {
 				autoClose: 2000,
 			});
+			fetchPosts();
 			setTimeout(() => {
 				history.push("/");
 			}, 2000);
@@ -179,4 +182,8 @@ const CreatePost = () => {
 	);
 };
 
-export default CreatePost;
+const mapDispatchToProps = (dispatch) => ({
+	fetchPosts: () => dispatch({ type: "FETCH_TIMELINE" }),
+});
+
+export default connect(null, mapDispatchToProps)(CreatePost);

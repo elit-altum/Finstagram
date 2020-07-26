@@ -53,6 +53,8 @@ const UserProfile = (props) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const [usersArray, setUsersArray] = useState([]);
+	const [followersArray, setFollowersArray] = useState([]);
+	const [followingArray, setFollowingArray] = useState([]);
 
 	const openModal = () => {
 		setIsModalOpen(true);
@@ -137,7 +139,7 @@ const UserProfile = (props) => {
 				url,
 				method: "GET",
 			});
-			setUsersArray(res.data.data.user.follows);
+			setFollowingArray(res.data.data.user.follows);
 		} catch (err) {}
 	};
 
@@ -148,22 +150,24 @@ const UserProfile = (props) => {
 				url,
 				method: "GET",
 			});
-			setUsersArray(res.data.data.followers);
+			setFollowersArray(res.data.data.followers);
 		} catch (err) {}
 	};
 
 	const showFollows = () => {
-		fetchFollows();
+		setUsersArray(followingArray);
 		openModal();
 	};
 
 	const showFollowers = () => {
-		fetchFollowers();
+		setUsersArray(followersArray);
 		openModal();
 	};
 
 	useEffect(() => {
 		fetchUser();
+		fetchFollowers();
+		fetchFollows();
 	}, []);
 
 	return !!user && !!posts ? (
