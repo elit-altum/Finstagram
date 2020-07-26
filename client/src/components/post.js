@@ -13,6 +13,7 @@ import {
 	AiFillHeart as HeartFill,
 } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
+import { MdLocationOn as LocationIcon } from "react-icons/md";
 
 const Post = ({
 	post,
@@ -152,9 +153,21 @@ const Post = ({
 						src={post.createdBy.photo}
 						alt={`${post.createdBy.username}'s profile`}
 					/>
-					<p onClick={() => history.push(`/user/${post.createdBy.username}`)}>
-						{post.createdBy.username}
-					</p>
+					<div className="postCard__userInfo-meta">
+						<p
+							className="postCard__userInfo-username"
+							onClick={() => history.push(`/user/${post.createdBy.username}`)}
+						>
+							{post.createdBy.username}
+						</p>
+						{!!post.locationName && (
+							<div className="postCard__location">
+								<Link to="/">
+									<p>{post.locationName}</p>
+								</Link>
+							</div>
+						)}
+					</div>
 				</div>
 				{!!rank && (
 					<div className="postCard__trending">

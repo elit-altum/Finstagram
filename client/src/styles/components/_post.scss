@@ -16,8 +16,12 @@
 		width: 40px;
 		border-radius: 100%;
 	}
-	p {
+	.postCard__userInfo-meta {
+		display: flex;
+		flex-direction: column;
 		padding-left: 35px;
+	}
+	.postCard__userInfo-username {
 		font-size: 1rem;
 		font-family: $primary-font;
 		font-weight: 600;
@@ -26,6 +30,16 @@
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
+	}
+	.postCard__location {
+		margin-top: 5px;
+		margin-left: -1px;
+		a {
+			color: $secondary-color;
+			text-decoration: none;
+			font-size: 0.8rem;
+			font-weight: bold;
+		}
 	}
 }
 

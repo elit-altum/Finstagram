@@ -371,6 +371,8 @@ exports.getTrending = catchAsync(async (req, res) => {
 				createdAt: 1,
 				trendScore: 1,
 				likes: 1,
+				locationName: 1,
+				location: 1,
 			},
 		},
 		{
