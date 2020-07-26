@@ -68,6 +68,8 @@ exports.storePost = catchAsync(async (req, res) => {
 
 	if (latitude && longitude) {
 		location = [longitude, latitude];
+	} else {
+		location = [0, 0];
 	}
 
 	const dimensions = await promisify(sizeOf)(
@@ -346,6 +348,11 @@ exports.getTrending = catchAsync(async (req, res) => {
 				dateDifference: {
 					$subtract: ["$$NOW", "$createdAt"],
 				},
+			},
+		},
+		{
+			$match: {
+				likes: { $gt: 0 },
 			},
 		},
 		{
