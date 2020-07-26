@@ -419,3 +419,52 @@ exports.getTrending = catchAsync(async (req, res) => {
 		},
 	});
 });
+
+// *? 8. GET POSTS NEAR A LOCATION
+exports.getPostsNearTo = catchAsync(async (req, res) => {
+	const { lat, lng } = req.query;
+
+	if (!lat || !lng) {
+		throw new AppError("Please provide coordinates.", 400);
+	}
+
+	// Get posts with a valid location in a 20Km radius of specified center
+	const nearByPosts = await Post.aggregate([
+		{
+			$geoNear: {
+				near: {
+					type: "Point",
+					coordinates: [lng * 1, lat * 1],
+				},
+				query: { locationName: { $ne: "" } },
+				maxDistance: 20 * 1000,
+				distanceField: "displacement",
+				spherical: true,
+			},
+		},
+		{
+			$sort: {
+				displacement: 1,
+			},
+		},
+		{
+			$limit: 9,
+		},
+	]);
+
+	const populatedPosts = await Post.populate(nearByPosts, {
+		path: "createdBy",
+		select: "username photo isActive",
+	});
+
+	res.status(200).json({
+		status: "success",
+		data: {
+			location: {
+				latitude: lat * 1,
+				longitude: lng * 1,
+			},
+			posts: populatedPosts,
+		},
+	});
+});

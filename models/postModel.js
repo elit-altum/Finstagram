@@ -42,7 +42,12 @@ const postSchema = new mongoose.Schema(
 );
 
 // Indexing the location coordinates
-postSchema.index({ location: "2dsphere" });
+postSchema.index(
+	{ location: "2dsphere" },
+	{
+		sparse: true,
+	}
+);
 
 // 0a. Virtual property for getting users which liked the post
 postSchema.virtual("likers", {
