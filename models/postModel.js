@@ -19,6 +19,20 @@ const postSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		locationName: {
+			type: String,
+			default: "",
+		},
+		location: {
+			type: {
+				type: String,
+				default: "Point",
+			},
+			coordinates: {
+				type: [Number],
+				default: [],
+			},
+		},
 	},
 	{
 		timestamps: true,
@@ -26,6 +40,9 @@ const postSchema = new mongoose.Schema(
 		toObject: { virtuals: true },
 	}
 );
+
+// Indexing the location coordinates
+postSchema.index({ location: "2dsphere" });
 
 // 0a. Virtual property for getting users which liked the post
 postSchema.virtual("likers", {

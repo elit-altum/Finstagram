@@ -62,6 +62,13 @@ exports.convertImageToJpeg = async (req, res, next) => {
 // * 1b. Store post to database
 exports.storePost = catchAsync(async (req, res) => {
 	const caption = req.body.caption || "";
+	const locationName = req.body.locationName || "";
+	const { latitude, longitude } = req.body;
+	let location = [];
+
+	if (latitude && longitude) {
+		location = [longitude, latitude];
+	}
 
 	const dimensions = await promisify(sizeOf)(
 		`public/img/posts/${req.file.filename}`
@@ -80,6 +87,10 @@ exports.storePost = catchAsync(async (req, res) => {
 
 	const newPost = {
 		caption,
+		location: {
+			coordinates: location,
+		},
+		locationName,
 		photo: image.url,
 		dimensions: `${dimensions.width} x ${dimensions.height}`,
 		createdBy: req.user.id,
