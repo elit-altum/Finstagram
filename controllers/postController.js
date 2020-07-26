@@ -463,6 +463,7 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 			location: {
 				latitude: lat * 1,
 				longitude: lng * 1,
+				name: nearByPosts[0].locationName,
 			},
 			posts: populatedPosts,
 		},
