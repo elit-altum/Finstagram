@@ -17,19 +17,12 @@
 	cursor: pointer;
 }
 
-.mapboxgl-popup {
-	max-width: 200px;
-}
-
-.mapboxgl-popup-content {
-	text-align: center;
-	font-family: "Open Sans", sans-serif;
-}
-
 .location-name {
 	display: flex;
 	align-items: center;
+	padding: 0 0.4rem;
 	justify-content: center;
+	text-align: center;
 	margin-top: 10px;
 	font-style: italic;
 	color: lighten($secondary-color, 30%);

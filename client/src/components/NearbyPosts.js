@@ -82,7 +82,6 @@ const NearbyPosts = (props) => {
 			{!loading ? (
 				<>
 					<div className="location-name">
-						<LocationIcon />
 						<p>{locationName}</p>
 					</div>
 					{!!posts.length ? (
