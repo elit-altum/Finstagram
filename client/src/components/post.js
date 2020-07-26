@@ -162,7 +162,9 @@ const Post = ({
 						</p>
 						{!!post.locationName && (
 							<div className="postCard__location">
-								<Link to="/">
+								<Link
+									to={`/post/nearby/${post.location.coordinates[0]},${post.location.coordinates[1]}`}
+								>
 									<p>{post.locationName}</p>
 								</Link>
 							</div>

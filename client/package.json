@@ -9,6 +9,7 @@
     "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
+    "mapbox-gl": "^1.11.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

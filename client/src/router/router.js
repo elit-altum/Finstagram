@@ -10,6 +10,7 @@ import PublicRoute from "./PublicRoute";
 
 import Timeline from "../components/Timeline";
 import Trending from "../components/TrendingPage";
+import NearbyPosts from "../components/NearbyPosts";
 import LoginForm from "../components/Login";
 import SignupForm from "../components/Signup";
 import PostDetail from "../components/PostDetails";
@@ -42,6 +43,11 @@ const AppRouter = (props) => {
 				<PrivateRoute
 					path="/post/:postId"
 					component={PostDetail}
+					exact={true}
+				/>
+				<PrivateRoute
+					path="/post/nearby/:center"
+					component={NearbyPosts}
 					exact={true}
 				/>
 				<PrivateRoute path="/update" component={EditUserProfile} exact={true} />
