@@ -452,10 +452,35 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 		},
 	]);
 
-	const populatedPosts = await Post.populate(nearByPosts, {
-		path: "createdBy",
-		select: "username photo isActive",
+	let populatedPosts = await Post.populate(nearByPosts, [
+		{
+			path: "createdBy",
+			select: "username photo isActive",
+		},
+		{
+			path: "likes",
+		},
+		{
+			path: "comments",
+		},
+	]);
+
+	const promisesArray = populatedPosts.map(async (post) => {
+		const isLiked = await Like.findOne({
+			likedBy: req.user._id,
+			post: post._id,
+		});
+
+		if (isLiked) {
+			post.likedByMe = true;
+		} else {
+			post.likedByMe = false;
+		}
+
+		return post;
 	});
+
+	const resolvedArray = await Promise.all(promisesArray);
 
 	res.status(200).json({
 		status: "success",
@@ -465,7 +490,7 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 				longitude: lng * 1,
 				name: nearByPosts[0].locationName,
 			},
-			posts: populatedPosts,
+			posts: resolvedArray,
 		},
 	});
 });
