@@ -61,8 +61,35 @@
 	position: relative;
 	width: 100%;
 	img {
+		position: relative;
 		width: 100%;
 		margin-top: 10px;
+	}
+}
+
+.postCase__image-like {
+	font-size: 20rem;
+	position: absolute;
+	top: 50%;
+	margin-top: -10rem;
+	left: 50%;
+	margin-left: -10rem;
+	z-index: 99;
+	fill: #fafafa;
+	-webkit-filter: drop-shadow(0 0 6px #888);
+	filter: drop-shadow(0 0 6px #888);
+	animation: toggleAnimation 0.3s ease;
+}
+
+@media only screen and (max-width: 500px) {
+	.postCase__image-like {
+		font-size: 10rem;
+		top: 50%;
+		margin-top: -5rem;
+		left: 50%;
+		margin-left: -5rem;
+		-webkit-filter: drop-shadow(0 0 4px #888);
+		filter: drop-shadow(0 0 4px #888);
 	}
 }
 

@@ -13,7 +13,6 @@ import {
 	AiFillHeart as HeartFill,
 } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
-import { MdLocationOn as LocationIcon } from "react-icons/md";
 
 const Post = ({
 	post,
@@ -27,6 +26,7 @@ const Post = ({
 	const [likes, setLikes] = useState(post.likes * 1);
 	const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
 	const [allLikes, setAllLikes] = useState([]);
+	const [showLikeIcon, setShowLikeIcon] = useState(false);
 
 	// a. Calculate time of post creation
 	const getTime = (date) => {
@@ -99,6 +99,10 @@ const Post = ({
 
 	// f. Inform the database that user has liked the post
 	const createLike = async () => {
+		setShowLikeIcon(true);
+		setTimeout(() => {
+			setShowLikeIcon(false);
+		}, 800);
 		const url = `/api/v1/posts/${post._id}/like`;
 		try {
 			await axios({
@@ -182,6 +186,9 @@ const Post = ({
 						alt={`${post.createdBy.username}'s post`}
 						onDoubleClick={handleLike}
 					/>
+					{!!showLikeIcon && (
+						<HeartFill className="postCase__image-like" id="post-like-icon" />
+					)}
 				</div>
 				<div className="postCard__meta">
 					<div className="postCard__meta--icons">
