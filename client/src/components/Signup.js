@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import Loader from "./Loader";
 
-const Signup = ({ putToken, fetchTimeline }) => {
+const Signup = ({ putToken, fetchTimeline, fetchTrending }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const sendFormData = async (e) => {
@@ -36,6 +36,7 @@ const Signup = ({ putToken, fetchTimeline }) => {
 			});
 			putToken(res.data.data.user);
 			fetchTimeline();
+			fetchTrending();
 		} catch (err) {
 			setIsLoading(false);
 			toast.error(`Error: ${err.response.data.data.error.message}`);
@@ -97,6 +98,7 @@ const Signup = ({ putToken, fetchTimeline }) => {
 const mapDispatchToProps = (dispatch) => ({
 	putToken: (user) => dispatch({ type: "PUT_TOKEN", user }),
 	fetchTimeline: () => dispatch({ type: "FETCH_TIMELINE" }),
+	fetchTrending: () => dispatch({ type: "FETCH_TRENDING" }),
 });
 
 export default connect(null, mapDispatchToProps)(Signup);
