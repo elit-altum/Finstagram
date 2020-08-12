@@ -165,3 +165,38 @@
 	margin-top: 10px;
 	color: lighten($secondary-color, 30%);
 }
+
+.timeline-end {
+	text-align: center;
+	margin-top: 0;
+	padding-top: 0;
+	color: lighten($secondary-color, 30%);
+	font-size: 2rem;
+	padding-bottom: 20px;
+}
+
+.timeline-loader {
+	width: 30px;
+	height: 30px;
+	display: block;
+	margin: 0 auto;
+	border-radius: 50%;
+	background-color: $secondary-color;
+	margin-bottom: 20px;
+	animation: toggleAnimationFade 1.2s ease infinite;
+}
+
+@keyframes toggleAnimationFade {
+	0% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
+}

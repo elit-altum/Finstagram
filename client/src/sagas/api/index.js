@@ -10,7 +10,12 @@ export function getTimeline() {
 	return axios.get("/api/v1/posts/feed");
 }
 
-// ? 03. FETCH TRENDING POSTS
+// ? 03. FETCH TIMELINE PAGES OF USER
+export function getTimelinePages(page) {
+	return axios.get(`/api/v1/posts/feed?page=${page}`);
+}
+
+// ? 04. FETCH TRENDING POSTS
 export function getTrending() {
 	return axios.get("/api/v1/posts/trending");
 }

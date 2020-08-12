@@ -19,7 +19,19 @@ function* fetchTimeline() {
 	} catch (e) {}
 }
 
-// ? 03. GET TRENDING POSTS
+// ? 03. GET USER TIMELINE
+function* fetchTimelineScrolling(state) {
+	try {
+		const res = yield call(() => api.getTimelinePages(state.page));
+		if (res.data.data.posts.length) {
+			yield put({ type: "PUT_TIMELINE_SCROLL", posts: res.data.data.posts });
+		} else {
+			yield put({ type: "END_OF_TIMELINE" });
+		}
+	} catch (e) {}
+}
+
+// ? 04. GET TRENDING POSTS
 function* fetchTrending() {
 	try {
 		const res = yield call(api.getTrending);
@@ -30,6 +42,7 @@ function* fetchTrending() {
 function* actionWatcher() {
 	yield takeLatest("FETCH_AUTH_TOKEN", fetchAuthToken);
 	yield takeLatest("FETCH_TIMELINE", fetchTimeline);
+	yield takeLatest("FETCH_TIMELINE_SCROLLING", fetchTimelineScrolling);
 	yield takeLatest("FETCH_TRENDING", fetchTrending);
 }
 

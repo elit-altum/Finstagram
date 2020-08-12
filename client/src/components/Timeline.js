@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { BsSearch as SearchIcon } from "react-icons/bs";
 
@@ -9,12 +10,30 @@ import Post from "./Post";
 
 import { history } from "../router/router";
 
-const Timeline = ({ posts, loading }) => {
+const endOfPosts = (
+	<div className="timeline-end">
+		<p>--x--</p>
+	</div>
+);
+
+const loadingPosts = <div className="timeline-loader"></div>;
+
+const Timeline = ({ posts, loading, page, end, fetchScrollingTimeline }) => {
 	return (
 		<div className="my-timeline">
 			{!loading ? (
 				!!posts.length ? (
-					posts.map((post) => <Post post={post} key={post.id} />)
+					<InfiniteScroll
+						dataLength={posts.length}
+						next={() => fetchScrollingTimeline(page + 1)}
+						hasMore={!end}
+						endMessage={endOfPosts}
+						loader={loadingPosts}
+					>
+						{posts.map((post) => (
+							<Post post={post} key={post.id} />
+						))}
+					</InfiniteScroll>
 				) : (
 					<div className="no-posts">
 						<NotFound
@@ -43,6 +62,13 @@ const Timeline = ({ posts, loading }) => {
 const mapStateToProps = (state) => ({
 	posts: state.timeline.posts,
 	loading: state.timeline.loading,
+	page: Number(state.timeline.page),
+	end: state.timeline.end,
 });
 
-export default connect(mapStateToProps, null)(Timeline);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	fetchScrollingTimeline: (page) =>
+		dispatch({ type: "FETCH_TIMELINE_SCROLLING", page }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timeline);

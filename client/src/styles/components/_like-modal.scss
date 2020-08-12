@@ -1,5 +1,7 @@
 .like-modal__list {
-	padding: 1rem;
+	padding: 0.8rem;
+	max-height: 300px;
+	overflow-y: auto;
 	h3 {
 		color: $secondary-color;
 		margin-bottom: 30px;

@@ -9,6 +9,10 @@
 	transition: all 200ms ease-in-out;
 }
 
+.ReactModal__Content {
+	margin: 3rem;
+}
+
 .ReactModalPortal .ReactModal__Overlay--after-open {
 	opacity: 1;
 }
@@ -23,4 +27,5 @@
 	word-break: break-all;
 	word-wrap: normal;
 	border: 1px solid lighten($secondary-color, 60%);
+	margin: 3rem;
 }
