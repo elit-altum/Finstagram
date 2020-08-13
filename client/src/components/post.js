@@ -246,7 +246,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	updateTimeline: (newTimeline) =>
-		dispatch({ type: "PUT_TIMELINE", posts: newTimeline }),
+		dispatch({ type: "PUT_TIMELINE_ON_CHANGE", posts: newTimeline }),
 	updateTrending: (newTrending) =>
 		dispatch({ type: "PUT_TRENDING", posts: newTrending }),
 });

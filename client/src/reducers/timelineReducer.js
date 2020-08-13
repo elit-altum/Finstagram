@@ -10,6 +10,11 @@ const reducer = (state = {}, action) => {
 				page: 1,
 				end: false,
 			};
+		case "PUT_TIMELINE_ON_CHANGE":
+			return {
+				...state,
+				posts: action.posts,
+			};
 		case "PUT_TIMELINE_SCROLL":
 			const newPosts = state.posts.concat(action.posts);
 			const newPage = state.page + 1;
