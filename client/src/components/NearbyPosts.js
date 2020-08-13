@@ -6,15 +6,13 @@ import PageLoader from "./PageLoader";
 import Post from "./Post";
 import mapboxgl from "mapbox-gl";
 
-import { MdLocationOn as LocationIcon } from "react-icons/md";
-
 import { useParams } from "react-router-dom";
 
 const NearbyPosts = (props) => {
 	const { center } = useParams();
 
 	const [posts, setPosts] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [locationName, setLocationName] = useState("");
 
 	let [lng, lat] = center.split(",");

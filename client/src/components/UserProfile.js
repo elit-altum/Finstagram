@@ -252,12 +252,14 @@ const UserProfile = (props) => {
 				closeTimeoutMS={200}
 				className="modal"
 			>
-				{usersArray.map((user) => (
-					<UserInfoSmall
-						user={user.follows.name ? user.follows : user.user}
-						key={user._id}
-					/>
-				))}
+				<div className="like-modal__list">
+					{usersArray.map((user) => (
+						<UserInfoSmall
+							user={user.follows.name ? user.follows : user.user}
+							key={user._id}
+						/>
+					))}
+				</div>
 			</Modal>
 		</div>
 	) : (
