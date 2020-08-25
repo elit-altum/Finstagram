@@ -4,9 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon server.js",
-		"start": "node server.js"
+		"start": "node server.js",
+		"test": "jest"
 	},
 	"keywords": [],
 	"author": "",
@@ -32,6 +32,7 @@
 		"xss-clean": "^0.1.1"
 	},
 	"devDependencies": {
+		"jest": "^26.4.2",
 		"nodemon": "^2.0.4"
 	},
 	"engines": {
