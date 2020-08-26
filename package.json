@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "nodemon server.js",
 		"start": "node server.js",
-		"test": "jest --NODE_ENV=test",
+		"test": "jest --NODE_ENV=test --forceExit",
 		"test-dev": "jest --watch"
 	},
 	"jest": {
