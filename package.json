@@ -6,7 +6,11 @@
 	"scripts": {
 		"dev": "nodemon server.js",
 		"start": "node server.js",
-		"test": "jest"
+		"test": "jest --NODE_ENV=test",
+		"test-dev": "jest --watch"
+	},
+	"jest": {
+		"testEnvironment": "node"
 	},
 	"keywords": [],
 	"author": "",
@@ -33,7 +37,8 @@
 	},
 	"devDependencies": {
 		"jest": "^26.4.2",
-		"nodemon": "^2.0.4"
+		"nodemon": "^2.0.4",
+		"supertest": "^4.0.2"
 	},
 	"engines": {
 		"node": ">10.0.0",
