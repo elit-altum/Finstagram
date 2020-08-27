@@ -18,7 +18,20 @@ const sampleUser = {
 
 // 01. SIGNUP USER TESTS
 test("Should signup user correctly.", async () => {
-	await request(app).post("/api/v1/users/signup").send(sampleUser).expect(200);
+	const res = await request(app)
+		.post("/api/v1/users/signup")
+		.send(sampleUser)
+		.expect(200);
+
+	// Should issue JWT & cookie
+	expect(res.body.data.token).not.toBeNull();
+	expect(res.header["set-cookie"][0]).toMatch(/^jwt/);
+
+	sampleUser.token = res.body.data.token;
+
+	// Should create user on database
+	const user = await User.findById(res.body.data.user.id);
+	expect(user).not.toBeNull();
 });
 
 test("Should not signup duplicate user", async () => {
@@ -79,4 +92,29 @@ test("Should not login non-existent user.", async () => {
 			password: sampleUser.password,
 		})
 		.expect(400);
+});
+
+// 03. LOGOUT USER TESTS
+test("Should logout user from session.", async () => {
+	const res = await request(app)
+		.get("/api/v1/users/logout")
+		.set("Authorization", `Bearer ${sampleUser.token}`)
+		.send()
+		.expect(200);
+
+	// Should return cookie
+	expect(res.header["set-cookie"][0]).toMatch(/^jwt=loggedOut;/);
+});
+
+// 04. SESSION VALIDATION
+test("Should indicate user is logged in, with token.", async () => {
+	await request(app)
+		.get("/api/v1/users/isLoggedIn")
+		.set("Authorization", `Bearer ${sampleUser.token}`)
+		.send()
+		.expect(200);
+});
+
+test("Should indicate user is logged out, without token.", async () => {
+	await request(app).get("/api/v1/users/isLoggedIn").send().expect(401);
 });
