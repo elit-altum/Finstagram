@@ -1,6 +1,6 @@
 const request = require("supertest");
-const app = require("../../app");
-const User = require("../../models/userModel");
+const app = require("../app");
+const User = require("../models/userModel");
 
 // 00 a. CLEAR USER COLLECTION BEFORE RUNNING TESTS
 beforeAll(async () => {
