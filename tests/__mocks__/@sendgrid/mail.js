@@ -1,8 +1,12 @@
 module.exports = {
 	setApiKey() {},
-	send() {
+	send(value, err) {
 		return new Promise((resolve, reject) => {
-			resolve();
+			if (err) {
+				reject();
+			} else {
+				resolve();
+			}
 		});
 	},
 };

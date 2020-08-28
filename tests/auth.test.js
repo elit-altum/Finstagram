@@ -2,32 +2,21 @@ const request = require("supertest");
 const app = require("../app");
 const User = require("../models/userModel");
 
-// 00 a. CLEAR USER COLLECTION BEFORE RUNNING TESTS
-beforeAll(async () => {
-	await User.deleteMany();
-});
+let { setupUserCollection, sampleUser, newUser } = require("./fixtures/db");
 
-// 00 b. SAMPLE USER FOR TESTS
-const sampleUser = {
-	name: "John Flank",
-	username: "john_1",
-	email: "john_flank@gmail.com",
-	password: "pass1234",
-	passwordConfirm: "pass1234",
-};
+// 00 a. CLEAR USER COLLECTION BEFORE RUNNING TESTS
+beforeAll(setupUserCollection);
 
 // 01. SIGNUP USER TESTS
-test("Should signup user correctly.", async () => {
+test("Should signup new user correctly.", async () => {
 	const res = await request(app)
 		.post("/api/v1/users/signup")
-		.send(sampleUser)
+		.send(newUser)
 		.expect(200);
 
 	// Should issue JWT & cookie
 	expect(res.body.data.token).not.toBeNull();
 	expect(res.header["set-cookie"][0]).toMatch(/^jwt/);
-
-	sampleUser.token = res.body.data.token;
 
 	// Should create user on database
 	const user = await User.findById(res.body.data.user.id);
@@ -42,9 +31,9 @@ test("Should not signup user without matching password.", async () => {
 	await request(app)
 		.post("/api/v1/users/signup")
 		.send({
-			...sampleUser,
-			username: "john_2",
-			email: "john_2@gmail.com",
+			...newUser,
+			username: "jadey",
+			email: "jadeY@gmail.com",
 			passwordConfirm: "pass12345",
 		})
 		.expect(400);
@@ -55,8 +44,8 @@ test("Should not signup user with password < 8 characters", async () => {
 		.post("/api/v1/users/signup")
 		.send({
 			...sampleUser,
-			username: "john_3",
-			email: "john_3@gmail.com",
+			username: "kenny",
+			email: "ken@gmail.com",
 			password: "pass",
 			passwordConfirm: "pass",
 		})
