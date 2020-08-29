@@ -4,7 +4,6 @@ const path = require("path");
 
 const multer = require("multer");
 const sharp = require("sharp");
-const sizeOf = require("image-size");
 
 const cloudinary = require("cloudinary").v2;
 
@@ -63,18 +62,16 @@ exports.convertImageToJpeg = async (req, res, next) => {
 exports.storePost = catchAsync(async (req, res) => {
 	const caption = req.body.caption || "";
 	const locationName = req.body.locationName || "";
-	const { latitude, longitude } = req.body;
+	let { latitude, longitude } = req.body;
 	let location = [];
 
 	if (latitude && longitude) {
+		latitude = latitude * 1;
+		longitude = longitude * 1;
 		location = [longitude, latitude];
 	} else {
 		location = [0, 0];
 	}
-
-	const dimensions = await promisify(sizeOf)(
-		`public/img/posts/${req.file.filename}`
-	);
 
 	const imagePath = path.join(
 		__dirname,
@@ -85,7 +82,14 @@ exports.storePost = catchAsync(async (req, res) => {
 		req.file.filename
 	);
 
-	const image = await cloudinary.uploader.upload(imagePath);
+	const uploadPublicId = `post-${req.user._id}-${Date.now()}`;
+
+	const image = await cloudinary.uploader.upload(
+		imagePath,
+		(options = {
+			public_id: uploadPublicId,
+		})
+	);
 
 	const newPost = {
 		caption,
@@ -94,7 +98,7 @@ exports.storePost = catchAsync(async (req, res) => {
 		},
 		locationName,
 		photo: image.url,
-		dimensions: `${dimensions.width} x ${dimensions.height}`,
+		dimensions: "500 x 500",
 		createdBy: req.user.id,
 	};
 
@@ -110,6 +114,7 @@ exports.storePost = catchAsync(async (req, res) => {
 		status: "success",
 		data: {
 			post,
+			public_id: uploadPublicId,
 		},
 	});
 });
