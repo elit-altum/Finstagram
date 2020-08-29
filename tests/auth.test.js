@@ -2,7 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 const User = require("../models/userModel");
 
-let { setupUserCollection, sampleUser, newUser } = require("./fixtures/db");
+let { setupUserCollection, newUser } = require("./fixtures/db");
 
 // 00 a. CLEAR USER COLLECTION BEFORE RUNNING TESTS
 beforeAll(setupUserCollection);
@@ -18,13 +18,15 @@ test("Should signup new user correctly.", async () => {
 	expect(res.body.data.token).not.toBeNull();
 	expect(res.header["set-cookie"][0]).toMatch(/^jwt/);
 
+	newUser.token = res.body.data.token;
+
 	// Should create user on database
 	const user = await User.findById(res.body.data.user.id);
 	expect(user).not.toBeNull();
 });
 
 test("Should not signup duplicate user", async () => {
-	await request(app).post("/api/v1/users/signup").send(sampleUser).expect(400);
+	await request(app).post("/api/v1/users/signup").send(newUser).expect(400);
 });
 
 test("Should not signup user without matching password.", async () => {
@@ -43,7 +45,7 @@ test("Should not signup user with password < 8 characters", async () => {
 	await request(app)
 		.post("/api/v1/users/signup")
 		.send({
-			...sampleUser,
+			...newUser,
 			username: "kenny",
 			email: "ken@gmail.com",
 			password: "pass",
@@ -57,8 +59,8 @@ test("Should login existing user.", async () => {
 	await request(app)
 		.post("/api/v1/users/login")
 		.send({
-			username: sampleUser.username,
-			password: sampleUser.password,
+			username: newUser.username,
+			password: newUser.password,
 		})
 		.expect(200);
 });
@@ -67,7 +69,7 @@ test("Should not login user with wrong password.", async () => {
 	await request(app)
 		.post("/api/v1/users/login")
 		.send({
-			username: sampleUser.username,
+			username: newUser.username,
 			password: "pass",
 		})
 		.expect(400);
@@ -78,7 +80,7 @@ test("Should not login non-existent user.", async () => {
 		.post("/api/v1/users/login")
 		.send({
 			username: "randomUsername",
-			password: sampleUser.password,
+			password: newUser.password,
 		})
 		.expect(400);
 });
@@ -87,7 +89,7 @@ test("Should not login non-existent user.", async () => {
 test("Should logout user from session.", async () => {
 	const res = await request(app)
 		.get("/api/v1/users/logout")
-		.set("Authorization", `Bearer ${sampleUser.token}`)
+		.set("Authorization", `Bearer ${newUser.token}`)
 		.send()
 		.expect(200);
 
@@ -99,7 +101,7 @@ test("Should logout user from session.", async () => {
 test("Should indicate user is logged in, with token.", async () => {
 	await request(app)
 		.get("/api/v1/users/isLoggedIn")
-		.set("Authorization", `Bearer ${sampleUser.token}`)
+		.set("Authorization", `Bearer ${newUser.token}`)
 		.send()
 		.expect(200);
 });

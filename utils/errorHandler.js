@@ -42,6 +42,7 @@ module.exports = (err, req, res, next) => {
 		process.env.NODE_ENV === "test"
 	) {
 		// console.log(err.message);
+		// console.log(err);
 		return res.status(statusCode).json({
 			status,
 			data: {
