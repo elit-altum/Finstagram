@@ -4,9 +4,13 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon server.js",
-		"start": "node server.js"
+		"start": "node server.js",
+		"test": "jest --NODE_ENV=test --forceExit",
+		"test-dev": "jest --watch"
+	},
+	"jest": {
+		"testEnvironment": "node"
 	},
 	"keywords": [],
 	"author": "",
@@ -22,7 +26,6 @@
 		"express": "^4.17.1",
 		"express-mongo-sanitize": "^2.0.0",
 		"helmet": "^3.22.0",
-		"image-size": "^0.8.3",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.9.18",
 		"morgan": "^1.10.0",
@@ -32,7 +35,9 @@
 		"xss-clean": "^0.1.1"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.4"
+		"jest": "^26.4.2",
+		"nodemon": "^2.0.4",
+		"supertest": "^4.0.2"
 	},
 	"engines": {
 		"node": ">10.0.0",

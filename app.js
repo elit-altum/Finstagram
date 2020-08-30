@@ -1,6 +1,13 @@
-require("dotenv").config({
-	path: "config.env",
-});
+// ? FOR TESTING AND DEVELOPMENT PURPOSES
+if (process.env.NODE_ENV === "test") {
+	require("dotenv").config({
+		path: "test.env",
+	});
+} else {
+	require("dotenv").config({
+		path: "config.env",
+	});
+}
 
 const path = require("path");
 
