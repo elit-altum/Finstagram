@@ -2,6 +2,8 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/userModel");
 const Post = require("../../models/postModel");
+const Like = require("../../models/likeModel");
+const Comment = require("../../models/commentModel");
 
 // 01. SAMPLE USERS FOR TESTS
 
@@ -21,12 +23,28 @@ let postUser = {
 	email: "jen@gmail.com",
 };
 
-// 02. CLEAR USER COLLECTION BEFORE TESTS
-const setupUserCollection = async () => {
+let userOne = {
+	name: "Mark Ruffalo",
+	username: "mark_ruff",
+	password: "test1234",
+	passwordConfirm: "test1234",
+	email: "mark_ruff@gmail.com",
+};
+
+let userTwo = {
+	name: "Bruce Banner",
+	username: "bruce_hulk",
+	password: "test1234",
+	passwordConfirm: "test1234",
+	email: "bruce_hulk@gmail.com",
+};
+
+// 02. SETUP BEFORE AUTH TESTS
+const setupAuthCollection = async () => {
 	await User.deleteMany();
 };
 
-// 03. CLEAR POSTS COLLECTION
+// 03. SETUP BEFORE POST TESTS
 const setupPostCollection = async () => {
 	await Post.deleteMany();
 	const user = await User.create(postUser);
@@ -37,9 +55,31 @@ const setupPostCollection = async () => {
 	postUser.token = token;
 };
 
+// 04. SETUP BEFORE USER TESTS
+const setupUserCollection = async () => {
+	// First user
+	const firstUser = await User.create(userOne);
+	const firstToken = jwt.sign({ id: firstUser._id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRE,
+	});
+
+	userOne.token = firstToken;
+
+	// Second user
+	const secondUser = await User.create(userTwo);
+	const secondToken = jwt.sign({ id: secondUser._id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRE,
+	});
+
+	userTwo.token = secondToken;
+};
+
 module.exports = {
 	setupUserCollection,
 	setupPostCollection,
+	setupAuthCollection,
 	newUser,
 	postUser,
+	userOne,
+	userTwo,
 };

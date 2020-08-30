@@ -2,10 +2,10 @@ const request = require("supertest");
 const app = require("../app");
 const User = require("../models/userModel");
 
-let { setupUserCollection, newUser } = require("./fixtures/db");
+let { setupAuthCollection, newUser } = require("./fixtures/db");
 
 // 00 a. CLEAR USER COLLECTION BEFORE RUNNING TESTS
-beforeAll(setupUserCollection);
+beforeAll(setupAuthCollection);
 
 // 01. SIGNUP USER TESTS
 test("Should signup new user correctly.", async () => {

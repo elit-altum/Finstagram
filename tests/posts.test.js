@@ -6,6 +6,7 @@ const { setupPostCollection, postUser } = require("./fixtures/db");
 
 let postPublicId;
 let postId;
+let commentId;
 
 beforeAll(setupPostCollection);
 
@@ -44,6 +45,54 @@ test("Should update post caption.", async () => {
 
 	// Should update the caption
 	expect(res.body.data.post.caption).toBe("New Caption");
+});
+
+test("Should like a post.", async () => {
+	const res = await request(app)
+		.get(`/api/v1/posts/${postId}/like`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.expect(200);
+});
+
+test("Should not like already liked post.", async () => {
+	const res = await request(app)
+		.get(`/api/v1/posts/${postId}/like`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.expect(400);
+});
+
+test("Should remove like from liked post.", async () => {
+	const res = await request(app)
+		.get(`/api/v1/posts/${postId}/unlike`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.expect(200);
+});
+
+test("Should not remove like from unliked post.", async () => {
+	const res = await request(app)
+		.get(`/api/v1/posts/${postId}/unlike`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.expect(400);
+});
+
+test("Should comment on a post.", async () => {
+	const res = await request(app)
+		.post(`/api/v1/posts/${postId}/comments`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.send({
+			comment: "my-comment",
+		})
+		.expect(200);
+
+	expect(res.body.data.comment._id).not.toBeNull();
+	commentId = res.body.data.comment._id;
+});
+
+test("Should remove comment from a post.", async () => {
+	const res = await request(app)
+		.delete(`/api/v1/posts/${postId}/comment/${commentId}`)
+		.set("Authorization", `Bearer ${postUser.token}`)
+		.expect(204);
 });
 
 afterAll(async () => {
