@@ -280,7 +280,7 @@ exports.uploadUserProfile = upload.single("photo");
 // * c. MIDDLEWARE: Sharp for image processing and storing
 exports.resizeUserImage = async (req, res, next) => {
 	if (!req.hasOwnProperty("file")) {
-		next();
+		return next();
 	}
 	req.file.filename = `user-${req.user.id}-${new Date(
 		Date.now()
@@ -292,5 +292,5 @@ exports.resizeUserImage = async (req, res, next) => {
 		.jpeg({ quality: 90 })
 		.toFile(`public/img/user-profiles/${req.file.filename}`);
 
-	next();
+	return next();
 };
