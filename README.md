@@ -87,7 +87,7 @@ More than 35 test cases have been written to test the backend REST API routes us
 
 **_Jest Coverage:_**
 
-<img src="./public/jest-coverage.png" />
+<img src="https://raw.githubusercontent.com/elit-altum/MERN-Instagram-Clone/master/public/jest-coverage.PNG?raw=true" />
 
 Running the test suites:
 
