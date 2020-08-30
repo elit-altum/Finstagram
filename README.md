@@ -13,9 +13,6 @@
   <img src="https://elit-altum.github.io/assets/Finstagram.jpg" width="250">
 </div>
 
-1. View the project report & engineering choices made [here]('./../PROJECT_REPORT.md).
-2. View the API Docs built using Postman documentation [here](https://documenter.getpostman.com/view/11499248/T1LPE7Tm?version=latest).
-
 ## Setting Up
 
 ### A. Clone and install packages
@@ -83,3 +80,28 @@
 **_Important_**: The front-end has an already configured proxy to port: `3001` to avoid the browser's CORS denial. If you are changing the port for the express server / backend. Please ensure to make a change [here](https://github.com/elit-altum/MERN-Instagram-Clone/blob/c95b615e72051a7bb3562e8c7bcec1aa04299f49/client/package.json#L26) as well.
 
 If you face any trouble setting up the project locally please feel free to open an issue [here](https://github.com/elit-altum/MERN-Instagram-Clone/issues/new).
+
+### E. Backend API Testing
+
+More than 35 test cases have been written to test the backend REST API routes using [Jest](https://www.npmjs.com/package/jest) & [Supertest](https://www.npmjs.com/package/supertest)
+
+**_Jest Coverage:_**
+
+<img src="./public/jest-coverage.png" />
+
+Running the test suites:
+
+```
+npm test
+```
+
+Running Jest with the `--watch` mode:
+
+```
+npm run test-dev
+```
+
+### F. Further Information
+
+1. View the project report & engineering choices made [here]('./../PROJECT_REPORT.md).
+2. View the API Docs built using Postman documentation [here](https://documenter.getpostman.com/view/11499248/T1LPE7Tm?version=latest).
