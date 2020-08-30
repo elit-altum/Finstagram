@@ -39,6 +39,30 @@ let userTwo = {
 	email: "bruce_hulk@gmail.com",
 };
 
+let samplePost = {
+	photo: "/photo-url",
+	caption: "my-caption",
+	dimensions: "500 x 500",
+	locationName: "DLF Cyber City",
+	location: {
+		type: "Point",
+		coordinates: [77.0864596, 28.4940474],
+	},
+	createdAt: Date.now(),
+};
+
+let samplePostTwo = {
+	photo: "/photo-url",
+	caption: "my-caption",
+	dimensions: "500 x 500",
+	locationName: "DLF Cyber City",
+	location: {
+		type: "Point",
+		coordinates: [77.0864596, 28.4940474],
+	},
+	createdAt: Date.now(),
+};
+
 // 02. SETUP BEFORE AUTH TESTS
 const setupAuthCollection = async () => {
 	await User.deleteMany();
@@ -47,6 +71,7 @@ const setupAuthCollection = async () => {
 // 03. SETUP BEFORE POST TESTS
 const setupPostCollection = async () => {
 	await Post.deleteMany();
+	await User.deleteMany();
 	const user = await User.create(postUser);
 	const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,
@@ -57,6 +82,8 @@ const setupPostCollection = async () => {
 
 // 04. SETUP BEFORE USER TESTS
 const setupUserCollection = async () => {
+	await User.deleteMany();
+
 	// First user
 	const firstUser = await User.create(userOne);
 	const firstToken = jwt.sign({ id: firstUser._id }, process.env.JWT_SECRET, {
@@ -72,6 +99,18 @@ const setupUserCollection = async () => {
 	});
 
 	userTwo.token = secondToken;
+
+	// Create post one
+	samplePost.createdBy = firstUser._id;
+
+	const post = await Post.create(samplePost);
+	samplePost._id = post._id;
+
+	// Create post two
+	samplePostTwo.createdBy = secondUser._id;
+
+	const postTwo = await Post.create(samplePostTwo);
+	samplePostTwo._id = postTwo._id;
 };
 
 module.exports = {
@@ -82,4 +121,5 @@ module.exports = {
 	postUser,
 	userOne,
 	userTwo,
+	samplePost,
 };
