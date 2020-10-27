@@ -14,6 +14,10 @@ const followSchema = new mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		notification: {
+			type: mongoose.Schema.ObjectId,
+			ref: "Notification",
+		},
 	},
 	{
 		timestamps: true,
