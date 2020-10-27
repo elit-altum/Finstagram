@@ -20,6 +20,7 @@ import EditUserProfile from "../components/EditUserProfile";
 import SearchUsers from "../components/SearchUsers";
 import PageNotFound from "../components/PageNotFound";
 import PageLoader from "../components/PageLoader";
+import Notifications from "../components/Notifications";
 
 export const history = createBrowserHistory();
 
@@ -60,6 +61,11 @@ const AppRouter = (props) => {
 				<PrivateRoute
 					path="/user/:username"
 					component={UserProfile}
+					exact={true}
+				/>
+				<PrivateRoute
+					path="/notifications"
+					component={Notifications}
 					exact={true}
 				/>
 

@@ -1,0 +1,70 @@
+.my-notifs {
+	width: 100%;
+}
+
+.my-notif {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1.5rem;
+	padding-bottom: 1.5rem;
+	border-bottom: 1px lighten($secondary-color, 60%) solid;
+	cursor: pointer;
+
+	.my-notif-details {
+		display: flex;
+		align-items: center;
+
+		.my-notif-image {
+			width: 4rem;
+			height: auto;
+			border-radius: 50%;
+		}
+
+		.my-notif-heading {
+			padding-left: 0.8rem;
+			font-size: 1.06rem;
+			text-decoration: none;
+			background: $alternate-gradient-color;
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+	}
+
+	.my-notif-post {
+		width: 4rem;
+		align-self: flex-end;
+		float: right;
+	}
+}
+
+.my-welcome-notif {
+	margin-top: 3rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px lighten($secondary-color, 60%) solid;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.my-welcome-notif-heading {
+		padding-left: 0.8rem;
+		font-size: 1.2rem;
+		text-decoration: none;
+		background: $gradient-color;
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		text-align: center;
+	}
+
+	.my-welcome-notif-gh-buttons {
+		margin-top: 20px;
+		display: flex;
+		justify-content: space-between;
+		span {
+			margin-left: 10px;
+		}
+	}
+}

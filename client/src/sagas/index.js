@@ -43,7 +43,6 @@ function* fetchTrending() {
 function* fetchNotifications() {
 	try {
 		const res = yield call(api.getNotifications);
-		console.log("notif", res.data);
 		yield put({
 			type: "PUT_NOTIFICATIONS",
 			notifications: res.data.data.notifications,
