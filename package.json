@@ -1,5 +1,5 @@
 {
-	"name": "insta-clone-restapi",
+	"name": "finstagram-the-instagram-clone",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -35,7 +35,7 @@
 		"xss-clean": "^0.1.1"
 	},
 	"devDependencies": {
-		"jest": "^26.4.2",
+		"jest": "^24.9.0",
 		"nodemon": "^2.0.4",
 		"supertest": "^4.0.2"
 	},
