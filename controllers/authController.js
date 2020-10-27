@@ -7,6 +7,7 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/sendEmails");
+const createNotification = require("../utils/createNotification");
 
 // *? 0. GENERATE JWT
 const generateJWT = (user, res) => {

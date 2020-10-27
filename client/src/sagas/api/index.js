@@ -19,3 +19,8 @@ export function getTimelinePages(page) {
 export function getTrending() {
 	return axios.get("/api/v1/posts/trending");
 }
+
+// ? 05. FETCH NOTIFICATIONS
+export function getNotifications() {
+	return axios.get("/api/v1/users/notifications");
+}

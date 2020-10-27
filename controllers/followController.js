@@ -1,9 +1,11 @@
 // Handles routes for follow
 const User = require("../models/userModel");
 const Follow = require("../models/followModel");
+const Notication = require("../models/notificationModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const createNotification = require("../utils/createNotification");
 
 // *? 1. FOLLOW A USER
 exports.followUser = catchAsync(async (req, res) => {
@@ -28,10 +30,21 @@ exports.followUser = catchAsync(async (req, res) => {
 		throw new AppError("You already follow this user!", 400);
 	}
 
-	// c. Create a new follow instance
+	// c. Dispatch notification to user
+	const notif = await createNotification.followNotification(
+		userToFollow._id,
+		req.user.id
+	);
+
+	if (!notif) {
+		throw new AppError("Internal server error", 500);
+	}
+
+	// d. Create a new follow instance
 	await Follow.create({
 		user: req.user.id,
 		follows: userToFollow._id,
+		notification: notif._id,
 	});
 
 	res.status(200).json({
@@ -73,6 +86,9 @@ exports.unfollowUser = catchAsync(async (req, res) => {
 		status: "success",
 		message: `You unfollowed @${userToUnfollow.username}`,
 	});
+
+	// d. Delete the follow notification
+	await Notication.findByIdAndRemove(existingFollow.notification);
 });
 
 // *? 3. GET ALL FOLLOWERS OF A USER

@@ -5,6 +5,7 @@ import createSagaMiddleware from "redux-saga";
 import authReducer from "../reducers/authReducer";
 import trendingReducer from "../reducers/trendingReducer";
 import timelineReducer from "../reducers/timelineReducer";
+import notificationReducer from "../reducers/notificationReducer";
 
 import mySaga from "../sagas";
 
@@ -22,6 +23,7 @@ const store = createStore(
 		auth: authReducer,
 		trending: trendingReducer,
 		timeline: timelineReducer,
+		notifications: notificationReducer,
 	}),
 	composeEnhancers(applyMiddleware(sagaMiddleware))
 );

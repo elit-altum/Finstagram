@@ -20,6 +20,7 @@ import EditUserProfile from "../components/EditUserProfile";
 import SearchUsers from "../components/SearchUsers";
 import PageNotFound from "../components/PageNotFound";
 import PageLoader from "../components/PageLoader";
+import Notifications from "../components/Notifications";
 
 export const history = createBrowserHistory();
 
@@ -29,6 +30,7 @@ const AppRouter = (props) => {
 		props.isLoggedIn();
 		props.fetchTimeline();
 		props.fetchTrending();
+		props.fetchNotifications();
 	}, []);
 
 	return !props.loading ? (
@@ -61,6 +63,11 @@ const AppRouter = (props) => {
 					component={UserProfile}
 					exact={true}
 				/>
+				<PrivateRoute
+					path="/notifications"
+					component={Notifications}
+					exact={true}
+				/>
 
 				<Route path="/" component={PageNotFound} />
 			</Switch>
@@ -74,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
 	isLoggedIn: () => dispatch(actions.getAuthToken()),
 	fetchTimeline: () => dispatch(actions.fetchMyTimeline()),
 	fetchTrending: () => dispatch(actions.fetchTrendingPosts()),
+	fetchNotifications: () => dispatch(actions.fetchNotifications()),
 });
 
 const mapStateToProps = (state) => ({
