@@ -15,6 +15,10 @@ const commentSchema = new mongoose.Schema({
 		type: String,
 		require: true,
 	},
+	notification: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Notification",
+	},
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

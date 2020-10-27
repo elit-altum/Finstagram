@@ -1,11 +1,12 @@
 // Handles routes specific to comments
 
 const Post = require("../models/postModel");
-const User = require("../models/userModel");
 const Comment = require("../models/commentModel");
+const Notification = require("../models/notificationModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const createNotification = require("../utils/createNotification");
 
 // ! ALL ROUTES HERE MUST BE PROTECTED BY authController.protectRoute()
 
@@ -23,10 +24,18 @@ exports.createComment = catchAsync(async (req, res) => {
 		throw new AppError("This post does not exist.", 404);
 	}
 
+	const notif = await createNotification.commentNotification(
+		post.createdBy,
+		req.user.id,
+		postId,
+		req.body.comment
+	);
+
 	const comment = await Comment.create({
 		createdBy: req.user.id,
 		post: postId,
 		body: req.body.comment,
+		notification: notif._id,
 	});
 
 	const newComment = await Comment.findById(comment.id).populate({
@@ -62,6 +71,8 @@ exports.removeComment = catchAsync(async (req, res) => {
 	if (comment.createdBy != req.user.id) {
 		throw new AppError("You do not have permission for this.", 403);
 	}
+
+	await Notification.findByIdAndRemove(comment.notification);
 
 	await Comment.findByIdAndRemove(comment.id);
 

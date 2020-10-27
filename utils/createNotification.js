@@ -32,3 +32,20 @@ exports.likeNotification = async (toUser, fromUser, postId) => {
 		console.log(error);
 	}
 };
+
+// Create comment notification
+exports.commentNotification = async (toUser, fromUser, postId, comment) => {
+	try {
+		const notif = await Notification.create({
+			to: toUser,
+			from: fromUser,
+			post: postId,
+			data: comment,
+			type: "comment",
+		});
+
+		return notif;
+	} catch (error) {
+		console.log(error);
+	}
+};
