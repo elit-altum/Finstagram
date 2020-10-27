@@ -79,7 +79,12 @@ header {
 }
 
 .discover-icon a svg {
-	font-size: 2rem;
+	font-size: 1.8rem;
+	color: lighten($secondary-color, 20%);
+}
+
+.bell-icon a svg {
+	font-size: 1.8rem;
 	color: lighten($secondary-color, 20%);
 }
 
