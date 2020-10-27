@@ -3,5 +3,6 @@ node_modules/
 .cache
 .vscode
 package-lock.json
-public/img/
+public/img/user-profiles
+public/img/posts
 coverage
