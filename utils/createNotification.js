@@ -49,3 +49,35 @@ exports.commentNotification = async (toUser, fromUser, postId, comment) => {
 		console.log(error);
 	}
 };
+
+// Create admin notification
+exports.adminNotification = async (toUser, message) => {
+	try {
+		const notif = await Notification.create({
+			to: toUser,
+			data: message,
+			type: "admin",
+		});
+
+		return notif;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// Create welcome notification
+exports.welcomeNotification = async (toUser) => {
+	try {
+		const welcomeMessage = "welcome";
+
+		const notif = await Notification.create({
+			to: toUser,
+			data: welcomeMessage,
+			type: "admin",
+		});
+
+		return notif;
+	} catch (error) {
+		console.log(error);
+	}
+};
