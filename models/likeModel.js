@@ -11,6 +11,10 @@ const likeSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: "Post",
 		},
+		notification: {
+			type: mongoose.Schema.ObjectId,
+			ref: "Notification",
+		},
 	},
 	{
 		timestamps: true,

@@ -18,13 +18,17 @@ exports.followNotification = async (toUser, fromUser) => {
 };
 
 // Create like notification
-exports.likeNotification = catchAsync(async (toUser, fromUser, postId) => {
-	const notif = await Notification.create({
-		to: toUser,
-		from: fromUser,
-		post: postId,
-		type: "like",
-	});
+exports.likeNotification = async (toUser, fromUser, postId) => {
+	try {
+		const notif = await Notification.create({
+			to: toUser,
+			from: fromUser,
+			post: postId,
+			type: "like",
+		});
 
-	return notif;
-});
+		return notif;
+	} catch (error) {
+		console.log(error);
+	}
+};

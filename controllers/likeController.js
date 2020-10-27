@@ -2,9 +2,11 @@
 const User = require("../models/userModel");
 const Like = require("../models/likeModel");
 const Post = require("../models/postModel");
+const Notification = require("../models/notificationModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const createNotification = require("../utils/createNotification");
 
 // *? 1. LIKE A POST
 exports.likePost = catchAsync(async (req, res) => {
@@ -23,9 +25,20 @@ exports.likePost = catchAsync(async (req, res) => {
 		throw new AppError("You have already liked this post.", 400);
 	}
 
+	const notif = await createNotification.likeNotification(
+		post.createdBy,
+		req.user.id,
+		req.params.postId
+	);
+
+	if (!notif) {
+		throw new AppError("Internal server error", 500);
+	}
+
 	await Like.create({
 		likedBy: req.user.id,
 		post: req.params.postId,
+		notification: notif._id,
 	});
 
 	res.status(200).json({
@@ -55,6 +68,8 @@ exports.unlikePost = catchAsync(async (req, res) => {
 		likedBy: req.user.id,
 		post: req.params.postId,
 	});
+
+	await Notification.findByIdAndRemove(alreadyLiked.notification);
 
 	res.status(200).json({
 		status: "success",
