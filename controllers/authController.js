@@ -58,8 +58,6 @@ exports.signupUser = catchAsync(async (req, res) => {
 	});
 
 	generateJWT(user, res);
-
-	await createNotification.welcomeNotification(user._id);
 });
 
 // *? 2. LOGIN EXISTING USER

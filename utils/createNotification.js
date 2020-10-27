@@ -64,21 +64,3 @@ exports.adminNotification = async (toUser, message) => {
 		console.log(error);
 	}
 };
-
-// Create welcome notification
-exports.welcomeNotification = async (toUser) => {
-	try {
-		const welcomeMessage = "welcome";
-
-		const notif = await Notification.create({
-			to: toUser,
-			data: welcomeMessage,
-			type: "admin",
-			priority: 99,
-		});
-
-		return notif;
-	} catch (error) {
-		console.log(error);
-	}
-};

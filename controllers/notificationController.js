@@ -61,21 +61,10 @@ const handleCommentNotification = async (notif) => {
 
 // ? 4. Admin notifications
 const handleAdminNotification = async (notif) => {
-	let message = notif.data;
-	let photo = notif.photo;
-	let link = notif.link;
-
-	if ((notif.data = "welcome")) {
-		message =
-			"Welcome to the Finstagram family! We can't wait to see what you do here!\n This is an open source project, click here to show some love by starring or forking this repository. ";
-		link = "https://github.com/elit-altum/Finstagram-The-Instagram-Clone";
-		photo = "/img/admin/welcome_img.jpg";
-	}
-
 	const notification = {
-		photo,
-		link,
-		message,
+		photo: notif.photo,
+		link: notif.link,
+		message: notif.data,
 		createdAt: notif.createdAt,
 		read: notif.read,
 	};
