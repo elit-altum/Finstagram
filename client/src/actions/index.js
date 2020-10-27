@@ -9,3 +9,7 @@ export const fetchMyTimeline = () => ({
 export const fetchTrendingPosts = () => ({
 	type: "FETCH_TRENDING",
 });
+
+export const fetchNotifications = () => ({
+	type: "FETCH_NOTIFICATIONS",
+});

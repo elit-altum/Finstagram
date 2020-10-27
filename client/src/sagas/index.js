@@ -39,11 +39,24 @@ function* fetchTrending() {
 	} catch (e) {}
 }
 
+// ? 05. GET NOTIFICATIONS
+function* fetchNotifications() {
+	try {
+		const res = yield call(api.getNotifications);
+		console.log("notif", res.data);
+		yield put({
+			type: "PUT_NOTIFICATIONS",
+			notifications: res.data.data.notifications,
+		});
+	} catch (e) {}
+}
+
 function* actionWatcher() {
 	yield takeLatest("FETCH_AUTH_TOKEN", fetchAuthToken);
 	yield takeLatest("FETCH_TIMELINE", fetchTimeline);
 	yield takeLatest("FETCH_TIMELINE_SCROLLING", fetchTimelineScrolling);
 	yield takeLatest("FETCH_TRENDING", fetchTrending);
+	yield takeLatest("FETCH_NOTIFICATIONS", fetchNotifications);
 }
 
 export default function* rootSaga() {
