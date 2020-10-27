@@ -122,5 +122,10 @@ exports.getNotifications = catchAsync(async (req, res) => {
 		.skip(skip);
 
 	const converted = await convertNotifications(notifs);
-	res.json(converted);
+	res.json({
+		status: "success",
+		data: {
+			notifications: converted,
+		},
+	});
 });
