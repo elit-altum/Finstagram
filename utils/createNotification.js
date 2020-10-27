@@ -74,6 +74,7 @@ exports.welcomeNotification = async (toUser) => {
 			to: toUser,
 			data: welcomeMessage,
 			type: "admin",
+			priority: 99,
 		});
 
 		return notif;
