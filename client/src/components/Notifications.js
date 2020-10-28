@@ -47,12 +47,37 @@ const WelcomeNotification = () => {
 	);
 };
 
+// Parse time of notification
+const getTime = (date) => {
+	const givenDate = new Date(date).setHours(0, 0, 0, 0);
+	const today = new Date(Date.now()).setHours(0, 0, 0, 0);
+
+	const difference = today - givenDate;
+
+	const dateObj = {
+		0: "Today",
+		86400000: "Yesterday",
+	};
+
+	return (
+		dateObj[difference] ||
+		new Date(date).toLocaleDateString("en-us", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})
+	);
+};
+
 const Notification = ({ notif }) => {
 	return (
 		<div className="my-notif" onClick={() => history.push(notif.link)}>
 			<div className="my-notif-details">
 				<img className="my-notif-image" src={notif.photo} />
-				<p className="my-notif-heading">{notif.message}</p>
+				<div className="my-notif-text">
+					<p className="my-notif-heading">{notif.message}</p>
+					<p className="my-notif-date">{getTime(notif.createdAt)}</p>
+				</div>
 			</div>
 			{notif.post && <img className="my-notif-post" src={notif.post} />}
 		</div>

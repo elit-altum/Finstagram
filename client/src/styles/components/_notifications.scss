@@ -1,6 +1,7 @@
 .my-notifs {
 	width: 100%;
 	margin-bottom: 40px;
+	padding: 1rem;
 }
 
 .my-notif {
@@ -16,24 +17,33 @@
 		align-items: center;
 
 		.my-notif-image {
-			width: 4rem;
+			width: 2.5rem;
 			height: auto;
 			border-radius: 50%;
 		}
 
-		.my-notif-heading {
+		.my-notif-text {
 			padding-left: 0.8rem;
-			font-size: 1rem;
-			text-decoration: none;
-			background: $alternate-gradient-color;
-			background-clip: text;
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
+
+			.my-notif-heading {
+				font-size: 0.95rem;
+				text-decoration: none;
+				background: $alternate-gradient-color;
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+
+			.my-notif-date {
+				font-size: 0.75rem;
+				color: lighten($secondary-color, 20%);
+				margin-top: 5px;
+			}
 		}
 	}
 
 	.my-notif-post {
-		width: 4rem;
+		width: 2.5rem;
 		align-self: flex-end;
 		float: right;
 	}
@@ -51,7 +61,7 @@
 
 	.my-welcome-notif-heading {
 		padding-left: 0.8rem;
-		font-size: 1.2rem;
+		font-size: 1.05rem;
 		text-decoration: none;
 		background: $gradient-color;
 		background-clip: text;
@@ -63,6 +73,7 @@
 	.my-welcome-notif-gh-buttons {
 		margin-top: 20px;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		span {
 			margin-left: 10px;
