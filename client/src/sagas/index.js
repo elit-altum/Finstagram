@@ -56,6 +56,7 @@ function* actionWatcher() {
 	yield takeLatest("FETCH_TIMELINE_SCROLLING", fetchTimelineScrolling);
 	yield takeLatest("FETCH_TRENDING", fetchTrending);
 	yield takeLatest("FETCH_NOTIFICATIONS", fetchNotifications);
+	yield takeLatest("CHECK_NOTIFICATIONS", fetchNotifications);
 }
 
 export default function* rootSaga() {

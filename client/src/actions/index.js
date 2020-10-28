@@ -13,3 +13,6 @@ export const fetchTrendingPosts = () => ({
 export const fetchNotifications = () => ({
 	type: "FETCH_NOTIFICATIONS",
 });
+export const checkNotifications = () => ({
+	type: "CHECK_NOTIFICATIONS",
+});

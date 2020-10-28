@@ -46,6 +46,29 @@ const Header = ({
 		</div>
 	);
 
+	let showDot = notifications
+		? !notificationsLoading && !notifications[0].read
+		: false;
+
+	const markNotifsAsRead = async () => {
+		if (!notifications) {
+			return;
+		}
+
+		try {
+			const url = "/api/v1/users/notifications/read";
+			await axios({
+				url,
+				method: "POST",
+				data: {
+					date: notifications[0].createdAt,
+				},
+			});
+		} catch (e) {
+			// console.log(e);
+		}
+	};
+
 	return (
 		<header>
 			<nav className="header">
@@ -55,11 +78,9 @@ const Header = ({
 					</div>
 					<ul className="header-navLinks">
 						<li className="bell-icon">
-							{!notificationsLoading && !notifications[0].read && (
-								<div className="notif-red-dot"></div>
-							)}
+							{showDot && <div className="notif-red-dot"></div>}
 							<Link to="/notifications">
-								<BellIcon2 />
+								<BellIcon2 onClick={markNotifsAsRead} />
 							</Link>
 						</li>
 						<li className="discover-icon">

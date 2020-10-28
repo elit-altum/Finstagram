@@ -31,6 +31,9 @@ const AppRouter = (props) => {
 		props.fetchTimeline();
 		props.fetchTrending();
 		props.fetchNotifications();
+		setInterval(() => {
+			props.checkNotifications();
+		}, 5000);
 	}, []);
 
 	return !props.loading ? (
@@ -82,6 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchTimeline: () => dispatch(actions.fetchMyTimeline()),
 	fetchTrending: () => dispatch(actions.fetchTrendingPosts()),
 	fetchNotifications: () => dispatch(actions.fetchNotifications()),
+	checkNotifications: () => dispatch(actions.checkNotifications()),
 });
 
 const mapStateToProps = (state) => ({
