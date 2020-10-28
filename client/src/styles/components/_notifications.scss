@@ -71,12 +71,14 @@
 	}
 
 	.my-welcome-notif-gh-buttons {
-		margin-top: 20px;
+		margin-top: 10px;
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
+		justify-content: center;
+		align-items: center;
 		span {
 			margin-left: 10px;
+			margin-top: 10px;
 		}
 	}
 }
