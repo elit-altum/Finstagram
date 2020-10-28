@@ -24,18 +24,24 @@ exports.createComment = catchAsync(async (req, res) => {
 		throw new AppError("This post does not exist.", 404);
 	}
 
-	const notif = await createNotification.commentNotification(
-		post.createdBy,
-		req.user.id,
-		postId,
-		req.body.comment
-	);
+	let notifId = null;
+
+	if (post.createdBy != req.user.id) {
+		const notif = await createNotification.commentNotification(
+			post.createdBy,
+			req.user.id,
+			postId,
+			req.body.comment
+		);
+
+		notifId = notif._id;
+	}
 
 	const comment = await Comment.create({
 		createdBy: req.user.id,
 		post: postId,
 		body: req.body.comment,
-		notification: notif._id,
+		notification: notifId,
 	});
 
 	const newComment = await Comment.findById(comment.id).populate({
@@ -72,7 +78,9 @@ exports.removeComment = catchAsync(async (req, res) => {
 		throw new AppError("You do not have permission for this.", 403);
 	}
 
-	await Notification.findByIdAndRemove(comment.notification);
+	if (comment.notification) {
+		await Notification.findByIdAndRemove(comment.notification);
+	}
 
 	await Comment.findByIdAndRemove(comment.id);
 

@@ -25,20 +25,21 @@ exports.likePost = catchAsync(async (req, res) => {
 		throw new AppError("You have already liked this post.", 400);
 	}
 
-	const notif = await createNotification.likeNotification(
-		post.createdBy,
-		req.user.id,
-		req.params.postId
-	);
+	let notifId = null;
 
-	if (!notif) {
-		throw new AppError("Internal server error", 500);
+	if (post.createdBy != req.user.id) {
+		const notif = await createNotification.likeNotification(
+			post.createdBy,
+			req.user.id,
+			req.params.postId
+		);
+		notifId = notif._id;
 	}
 
 	await Like.create({
 		likedBy: req.user.id,
 		post: req.params.postId,
-		notification: notif._id,
+		notification: notifId,
 	});
 
 	res.status(200).json({
@@ -69,7 +70,9 @@ exports.unlikePost = catchAsync(async (req, res) => {
 		post: req.params.postId,
 	});
 
-	await Notification.findByIdAndRemove(alreadyLiked.notification);
+	if (alreadyLiked.notification) {
+		await Notification.findByIdAndRemove(alreadyLiked.notification);
+	}
 
 	res.status(200).json({
 		status: "success",
