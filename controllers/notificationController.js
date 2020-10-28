@@ -92,7 +92,7 @@ const convertNotifications = async (notifs) => {
 // ? 1. TO FETCH USER NOTIFICATIONS
 exports.getNotifications = catchAsync(async (req, res) => {
 	const page = req.query.page * 1 || 1;
-	const limit = req.query.limit * 1 || 10;
+	const limit = req.query.limit * 1 || 20;
 
 	if (limit < 0 || page < 1) {
 		throw new AppError("Invalid request format.", 404);
