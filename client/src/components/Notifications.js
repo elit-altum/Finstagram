@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 import { connect } from "react-redux";
 import { history } from "../router/router";
 import GitHubButton from "react-github-btn";
@@ -85,6 +86,27 @@ const Notification = ({ notif }) => {
 };
 
 const Notifications = ({ loading, notifs }) => {
+	useEffect(() => {
+		const markNotifsAsRead = async () => {
+			if (!notifs) {
+				return;
+			}
+
+			try {
+				const url = "/api/v1/users/notifications/read";
+				await axios({
+					url,
+					method: "POST",
+					data: {
+						date: notifs[0].createdAt,
+					},
+				});
+			} catch (e) {
+				// console.log(e);
+			}
+		};
+		markNotifsAsRead();
+	});
 	return (
 		<div class="notifs-page">
 			{!loading ? (
