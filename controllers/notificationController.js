@@ -89,7 +89,7 @@ const convertNotifications = async (notifs) => {
 	return convertedNotifs;
 };
 
-// ? TO FETCH USER NOTIFICATIONS
+// ? 1. TO FETCH USER NOTIFICATIONS
 exports.getNotifications = catchAsync(async (req, res) => {
 	const page = req.query.page * 1 || 1;
 	const limit = req.query.limit * 1 || 10;
@@ -111,10 +111,36 @@ exports.getNotifications = catchAsync(async (req, res) => {
 		.skip(skip);
 
 	const converted = await convertNotifications(notifs);
-	res.json({
+	res.status(200).json({
 		status: "success",
 		data: {
 			notifications: converted,
 		},
+	});
+});
+
+// ? 2. TO MARK USER NOTIFICATIONS AS READ
+exports.readNotifications = catchAsync(async (req, res) => {
+	const lastDate = req.body.date;
+
+	if (!lastDate) {
+		throw new AppError("Invalid request format.", 404);
+	}
+
+	await Notification.updateMany(
+		{
+			createdAt: { $lte: lastDate },
+			read: false,
+		},
+		{
+			read: true,
+		},
+		{
+			multi: true,
+		}
+	);
+
+	res.status(200).json({
+		status: "success",
 	});
 });

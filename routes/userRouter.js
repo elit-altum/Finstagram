@@ -60,6 +60,9 @@ router.get("/:username/follows", followController.getAllFollows);
 // *? ALL NOTIFICATIONS OF A USER
 router.get("/notifications", notificationController.getNotifications);
 
+// *? MARK AS READ ALL NOTIFICATIONS OF A USER
+router.post("/notifications/read", notificationController.readNotifications);
+
 // *? <---- ADMIN ONLY ROUTES ---->
 router.use(authController.restrictTo("admin"));
 
