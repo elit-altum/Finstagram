@@ -9,7 +9,13 @@ import { history } from "../router/router";
 
 import { toast } from "react-toastify";
 
-const Header = ({ user, logoutUser, clearTimeline }) => {
+const Header = ({
+	user,
+	logoutUser,
+	clearTimeline,
+	notifications,
+	notificationsLoading,
+}) => {
 	const logout = async () => {
 		const url = "/api/v1/users/logout";
 		try {
@@ -49,6 +55,9 @@ const Header = ({ user, logoutUser, clearTimeline }) => {
 					</div>
 					<ul className="header-navLinks">
 						<li className="bell-icon">
+							{!notificationsLoading && !notifications[0].read && (
+								<div className="notif-red-dot"></div>
+							)}
 							<Link to="/notifications">
 								<BellIcon2 />
 							</Link>
@@ -85,6 +94,8 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	loading: state.auth.loading,
+	notifications: state.notifications.notifications,
+	notificationsLoading: state.notifications.loading,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

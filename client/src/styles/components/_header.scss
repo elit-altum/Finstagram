@@ -72,6 +72,7 @@ header {
 		margin-right: 1rem;
 		font-weight: 600;
 		color: $link-color;
+		position: relative;
 		a {
 			text-decoration: none;
 		}
@@ -86,6 +87,16 @@ header {
 .bell-icon a svg {
 	font-size: 1.8rem;
 	color: lighten($secondary-color, 20%);
+}
+
+.notif-red-dot {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 7px;
+	height: 7px;
+	background-color: #ef5350;
+	border-radius: 50%;
 }
 
 .header-profile {
