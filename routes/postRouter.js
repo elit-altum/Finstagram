@@ -19,6 +19,17 @@ router.post(
 	postController.storePost
 );
 
+// ? <--- UTILS --->
+
+// ? REPUTATION LIMIT
+router.get("/utils/getReputation", postController.getReputation);
+
+// ? REPORT A POST
+router.post("/utils/report", postController.reportPost);
+
+// ? UN-REPORT A POST
+router.post("/utils/unReport", postController.unReportPost);
+
 // *? 2. EDIT A POST
 router.patch("/edit/:postId", postController.editPost);
 

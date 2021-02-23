@@ -11,6 +11,7 @@ const Post = require("../models/postModel");
 const User = require("../models/userModel");
 const Follow = require("../models/followModel");
 const Like = require("../models/likeModel");
+const Report = require("../models/reportModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -449,11 +450,12 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 		},
 		{
 			$sort: {
-				displacement: 1,
+        reputation: -1,
+				displacement: 1
 			},
 		},
 		{
-			$limit: 9,
+			$limit: 20,
 		},
 	]);
 
@@ -476,12 +478,13 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 			post: post._id,
 		});
 
-		if (isLiked) {
-			post.likedByMe = true;
-		} else {
-			post.likedByMe = false;
-		}
+    const isReported = await Report.findOne({
+      user: req.user._id,
+      post: post._id
+    })
 
+    post.likedByMe = isLiked ? true : false;
+    post.reportedByMe = isReported ? true : false;
 		return post;
 	});
 
@@ -498,4 +501,117 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 			posts: resolvedArray,
 		},
 	});
+});
+
+// ? FOR REPUTATION AND REPORTS
+
+// *? 9. REPUTATION LIMIT
+exports.getReputation = catchAsync(async (req, res) => {
+  const allUsers = await User.find({});
+  const currUsers = allUsers.length;
+
+  return res.status(200).json({
+		status: "success",
+		results: {
+			reputationLimit: Math.ceil(currUsers * 0.2)
+		},
+	});
+})
+
+// *? 10. REPORT POST
+exports.reportPost = catchAsync(async(req, res) => {
+  const {post, status} = req.body;
+
+  if(!post || !status) {
+    throw new AppError('Please provide the status and post.', 400);
+  }
+
+  const isReviewed = await Report.findOne({
+    user: req.user._id,
+    post
+  });
+
+  if(isReviewed) {
+    throw new AppError('User has already reported.', 400);
+  }
+  
+  const postExists = await Post.findById(post);
+
+  if(!postExists) {
+    throw new AppError('No post found.', 400);
+  }
+
+  // Create a new report
+  const newReport = await Report.create({
+    user: req.user._id,
+    post,
+    status,
+  });
+
+  if(!newReport) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  // Update post reputation
+  const updatedPost = await Post.findByIdAndUpdate(post, {
+    $inc: {
+      reputation: -1,
+    }
+  })
+
+  if(!updatedPost) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  return res.status(200).json({
+    status: "success",
+  });
+});
+
+// *? 11. UN-REPORT POST
+exports.unReportPost = catchAsync(async (req, res) => {
+  const {
+    post,
+  } = req.body;
+
+  if (!post) {
+    throw new AppError('Please provide the post.', 400);
+  }
+
+  const isReviewed = await Report.findOne({
+    user: req.user._id,
+    post
+  });
+
+  if (!isReviewed) {
+    throw new AppError('User has not reported.', 400);
+  }
+
+  const postExists = await Post.findById(post);
+
+  if (!postExists) {
+    throw new AppError('No post found.', 400);
+  }
+
+  // Create a new report
+  const newReport = await Report.findByIdAndDelete(isReviewed._id);
+
+  if (!newReport) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  // Update post reputation
+  const updatedPost = await Post.findByIdAndUpdate(post, {
+    $inc: {
+      reputation: 1,
+    }
+  })
+
+  if (!updatedPost) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  return res.status(200).json({
+    status: "success",
+  });
 });
