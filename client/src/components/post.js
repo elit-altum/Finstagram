@@ -11,6 +11,7 @@ import { history } from "../router/router";
 import {
 	AiOutlineHeart as HeartOutline,
 	AiFillHeart as HeartFill,
+  AiFillCaretDown as CaretDown
 } from "react-icons/ai";
 import { AiOutlineComment as CommentOutline } from "react-icons/ai";
 
@@ -21,12 +22,16 @@ const Post = ({
 	trendingPosts,
 	updateTimeline,
 	updateTrending,
+  isNearby
 }) => {
 	const [isLiked, setIsLiked] = useState(post.likedByMe);
 	const [likes, setLikes] = useState(post.likes * 1);
 	const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
 	const [allLikes, setAllLikes] = useState([]);
 	const [showLikeIcon, setShowLikeIcon] = useState(false);
+  const [currReputation, setCurrReputation] = useState(post.reputation || 0);
+  const [reportedByMe, setReportedByMe] = useState(post.reportedByMe);
+
 
 	// a. Calculate time of post creation
 	const getTime = (date) => {
@@ -145,6 +150,41 @@ const Post = ({
 		await fetchLikes();
 	};
 
+  // i. Reputation update
+  const handleReputation = async () => {
+    if(reportedByMe) {
+      const url = `/api/v1/posts/utils/unReport`;
+      try {
+        await axios({
+          url,
+          method: "POST",
+          data: {
+            post: post._id
+          }
+        });
+        setCurrReputation(currReputation + 1);
+        setReportedByMe(false);
+      } catch (err) {
+      }
+    } else {
+      const url = `/api/v1/posts/utils/report`;
+      try {
+        await axios({
+          url,
+          method: "POST",
+          data: {
+            post: post._id,
+            status: "spam"
+          }
+        });
+        setCurrReputation(currReputation - 1);
+        setReportedByMe(true);
+      } catch (err){
+      }  
+    }
+  }
+
+
 	useEffect(() => {
 		fetchLikes();
 	}, []);
@@ -174,6 +214,14 @@ const Post = ({
 							</div>
 						)}
 					</div>
+          {
+            isNearby && ( < div className = "postCard__downvote">
+                <CaretDown onClick = {handleReputation} color = {reportedByMe ? "#f44336" : ""}/>
+                <p>{currReputation}</p>
+              </div>
+            )
+
+          }
 				</div>
 				{!!rank && (
 					<div className="postCard__trending">

@@ -9,8 +9,10 @@
 }
 
 .postCard__userInfo {
+  width: 100%;
 	display: flex;
 	align-items: center;
+  position: relative;
 	img {
 		margin-left: 10px;
 		width: 40px;
@@ -41,6 +43,22 @@
 			font-weight: bold;
 		}
 	}
+}
+
+.postCard__downvote {
+  margin-left: auto;
+  margin-right: 15px;
+  display: flex;
+  font-size: 1.35rem ;
+  align-items: center;
+  p {
+    color: #f44336;
+  }
+  svg {
+    cursor: pointer;
+    color: #888;
+    font-size: 1.6rem;
+  }
 }
 
 .postCard__trending {

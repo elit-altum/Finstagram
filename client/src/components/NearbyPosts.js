@@ -83,7 +83,7 @@ const NearbyPosts = (props) => {
 						<p>{locationName}</p>
 					</div>
 					{!!posts.length ? (
-						posts.map((post, index) => <Post post={post} key={post._id} />)
+						posts.map((post, index) => <Post post={post} key={post._id} isNearby={true} />)
 					) : (
 						<div className="no-posts">
 							<NotFound message={"Nothing Here."} />
