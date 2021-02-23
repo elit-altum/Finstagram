@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === "development") {
 
 // 3. Connect to MongoDB
 mongoose
-	.connect(process.env.MONGO_PROD, {
+	.connect(process.env.MONGO_SRV, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useCreateIndex: true,
