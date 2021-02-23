@@ -15,6 +15,10 @@ const postSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: "User",
 		},
+    reputation : {
+      type: Number,
+      default: 0
+    },
 		dimensions: {
 			type: String,
 			required: true,
