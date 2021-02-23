@@ -450,11 +450,12 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 		},
 		{
 			$sort: {
-				displacement: 1,
+        reputation: -1,
+				displacement: 1
 			},
 		},
 		{
-			$limit: 9,
+			$limit: 20,
 		},
 	]);
 
