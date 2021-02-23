@@ -532,11 +532,12 @@ exports.reportPost = catchAsync(async(req, res) => {
   if(isReviewed) {
     throw new AppError('User has already reported.', 400);
   }
+  
+  const postExists = await Post.findById(post);
 
-  const scoring = {
-    'spam': -1,
-    'abuse': -2,
-  } 
+  if(!postExists) {
+    throw new AppError('No post found.', 400);
+  }
 
   // Create a new report
   const newReport = await Report.create({
@@ -552,7 +553,7 @@ exports.reportPost = catchAsync(async(req, res) => {
   // Update post reputation
   const updatedPost = await Post.findByIdAndUpdate(post, {
     $inc: {
-      reputation: scoring[status] || -1,
+      reputation: -1,
     }
   })
 
@@ -563,5 +564,52 @@ exports.reportPost = catchAsync(async(req, res) => {
   return res.status(200).json({
     status: "success",
   });
+});
 
-})
+// *? 11. UN-REPORT POST
+exports.unReportPost = catchAsync(async (req, res) => {
+  const {
+    post,
+  } = req.body;
+
+  if (!post) {
+    throw new AppError('Please provide the post.', 400);
+  }
+
+  const isReviewed = await Report.findOne({
+    user: req.user._id,
+    post
+  });
+
+  if (!isReviewed) {
+    throw new AppError('User has not reported.', 400);
+  }
+
+  const postExists = await Post.findById(post);
+
+  if (!postExists) {
+    throw new AppError('No post found.', 400);
+  }
+
+  // Create a new report
+  const newReport = await Report.findByIdAndDelete(isReviewed._id);
+
+  if (!newReport) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  // Update post reputation
+  const updatedPost = await Post.findByIdAndUpdate(post, {
+    $inc: {
+      reputation: 1,
+    }
+  })
+
+  if (!updatedPost) {
+    throw new AppError('Internal server error.', 500);
+  }
+
+  return res.status(200).json({
+    status: "success",
+  });
+});
