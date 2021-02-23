@@ -477,12 +477,13 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 			post: post._id,
 		});
 
-		if (isLiked) {
-			post.likedByMe = true;
-		} else {
-			post.likedByMe = false;
-		}
+    const isReported = await Report.findOne({
+      user: req.user._id,
+      post: post._id
+    })
 
+    post.likedByMe = isLiked ? true : false;
+    post.reportedByMe = isReported ? true : false;
 		return post;
 	});
 
