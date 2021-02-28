@@ -4,5 +4,5 @@ node_modules/
 .vscode
 package-lock.json
 public/img/user-profiles
-public/img/posts
+public/img/posts/*
 coverage
