@@ -153,6 +153,8 @@ const Post = ({
   // i. Reputation update
   const handleReputation = async () => {
     if(reportedByMe) {
+      setCurrReputation(currReputation + 1);
+      setReportedByMe(false);
       const url = `/api/v1/posts/utils/unReport`;
       try {
         await axios({
@@ -162,12 +164,14 @@ const Post = ({
             post: post._id
           }
         });
-        setCurrReputation(currReputation + 1);
-        setReportedByMe(false);
       } catch (err) {
+        setCurrReputation(currReputation - 1);
+        setReportedByMe(true);
       }
     } else {
       const url = `/api/v1/posts/utils/report`;
+      setCurrReputation(currReputation - 1);
+      setReportedByMe(true);
       try {
         await axios({
           url,
@@ -177,9 +181,10 @@ const Post = ({
             status: "spam"
           }
         });
-        setCurrReputation(currReputation - 1);
-        setReportedByMe(true);
+        
       } catch (err){
+        setCurrReputation(currReputation + 1);
+        setReportedByMe(false);
       }  
     }
   }
