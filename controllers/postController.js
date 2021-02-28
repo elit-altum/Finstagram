@@ -451,6 +451,7 @@ exports.getPostsNearTo = catchAsync(async (req, res) => {
 		{
 			$sort: {
         reputation: -1,
+        createdAt: -1,
 				displacement: 1
 			},
 		},
