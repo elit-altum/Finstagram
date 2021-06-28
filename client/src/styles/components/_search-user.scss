@@ -50,6 +50,40 @@
 	overflow-y: auto;
 }
 
+.search-location-results {
+	width: auto;
+
+	.location-data {
+		display: flex;
+		align-items: center;
+		margin: 10px 0;
+		padding-bottom: 10px;
+		border-bottom: 1px solid lighten($secondary-color, 70%);
+		svg {
+			flex: 1;
+			font-size: 1.5rem;
+			color: lighten(#E53935, 20);
+		}
+
+		a {
+			flex: 14;
+			text-decoration: none;
+			p {
+				padding: 0 5px;
+				text-align: left;
+				font-family: $primary-font;
+				background: $gradient-color;
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				font-style: italic;
+				font-size: 1rem;
+				text-decoration: none;
+			}
+		}
+	}
+ }
+
 .search-loader {
 	margin: 0 auto;
 	margin-top: 50px;
