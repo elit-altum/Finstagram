@@ -5,3 +5,4 @@ node_modules/
 public/img/user-profiles
 public/img/posts
 coverage
+package-lock.json
