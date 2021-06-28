@@ -47,7 +47,7 @@ const Header = ({
 	);
 
 	let showDot = notifications
-		? !notificationsLoading && !notifications[0].read
+		? !notificationsLoading && notifications.length > 0 && !notifications[0].read
 		: false;
 
 	return (
