@@ -37,7 +37,7 @@
 		border-radius: 100%;
 		margin-left: 10px;
 	}
-	p {
+	.postDetails--username {
 		padding-left: 35px;
 		font-size: 1rem;
 		color: $link-color;
@@ -49,7 +49,19 @@
 		-webkit-text-fill-color: transparent;
 		cursor: pointer;
 	}
+  .postDetails__location {
+    margin-top: 5px;
+		padding-left: 35px;
+
+    a {
+      color: $secondary-color;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+  }
 }
+
 
 .postDetails__likes {
 	display: flex;

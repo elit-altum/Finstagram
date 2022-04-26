@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 import { history } from "../router/router";
 
@@ -39,6 +41,7 @@ const PostDetails = ({
 				method: "GET",
 			});
 			const post = res.data.results.post;
+      console.log(post);
 			setPost(post);
 			setIsLiked(post.likedByMe);
 			setLikes(post.likes * 1);
@@ -173,13 +176,26 @@ const PostDetails = ({
 						src={post.createdBy.photo}
 						alt={`${post.createdBy.username}'s profile`}
 					/>
-					<p
+          <div>
+            <p
 						className="postDetails--username"
 						onClick={() => history.push(`/user/${post.createdBy.username}`)}
 					>
 						{post.createdBy.username}
 					</p>
+          {!!post.locationName && (
+            <div className="postDetails__location">
+              <Link
+                to={`/post/nearby/${post.location.coordinates[0]},${post.location.coordinates[1]}`}
+              >
+                <p>{post.locationName}</p>
+              </Link>
+            </div>
+          )}
+
+          </div>
 				</div>
+        
 				<div className="postDetails--image">
 					<img
 						src={post.photo}
