@@ -239,8 +239,11 @@ exports.searchUser = catchAsync(async (req, res) => {
 	res.status(200).json({
 		status: "success",
 		data: {
-      country,
-      city,
+      location: {
+        country,
+        city,
+        ip,
+      },
 			results: users.length,
 			users,
 		},

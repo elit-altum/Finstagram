@@ -12,13 +12,22 @@
 }
 
 .searchUser-details {
-  display: flex;
-  align-items: center;
   width: 100%;
-  justify-content: center;
   text-align: center;
   font-size: 1.3rem;
   color: #999;
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.searchUser-details__small {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  align-self: flex-start;
+  // font-style: italic;
 }
 
 .searchUser-bar {

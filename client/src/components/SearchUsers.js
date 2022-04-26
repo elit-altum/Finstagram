@@ -33,8 +33,7 @@ const LocationResults = ({ locations }) => {
 const SearchUsers = () => {
     const [users, setUsers] = useState([]);
     const [locations, setLocations] = useState([]);
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
+    const [userLocation, setUserLocation] = useState({});
 
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
@@ -54,10 +53,8 @@ const SearchUsers = () => {
                 },
             });
             setUsers(res.data.data.users);
-            console.log(res);
 
-            setCountry(res.data.data.country);
-            setCity(res.data.data.city);
+            setUserLocation(res.data.data.location);
 
             const geoCodeRes = await geoCode(value);
             !value ? setLocations([]) : setLocations(geoCodeRes);
@@ -94,11 +91,14 @@ const SearchUsers = () => {
         <div className='searchUsers'>
             <h3>Search Users & Places</h3>
             <div className='searchUser-details'>
-                {city && (
-                    <>
-                        <LocationIcon />
-                        <p>{`${city}/${country}`}</p>
-                    </>
+                {userLocation.city && (
+                  <>
+                    <div className="flex">
+                      <LocationIcon />
+                      <p>{`${userLocation.city}/${userLocation.country}`}</p>
+                    </div>
+                    <p className='searchUser-details__small'>{`${userLocation.ip}`}</p>
+                  </>
                 )}
             </div>
             <div className='searchUser-bar'>
