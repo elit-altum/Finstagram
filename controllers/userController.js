@@ -1,7 +1,7 @@
 // Handles user specific routes
 const fs = require("fs");
-const { promisify } = require("util");
 const path = require("path");
+const geoip = require('geoip-lite');
 
 const multer = require("multer");
 const sharp = require("sharp");
@@ -201,6 +201,20 @@ exports.searchUser = catchAsync(async (req, res) => {
 		throw new AppError("Please provide a search value.", 400);
 	}
 
+  const ipAddrReq = req.headers["x-forwarded-for"] || req.ip;
+  let ip = ipAddrReq.split(",").slice(-1)[0];
+  let country = "", city = "";
+
+  // ip = "122.162.144.205"
+  const geoLocation = geoip.lookup(ip);
+
+  if(geoLocation) {
+    country = geoLocation?.country;
+    city = geoLocation?.city;
+  }
+
+  // console.log(ip, geoLocation);
+  
 	const regex = "^" + req.body.search;
 	const searchQuery = new RegExp(regex, "i");
 
@@ -225,13 +239,15 @@ exports.searchUser = catchAsync(async (req, res) => {
 	res.status(200).json({
 		status: "success",
 		data: {
+      country,
+      city,
 			results: users.length,
 			users,
 		},
 	});
 });
 
-// *? 6. SEARCH FOR A USER USING NAME/USERNAME
+// *? 7. SUGGEST RANDOM USERS
 exports.findRandomUsers = catchAsync(async (req, res) => {
 	const users = await User.find({ _id: { $ne: req.user.id } })
 		.limit(8)

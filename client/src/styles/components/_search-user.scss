@@ -11,6 +11,16 @@
 	}
 }
 
+.searchUser-details {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.3rem;
+  color: #999;
+}
+
 .searchUser-bar {
 	height: 50px;
 	margin: 0.8rem;

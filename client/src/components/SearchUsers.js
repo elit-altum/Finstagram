@@ -4,8 +4,9 @@ import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import { FcSearch as SearchIcon } from 'react-icons/fc';
 import { FaRegSadTear as SadIcon } from 'react-icons/fa';
 import { TiLocation as PinIcon } from 'react-icons/ti';
+import { MdLocationOn as LocationIcon } from 'react-icons/md';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import { UserInfoSmall } from './likesArray';
 import geoCode from '../utils/geoCode';
@@ -16,16 +17,13 @@ const LocationResults = ({ locations }) => {
     return (
         <div className='search-location-results'>
             {locations.map((location) => (
-                <div
-                    className='location-data'
-                    key={location.name}
-                >	
-					<PinIcon />
-					<Link
-						to={`/post/nearby/${location.longitude},${location.latitude}`}
-					>
-						<p>{location.name}</p>
-					</Link>
+                <div className='location-data' key={location.name}>
+                    <PinIcon />
+                    <Link
+                        to={`/post/nearby/${location.longitude},${location.latitude}`}
+                    >
+                        <p>{location.name}</p>
+                    </Link>
                 </div>
             ))}
         </div>
@@ -35,15 +33,17 @@ const LocationResults = ({ locations }) => {
 const SearchUsers = () => {
     const [users, setUsers] = useState([]);
     const [locations, setLocations] = useState([]);
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
 
     const matchQueryAsync = async (value) => {
-		if(!value) {
-			setLocations([]);
-			return;
-		}
+        if (!value) {
+            setLocations([]);
+            return;
+        }
         try {
             const url = '/api/v1/users/search';
             const res = await axios({
@@ -54,6 +54,10 @@ const SearchUsers = () => {
                 },
             });
             setUsers(res.data.data.users);
+            console.log(res);
+
+            setCountry(res.data.data.country);
+            setCity(res.data.data.city);
 
             const geoCodeRes = await geoCode(value);
             !value ? setLocations([]) : setLocations(geoCodeRes);
@@ -89,6 +93,14 @@ const SearchUsers = () => {
     return (
         <div className='searchUsers'>
             <h3>Search Users & Places</h3>
+            <div className='searchUser-details'>
+                {city && (
+                    <>
+                        <LocationIcon />
+                        <p>{`${city}/${country}`}</p>
+                    </>
+                )}
+            </div>
             <div className='searchUser-bar'>
                 <div className='searchUser-bar__icon'>
                     <SearchIcon />
